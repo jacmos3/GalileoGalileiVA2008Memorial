@@ -23,22 +23,57 @@
       margin: 0;
       min-height: 100vh;
       font-family: "MS Sans Serif", Tahoma, Geneva, sans-serif;
-      background-color: #245edb;
-      background-image: url("resources/winxp.jpg?v=20260307-3");
-      background-position: left top;
-      background-repeat: no-repeat;
-      background-size: auto 100vh;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        url("resources/wallpaperxp.jpg?v=20260309-2") center center / cover no-repeat;
       color: var(--text);
-      padding: 8px;
+      padding: 0;
       overflow: hidden;
       cursor: auto;
     }
     .shell {
       width: 100%;
-      min-height: calc(100vh - 16px);
+      min-height: 100vh;
       margin: 0 auto;
       position: relative;
       overflow: hidden;
+    }
+    .taskbar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 30px;
+      background: linear-gradient(180deg, #3f91ff 0%, #2878ef 18%, #1d66db 52%, #0d4bb6 100%);
+      border-top: 1px solid rgba(255,255,255,0.45);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.28);
+      z-index: 2;
+    }
+    .taskbar::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 110px;
+      background: linear-gradient(180deg, #41b8ff 0%, #2f8de6 28%, #1d63c7 100%);
+      border-left: 1px solid rgba(255,255,255,0.32);
+      box-shadow: inset 1px 0 0 rgba(0,0,0,0.18);
+    }
+    .taskbar-clock {
+      position: absolute;
+      right: 12px;
+      bottom: 0;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 72px;
+      color: #fff;
+      font: 400 11px "Tahoma", "MS Sans Serif", sans-serif;
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.35);
+      z-index: 3;
+      pointer-events: none;
     }
     .window {
       border: 1px solid #7c7c7c;
@@ -51,6 +86,12 @@
       position: absolute;
       left: 0;
       top: 0;
+      transition: transform 180ms ease, opacity 180ms ease;
+    }
+    .window.minimized {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.88);
     }
     .window-titlebar {
       height: 24px;
@@ -130,11 +171,30 @@
     }
     .start-hotspot {
       position: absolute;
-      border: 0;
-      background: transparent;
-      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 29px;
+      padding: 0 16px 0 12px;
+      border: 1px solid #0f5f11;
+      border-radius: 0 10px 10px 0;
+      background: linear-gradient(180deg, #58c450 0%, #2ea82b 48%, #1d7f1d 100%);
+      box-shadow: inset 1px 1px 0 rgba(255,255,255,0.45), inset -1px -1px 0 rgba(0,0,0,0.2);
+      color: #fff;
+      font: italic 700 18px "Trebuchet MS", Tahoma, sans-serif;
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.35);
       cursor: pointer;
       z-index: 3;
+    }
+    .start-hotspot::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background:
+        linear-gradient(135deg, #ffd24a 0 45%, #e83f3f 45% 70%, #4ab04a 70% 100%);
+      box-shadow: inset 1px 1px 0 rgba(255,255,255,0.45), 0 0 0 1px rgba(0,0,0,0.16);
+      flex: 0 0 18px;
     }
     .start-menu {
       position: absolute;
@@ -148,6 +208,34 @@
     }
     .start-menu.visible {
       display: block;
+    }
+    .taskbar-app {
+      position: absolute;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      height: 24px;
+      padding: 0 10px 0 8px;
+      border: 1px solid rgba(6, 49, 130, 0.95);
+      border-radius: 2px;
+      background: linear-gradient(180deg, rgba(125, 177, 255, 0.95) 0%, rgba(56, 120, 224, 0.98) 100%);
+      color: #fff;
+      font: 700 11px "Tahoma", "MS Sans Serif", sans-serif;
+      box-shadow: inset 1px 1px 0 rgba(255,255,255,0.4), inset -1px -1px 0 rgba(0,0,0,0.18);
+      cursor: pointer;
+      z-index: 4;
+    }
+    .taskbar-app.visible {
+      display: inline-flex;
+    }
+    .taskbar-app.minimized {
+      background: linear-gradient(180deg, rgba(91, 144, 228, 0.95) 0%, rgba(44, 103, 198, 0.98) 100%);
+      opacity: 0.92;
+    }
+    .taskbar-app img {
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
     }
     .start-menu-header {
       padding: 8px 10px;
@@ -288,11 +376,17 @@
 </head>
 <body>
   <main class="shell">
+    <div id="taskbar" class="taskbar"></div>
+    <div id="taskbarClock" class="taskbar-clock" aria-hidden="true">19:45</div>
     <button type="button" id="desktopAppIcon" class="desktop-icon" aria-label="Apri Acciacca prof">
       <img src="resources/app-icon.png" alt="">
       <span>Acciacca prof</span>
     </button>
-    <button type="button" id="startHotspot" class="start-hotspot" aria-label="Start"></button>
+    <button type="button" id="startHotspot" class="start-hotspot" aria-label="Start">start</button>
+    <button type="button" id="taskbarApp" class="taskbar-app" aria-label="Acciacca prof in esecuzione">
+      <img src="resources/app-icon.png" alt="">
+      <span>Acciacca prof</span>
+    </button>
     <div id="startMenu" class="start-menu" aria-hidden="true">
       <div class="start-menu-header">Acciacca prof</div>
       <div class="start-menu-items">
@@ -457,9 +551,6 @@
     const GAME_SCALE_FACTOR = 3.0;
     const WINDOW_CHROME_HEIGHT = 24 + 16 + 4;
     const BOTTOM_SAFE_GAP = 50;
-    const DESKTOP_IMAGE_WIDTH = 4000;
-    const DESKTOP_IMAGE_HEIGHT = 3073;
-    const DESKTOP_TASKBAR_RATIO = 28 / 768;
     const START_MENU_STORY_PAGES = [
       {
         title: 'Acciacca Prof',
@@ -504,7 +595,7 @@
     ];
 
     const refs = {
-      shell: document.querySelector('.shell'), window: document.getElementById('window'), windowTitlebar: document.getElementById('windowTitlebar'), windowClose: document.getElementById('windowClose'), desktopAppIcon: document.getElementById('desktopAppIcon'), startHotspot: document.getElementById('startHotspot'), startMenu: document.getElementById('startMenu'), startMenuOpen: document.getElementById('startMenuOpen'), startMenuStory: document.getElementById('startMenuStory'),
+      shell: document.querySelector('.shell'), taskbar: document.getElementById('taskbar'), taskbarClock: document.getElementById('taskbarClock'), window: document.getElementById('window'), windowTitlebar: document.getElementById('windowTitlebar'), windowClose: document.getElementById('windowClose'), desktopAppIcon: document.getElementById('desktopAppIcon'), startHotspot: document.getElementById('startHotspot'), taskbarApp: document.getElementById('taskbarApp'), startMenu: document.getElementById('startMenu'), startMenuOpen: document.getElementById('startMenuOpen'), startMenuStory: document.getElementById('startMenuStory'),
       viewport: document.getElementById('viewport'), form: document.getElementById('form'), background: document.getElementById('background'),
       profcatt: document.getElementById('profcatt'), profbuon: document.getElementById('profbuon'), bidella: document.getElementById('bidella'),
       schizzi: document.getElementById('schizzi'), zampilli1: document.getElementById('zampilli1'), zampilli2: document.getElementById('zampilli2'), zampilli3: document.getElementById('zampilli3'),
@@ -559,16 +650,29 @@
         x: 0,
         y: 0
       },
+      desktopIconDrag: {
+        active: false,
+        moved: false,
+        initialized: false,
+        suppressClick: false,
+        offsetX: 0,
+        offsetY: 0,
+        x: 18,
+        y: 18
+      },
       windowClosed: false,
+      windowMinimized: false,
       startMenuOpen: false,
       pentathlonAwaitingStart: false,
       storyPage: 0,
-      storyMode: false
+      storyMode: false,
+      clockTimerId: null
     };
 
     function resizeForm() {
-      const availableW = Math.max(120, window.innerWidth - 24);
-      const availableH = Math.max(120, window.innerHeight - WINDOW_CHROME_HEIGHT - 16 - BOTTOM_SAFE_GAP);
+      const desktop = desktopBounds();
+      const availableW = Math.max(120, desktop.width - 24);
+      const availableH = Math.max(120, desktop.height - WINDOW_CHROME_HEIGHT - 16 - BOTTOM_SAFE_GAP);
       const scaleW = availableW / FORM_WIDTH;
       const scaleH = availableH / FORM_HEIGHT;
       const fitScale = Math.min(scaleW, scaleH);
@@ -582,15 +686,11 @@
     }
     function desktopBounds() {
       const shellRect = refs.shell.getBoundingClientRect();
-      const bgHeight = window.innerHeight;
-      const bgWidth = bgHeight * (DESKTOP_IMAGE_WIDTH / DESKTOP_IMAGE_HEIGHT);
-      const bgLeft = bgWidth < window.innerWidth ? (window.innerWidth - bgWidth) / 2 : 0;
-      const bgTop = 0;
-      const taskbarHeight = bgHeight * DESKTOP_TASKBAR_RATIO;
-      const localLeft = Math.max(0, bgLeft - shellRect.left);
-      const localTop = Math.max(0, bgTop - shellRect.top);
-      const localRight = Math.min(shellRect.width, bgLeft + bgWidth - shellRect.left);
-      const localBottom = Math.min(shellRect.height, bgTop + bgHeight - taskbarHeight - shellRect.top);
+      const taskbarRect = refs.taskbar.getBoundingClientRect();
+      const localLeft = 0;
+      const localTop = 0;
+      const localRight = shellRect.width;
+      const localBottom = Math.max(0, taskbarRect.top - shellRect.top);
       return {
         left: localLeft,
         top: localTop,
@@ -602,10 +702,35 @@
       const desktop = desktopBounds();
       const iconWidth = refs.desktopAppIcon.offsetWidth || 84;
       const iconHeight = refs.desktopAppIcon.offsetHeight || 64;
-      const x = desktop.left + Math.max(0, (desktop.width - iconWidth) / 2);
-      const y = desktop.top + Math.max(24, (desktop.height - iconHeight) / 2 - 24);
-      refs.desktopAppIcon.style.left = `${x}px`;
-      refs.desktopAppIcon.style.top = `${y}px`;
+      if (!state.desktopIconDrag.initialized) {
+        state.desktopIconDrag.x = desktop.left + 18;
+        state.desktopIconDrag.y = desktop.top + 18;
+        state.desktopIconDrag.initialized = true;
+      }
+      applyDesktopIconPosition(state.desktopIconDrag.x, state.desktopIconDrag.y, iconWidth, iconHeight);
+    }
+    function desktopIconBounds(iconWidth, iconHeight) {
+      const desktop = desktopBounds();
+      return {
+        minX: desktop.left,
+        minY: desktop.top,
+        maxX: Math.max(desktop.left, desktop.left + desktop.width - iconWidth),
+        maxY: Math.max(desktop.top, desktop.top + desktop.height - iconHeight)
+      };
+    }
+    function clampDesktopIconPosition(x, y, iconWidth, iconHeight) {
+      const bounds = desktopIconBounds(iconWidth, iconHeight);
+      return {
+        x: Math.min(Math.max(bounds.minX, x), bounds.maxX),
+        y: Math.min(Math.max(bounds.minY, y), bounds.maxY)
+      };
+    }
+    function applyDesktopIconPosition(x, y, iconWidth = refs.desktopAppIcon.offsetWidth || 84, iconHeight = refs.desktopAppIcon.offsetHeight || 64) {
+      const pos = clampDesktopIconPosition(x, y, iconWidth, iconHeight);
+      state.desktopIconDrag.x = pos.x;
+      state.desktopIconDrag.y = pos.y;
+      refs.desktopAppIcon.style.left = `${pos.x}px`;
+      refs.desktopAppIcon.style.top = `${pos.y}px`;
     }
     function closeStartMenu() {
       state.startMenuOpen = false;
@@ -623,12 +748,13 @@
       else openStartMenu();
     }
     function positionStartUI() {
+      const shellRect = refs.shell.getBoundingClientRect();
+      const taskbarRect = refs.taskbar.getBoundingClientRect();
       const desktop = desktopBounds();
-      const taskbarHeight = window.innerHeight * DESKTOP_TASKBAR_RATIO;
-      const startWidth = 108;
-      const startHeight = taskbarHeight;
-      const startX = desktop.left;
-      const startY = desktop.top + desktop.height;
+      const startWidth = 118;
+      const startHeight = taskbarRect.height;
+      const startX = 0;
+      const startY = taskbarRect.top - shellRect.top;
       refs.startHotspot.style.left = `${startX}px`;
       refs.startHotspot.style.top = `${startY}px`;
       refs.startHotspot.style.width = `${startWidth}px`;
@@ -636,10 +762,14 @@
 
       const menuWidth = refs.startMenu.offsetWidth || 190;
       const menuHeight = refs.startMenu.offsetHeight || 120;
-      const menuX = Math.min(startX, desktop.left + desktop.width - menuWidth);
+      const menuX = Math.max(desktop.left, Math.min(startX, desktop.left + desktop.width - menuWidth));
       const menuY = Math.max(desktop.top, startY - menuHeight);
       refs.startMenu.style.left = `${menuX}px`;
       refs.startMenu.style.top = `${menuY}px`;
+
+      refs.taskbarApp.style.left = `${startX + startWidth + 10}px`;
+      refs.taskbarApp.style.top = `${startY + Math.max(0, (startHeight - 24) / 2)}px`;
+      refs.taskbarApp.style.width = `${Math.min(180, Math.max(142, desktop.width * 0.16))}px`;
     }
     function windowBounds() {
       const shellRect = refs.shell.getBoundingClientRect();
@@ -674,12 +804,18 @@
       applyWindowPosition(x, y);
     }
     function positionWindow() {
-      if (state.windowClosed) return;
+      if (state.windowClosed || state.windowMinimized) return;
       if (state.windowDrag.moved) applyWindowPosition(state.windowDrag.x, state.windowDrag.y);
       else centerWindow();
     }
+    function syncTaskbarApp() {
+      const visible = !state.windowClosed;
+      refs.taskbarApp.classList.toggle('visible', visible);
+      refs.taskbarApp.classList.toggle('minimized', visible && state.windowMinimized);
+      refs.taskbarApp.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    }
     function startWindowDrag(event) {
-      if (state.windowClosed) return;
+      if (state.windowClosed || state.windowMinimized) return;
       if (event.target.closest('.win-btn')) return;
       const rect = refs.window.getBoundingClientRect();
       state.windowDrag.active = true;
@@ -698,20 +834,81 @@
     function stopWindowDrag() {
       state.windowDrag.active = false;
     }
+    function startDesktopIconDrag(event) {
+      const rect = refs.desktopAppIcon.getBoundingClientRect();
+      state.desktopIconDrag.active = true;
+      state.desktopIconDrag.moved = false;
+      state.desktopIconDrag.offsetX = event.clientX - rect.left;
+      state.desktopIconDrag.offsetY = event.clientY - rect.top;
+      event.preventDefault();
+    }
+    function moveDesktopIconDrag(event) {
+      if (!state.desktopIconDrag.active) return;
+      const shellRect = refs.shell.getBoundingClientRect();
+      const nextX = event.clientX - shellRect.left - state.desktopIconDrag.offsetX;
+      const nextY = event.clientY - shellRect.top - state.desktopIconDrag.offsetY;
+      if (Math.abs(nextX - state.desktopIconDrag.x) > 2 || Math.abs(nextY - state.desktopIconDrag.y) > 2) {
+        state.desktopIconDrag.moved = true;
+      }
+      applyDesktopIconPosition(nextX, nextY);
+    }
+    function stopDesktopIconDrag() {
+      if (!state.desktopIconDrag.active) return;
+      state.desktopIconDrag.active = false;
+      state.desktopIconDrag.suppressClick = state.desktopIconDrag.moved;
+      state.desktopIconDrag.moved = false;
+    }
     function closeWindow() {
       stopWindowDrag();
       if (state.running) stopGame();
       closeModal(false);
       closeStartMenu();
       state.windowClosed = true;
+      state.windowMinimized = false;
       refs.window.style.display = 'none';
+      refs.window.classList.remove('minimized');
+      syncTaskbarApp();
     }
-    function openWindow() {
+    function openWindow(keepPosition = false) {
       state.windowClosed = false;
+      state.windowMinimized = false;
       refs.window.style.display = 'inline-block';
+      refs.window.classList.remove('minimized');
       positionDesktopIcon();
       positionStartUI();
+      if (!keepPosition) state.windowDrag.moved = false;
       positionWindow();
+      syncTaskbarApp();
+    }
+    function updateTaskbarClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      refs.taskbarClock.textContent = `${hours}:${minutes}`;
+    }
+    function startTaskbarClock() {
+      if (state.clockTimerId) return;
+      updateTaskbarClock();
+      state.clockTimerId = window.setInterval(updateTaskbarClock, 1000);
+    }
+    function minimizeWindow() {
+      if (state.windowClosed || state.windowMinimized) return;
+      stopWindowDrag();
+      closeStartMenu();
+      state.windowMinimized = true;
+      refs.window.classList.add('minimized');
+      syncTaskbarApp();
+    }
+    function toggleTaskbarWindow() {
+      if (state.windowClosed) {
+        openWindow();
+        return;
+      }
+      if (state.windowMinimized) {
+        openWindow(true);
+        return;
+      }
+      minimizeWindow();
     }
     function playAudio(el) { if (!refs.ckdsuoni.checked && el !== refs.audioSottofondo) return; try { el.currentTime = 0; el.play().catch(() => {}); } catch (_) {} }
     function setHammerDown() { refs.form.classList.add('hammer-down'); }
@@ -1429,7 +1626,16 @@
     refs.windowTitlebar.addEventListener('mousedown', startWindowDrag);
     refs.windowClose.addEventListener('mousedown', (event) => { event.stopPropagation(); });
     refs.windowClose.addEventListener('click', (event) => { event.stopPropagation(); closeWindow(); });
-    refs.desktopAppIcon.addEventListener('click', openWindow);
+    refs.desktopAppIcon.addEventListener('mousedown', startDesktopIconDrag);
+    refs.desktopAppIcon.addEventListener('click', (event) => {
+      if (state.desktopIconDrag.suppressClick) {
+        state.desktopIconDrag.suppressClick = false;
+        event.preventDefault();
+        return;
+      }
+      openWindow();
+    });
+    refs.taskbarApp.addEventListener('click', (event) => { event.stopPropagation(); toggleTaskbarWindow(); });
     refs.startHotspot.addEventListener('click', (event) => { event.stopPropagation(); toggleStartMenu(); });
     refs.startMenuOpen.addEventListener('click', (event) => { event.stopPropagation(); closeStartMenu(); openWindow(); });
     refs.startMenuStory.addEventListener('click', (event) => { event.stopPropagation(); showStartStory(); });
@@ -1486,12 +1692,15 @@
       closeStartMenu();
     });
     document.addEventListener('mousemove', moveWindowDrag);
+    document.addEventListener('mousemove', moveDesktopIconDrag);
     document.addEventListener('mouseup', setHammerUp);
     document.addEventListener('mouseup', stopWindowDrag);
+    document.addEventListener('mouseup', stopDesktopIconDrag);
     window.addEventListener('blur', setHammerUp);
     window.addEventListener('blur', stopWindowDrag);
+    window.addEventListener('blur', stopDesktopIconDrag);
 
-    applyCustomization(); moveSpritesOffstage(); clearPentathlonState(); syncLevelRadios(); syncScoreboard(); resizeForm(); window.addEventListener('resize', resizeForm); new ResizeObserver(resizeForm).observe(refs.viewport);
+    applyCustomization(); moveSpritesOffstage(); clearPentathlonState(); syncLevelRadios(); syncScoreboard(); syncTaskbarApp(); startTaskbarClock(); resizeForm(); window.addEventListener('resize', resizeForm); new ResizeObserver(resizeForm).observe(refs.viewport);
   </script>
 </body>
 </html>
