@@ -253,6 +253,7 @@
     .poster { width: min(434px, calc(100% - 20px)); padding: 18px 16px 14px; background: linear-gradient(180deg, #fffef5 0%, #f5f1d8 100%); border-color: #8d8561; }
     .poster.good h2 { color: #0b6f15; }
     .poster.bad h2 { color: #8f0f0f; }
+    #result-body { white-space: pre-line; }
     .custom-grid { display: grid; gap: 12px; margin-bottom: 12px; }
     .custom-row { display: grid; grid-template-columns: 90px 1fr; align-items: center; gap: 10px; }
     .custom-preview { width: 72px; height: 72px; display: grid; place-items: center; border: 1px solid #8a8a8a; background: #fff; box-shadow: inset 1px 1px 0 #fff; }
@@ -298,6 +299,10 @@
         <button type="button" id="startMenuOpen" class="start-item">
           <img src="resources/app-icon.png" alt="">
           <span>Apri Acciacca prof</span>
+        </button>
+        <button type="button" id="startMenuStory" class="start-item">
+          <img src="resources/app-icon.png" alt="">
+          <span>La storia</span>
         </button>
       </div>
     </div>
@@ -419,8 +424,13 @@
 
           <div id="dialogResult" class="poster hidden" role="dialog" aria-modal="true" aria-labelledby="result-title">
             <h2 id="result-title"></h2>
+            <div id="result-subtitle" style="margin:0 0 8px;font-size:13px;font-weight:700;color:#5a4f2f;"></div>
             <p id="result-body"></p>
-            <div class="actions"><button type="button" class="btn" id="closeResult" style="position:static;width:72px;height:24px;">Chiudi</button></div>
+            <div class="actions">
+              <button type="button" class="btn hidden" id="storyPrev" style="position:static;width:72px;height:24px;">Indietro</button>
+              <button type="button" class="btn hidden" id="storyNext" style="position:static;width:72px;height:24px;">Avanti</button>
+              <button type="button" class="btn" id="closeResult" style="position:static;width:72px;height:24px;">Chiudi</button>
+            </div>
           </div>
         </div>
 
@@ -450,6 +460,38 @@
     const DESKTOP_IMAGE_WIDTH = 4000;
     const DESKTOP_IMAGE_HEIGHT = 3073;
     const DESKTOP_TASKBAR_RATIO = 28 / 768;
+    const START_MENU_STORY_PAGES = [
+      {
+        title: 'Acciacca Prof',
+        subtitle: '2007: niente app, solo PC',
+        body: `Nel 2007 non esistevano ancora le app. Gli smartphone moderni stavano per arrivare, e pure l'App Store sarebbe nato solo pochi mesi dopo. E mentre i suoi compagni di classe studiavano e facevano i compiti, Jacopo da Perugia, invece di fare i compiti, programmava per divertimento. In quell'epoca smanettava su Windows e realizzava piccoli giochi per il gusto di farli. Non si chiamavano app. Si chiamavano "programmini".`
+      },
+      {
+        title: 'Dal PC al forum',
+        subtitle: 'Windows XP, Delphi e ricreazioni',
+        body: `Dopo il successo di un precedente gioco di enigmi a livelli, nasce un gioco fatto per puro divertimento. E' scritto in Delphi, gira su Windows XP e passa di mano in mano da un PC all'altro. Finisce sul forum del liceo scientifico Galileo Galilei, dove le classi lo trasformano in un piccolo rito scolastico e lo personalizzano con facce e personaggi immaginari.`
+      },
+      {
+        title: 'Dal PC al forum',
+        subtitle: 'La richiesta rimasta aperta',
+        body: `E' cosi che nacque l'Acciacca Prof: un giochino semplice, simpatico, con spirito goliardico, quello delle ricreazioni, dei banchi di scuola e delle risate tra compagni. Gli studenti lo usavano personalizzandolo con le facce dei propri prof, divertendosi a schiacciarli. Divento un piccolo meme, prima dei meme. Il 25 febbraio 2007 un commento recito: "Io volevo la Perla e il pentathlon".`
+      },
+      {
+        title: 'Come si gioca',
+        subtitle: 'La banalita giusta',
+        body: `La dinamica e' volutamente semplice: una versione scolastica di "Schiaccia la talpa". Dai banchi compaiono i prof. Alcuni vanno colpiti al momento giusto, altri no. Se sbagli perdi punti e il voto finale peggiora. E' proprio questa semplicita a tenerlo fedele allo spirito originale.`
+      },
+      {
+        title: 'La bidella',
+        subtitle: 'Circolari e fortuna',
+        body: `C'e anche la bidella. Ogni tanto entra in classe con una circolare: se la blocchi puoi leggerla e giocarti la fortuna. Non tutte le circolari portano buone notizie, quindi anche li serve un po' di sorte oltre ai riflessi.`
+      },
+      {
+        title: '2026: ritorno',
+        subtitle: 'Perla e pentathlon',
+        body: `Nel 2026 l'Acciacca Prof torna su iPhone e Web: stesso spirito, stessa grafica, stessi suoni. Restano i personaggi classici, i prof da acciaccare al momento giusto e il Pentathlon finalmente completo guidato dalla coach Perla.`
+      }
+    ];
     const FIELD_LEFT = 13;
     const FIELD_TOP = 10;
     const SPAWN_Y_OFFSET = 85;
@@ -462,7 +504,7 @@
     ];
 
     const refs = {
-      shell: document.querySelector('.shell'), window: document.getElementById('window'), windowTitlebar: document.getElementById('windowTitlebar'), windowClose: document.getElementById('windowClose'), desktopAppIcon: document.getElementById('desktopAppIcon'), startHotspot: document.getElementById('startHotspot'), startMenu: document.getElementById('startMenu'), startMenuOpen: document.getElementById('startMenuOpen'),
+      shell: document.querySelector('.shell'), window: document.getElementById('window'), windowTitlebar: document.getElementById('windowTitlebar'), windowClose: document.getElementById('windowClose'), desktopAppIcon: document.getElementById('desktopAppIcon'), startHotspot: document.getElementById('startHotspot'), startMenu: document.getElementById('startMenu'), startMenuOpen: document.getElementById('startMenuOpen'), startMenuStory: document.getElementById('startMenuStory'),
       viewport: document.getElementById('viewport'), form: document.getElementById('form'), background: document.getElementById('background'),
       profcatt: document.getElementById('profcatt'), profbuon: document.getElementById('profbuon'), bidella: document.getElementById('bidella'),
       schizzi: document.getElementById('schizzi'), zampilli1: document.getElementById('zampilli1'), zampilli2: document.getElementById('zampilli2'), zampilli3: document.getElementById('zampilli3'),
@@ -474,7 +516,7 @@
       groupbox1: document.getElementById('groupbox1'), status: document.getElementById('status'), modalBackdrop: document.getElementById('modalBackdrop'),
       pentathlonLabel: document.getElementById('pentathlonLabel'), perlaHint: document.getElementById('perlaHint'),
       dialogCircolare: document.getElementById('dialogCircolare'), dialogCustomization: document.getElementById('dialogCustomization'), dialogResult: document.getElementById('dialogResult'),
-      confirmCircolare: document.getElementById('confirmCircolare'), closeCustomization: document.getElementById('closeCustomization'), resultTitle: document.getElementById('result-title'), resultBody: document.getElementById('result-body'), closeResult: document.getElementById('closeResult'),
+      confirmCircolare: document.getElementById('confirmCircolare'), closeCustomization: document.getElementById('closeCustomization'), resultTitle: document.getElementById('result-title'), resultSubtitle: document.getElementById('result-subtitle'), resultBody: document.getElementById('result-body'), closeResult: document.getElementById('closeResult'), storyPrev: document.getElementById('storyPrev'), storyNext: document.getElementById('storyNext'),
       selectCattivo: document.getElementById('selectCattivo'), selectBuono: document.getElementById('selectBuono'), selectBidella: document.getElementById('selectBidella'), previewCattivo: document.getElementById('previewCattivo'), previewBuono: document.getElementById('previewBuono'), previewBidella: document.getElementById('previewBidella'),
       student30: document.getElementById('student30'), student31: document.getElementById('student31'), student32: document.getElementById('student32'), student33: document.getElementById('student33'), student34: document.getElementById('student34'), student35: document.getElementById('student35'),
       pentCells: Array.from({ length: 9 }, (_, i) => document.getElementById(`pentCell${i}`)),
@@ -519,7 +561,9 @@
       },
       windowClosed: false,
       startMenuOpen: false,
-      pentathlonAwaitingStart: false
+      pentathlonAwaitingStart: false,
+      storyPage: 0,
+      storyMode: false
     };
 
     function resizeForm() {
@@ -780,7 +824,8 @@
     }
     function setPentathlonLabel() { refs.pentathlonLabel.textContent = pentathlonModeMeta()[0]; refs.pentathlonLabel.style.display = 'block'; }
     function showPentathlonRule() {
-      const [title, body] = pentathlonModeMeta(); refs.resultTitle.textContent = title; refs.resultBody.textContent = body; refs.dialogResult.className = 'poster good'; refs.dialogResult.classList.remove('hidden'); openModal('result');
+      state.storyMode = false;
+      const [title, body] = pentathlonModeMeta(); refs.resultTitle.textContent = title; refs.resultSubtitle.textContent = ''; refs.resultBody.textContent = body; refs.storyPrev.classList.add('hidden'); refs.storyNext.classList.add('hidden'); refs.dialogResult.className = 'poster good'; refs.dialogResult.classList.remove('hidden'); openModal('result');
     }
     function placePentCell(index, face, options = {}) {
       const cell = refs.pentCells[index];
@@ -1072,10 +1117,32 @@
       showPentathlonRule();
     }
     function failPentathlonMode() {
+      state.storyMode = false;
       state.retryCurrentPentathlon = true;
       refs.resultTitle.textContent = 'Riprova';
+      refs.resultSubtitle.textContent = '';
       refs.resultBody.textContent = 'Hai sbagliato questa prova del Pentathlon. Chiudi per ripartire dalla stessa prova.';
+      refs.storyPrev.classList.add('hidden');
+      refs.storyNext.classList.add('hidden');
       refs.dialogResult.className = 'poster bad';
+      refs.dialogResult.classList.remove('hidden');
+      openModal('result');
+    }
+    function renderStoryPage() {
+      const page = START_MENU_STORY_PAGES[state.storyPage];
+      refs.resultTitle.textContent = page.title;
+      refs.resultSubtitle.textContent = page.subtitle;
+      refs.resultBody.textContent = page.body;
+      refs.storyPrev.classList.toggle('hidden', state.storyPage === 0);
+      refs.storyNext.classList.remove('hidden');
+      refs.storyNext.textContent = state.storyPage === START_MENU_STORY_PAGES.length - 1 ? 'Fine' : 'Avanti';
+    }
+    function showStartStory() {
+      closeStartMenu();
+      state.storyMode = true;
+      state.storyPage = 0;
+      renderStoryPage();
+      refs.dialogResult.className = 'poster good';
       refs.dialogResult.classList.remove('hidden');
       openModal('result');
     }
@@ -1337,7 +1404,7 @@
 
     function handleCircolareConfirm() {
       const selected = Number(document.querySelector('input[name="circolare"]:checked').value); const numero = Math.floor(Math.random() * 2) + 1; const good = numero === selected;
-      state.counts.hit = good ? state.counts.hit + 100 : state.counts.hit - 100; addPoints(good ? 100 : -100); refs.resultTitle.textContent = good ? 'Bella notizia' : 'Cattiva notizia'; refs.resultBody.textContent = good ? 'Hai scelto la circolare giusta. Guadagni 100 punti sui prof colpiti.' : 'Hai scelto male. Perdi 100 punti sui prof colpiti.'; refs.dialogResult.className = `poster ${good ? 'good' : 'bad'}`; refs.dialogResult.classList.remove('hidden'); refs.dialogCircolare.classList.add('hidden'); syncScoreboard(); playAudio(good ? refs.audioSiii : refs.audioNooo);
+      state.storyMode = false; state.counts.hit = good ? state.counts.hit + 100 : state.counts.hit - 100; addPoints(good ? 100 : -100); refs.resultTitle.textContent = good ? 'Bella notizia' : 'Cattiva notizia'; refs.resultSubtitle.textContent = ''; refs.resultBody.textContent = good ? 'Hai scelto la circolare giusta. Guadagni 100 punti sui prof colpiti.' : 'Hai scelto male. Perdi 100 punti sui prof colpiti.'; refs.storyPrev.classList.add('hidden'); refs.storyNext.classList.add('hidden'); refs.dialogResult.className = `poster ${good ? 'good' : 'bad'}`; refs.dialogResult.classList.remove('hidden'); refs.dialogCircolare.classList.add('hidden'); syncScoreboard(); playAudio(good ? refs.audioSiii : refs.audioNooo);
     }
 
     refs.profcatt.addEventListener('mousedown', clickProfCattivo);
@@ -1365,6 +1432,7 @@
     refs.desktopAppIcon.addEventListener('click', openWindow);
     refs.startHotspot.addEventListener('click', (event) => { event.stopPropagation(); toggleStartMenu(); });
     refs.startMenuOpen.addEventListener('click', (event) => { event.stopPropagation(); closeStartMenu(); openWindow(); });
+    refs.startMenuStory.addEventListener('click', (event) => { event.stopPropagation(); showStartStory(); });
     refs.help1.addEventListener('click', () => { window.alert("Apparira una sola immagine alla volta, se la colpisci guadagni punti, se non la colpisci, o se sbagli a colpirla perdi punti"); });
     refs.help2.addEventListener('click', () => { window.alert("Appariranno 1 prof 'buono' e 1 prof 'cattivo'. Se colpisci quello 'buono' perdi punti se colpisci quello 'cattivo' li guadagni"); });
     refs.help3.addEventListener('click', () => { window.alert("Come il livello 2 solo che i prof buoni e cattivi sono scelti a caso tra quelli salvati, e ci sara la bidella che ogni tanto porta circolari..."); });
@@ -1382,8 +1450,26 @@
     refs.selectBidella.addEventListener('change', () => { state.customization.bidella = Number(refs.selectBidella.value); applyCustomization(); resetPositions(); });
     refs.confirmCircolare.addEventListener('click', handleCircolareConfirm);
     refs.closeCustomization.addEventListener('click', () => { closeModal(true); updateStatus('Personalizzazioni chiuse.'); });
+    refs.storyPrev.addEventListener('click', () => {
+      if (!state.storyMode || state.storyPage <= 0) return;
+      state.storyPage -= 1;
+      renderStoryPage();
+    });
+    refs.storyNext.addEventListener('click', () => {
+      if (!state.storyMode) return;
+      if (state.storyPage >= START_MENU_STORY_PAGES.length - 1) {
+        state.storyMode = false;
+        closeModal(false);
+        return;
+      }
+      state.storyPage += 1;
+      renderStoryPage();
+    });
     refs.closeResult.addEventListener('click', () => {
+      const wasStoryMode = state.storyMode;
+      state.storyMode = false;
       const fromPentathlon = state.inPentathlon; const retry = state.retryCurrentPentathlon; state.retryCurrentPentathlon = false; closeModal(true);
+      if (wasStoryMode) return;
       if (fromPentathlon) {
         if (retry) { state.paused = false; restartPentathlonAfterRetry(); updateStatus('Pentathlon ripreso dalla stessa prova.'); }
         else if (state.pentathlonAwaitingStart) { state.pentathlonAwaitingStart = false; state.paused = false; startPentathlonMode(); updateStatus('Pentathlon in corso.'); }
