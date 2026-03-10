@@ -343,10 +343,24 @@
     .poster.bad h2 { color: #8f0f0f; }
     #result-body { white-space: pre-line; }
     .custom-grid { display: grid; gap: 12px; margin-bottom: 12px; }
-    .custom-row { display: grid; grid-template-columns: 90px 1fr; align-items: center; gap: 10px; }
+    .custom-row { display: grid; grid-template-columns: 90px 1fr; align-items: start; gap: 10px; }
     .custom-preview { width: 72px; height: 72px; display: grid; place-items: center; border: 1px solid #8a8a8a; background: #fff; box-shadow: inset 1px 1px 0 #fff; }
     .custom-preview img { max-width: 64px; max-height: 64px; image-rendering: pixelated; }
-    .custom-row select { width: 100%; font: 11px "MS Sans Serif", Tahoma, sans-serif; height: 24px; }
+    .custom-label { display: block; margin-bottom: 6px; font-size: 11px; }
+    .custom-options { display: flex; gap: 8px; flex-wrap: wrap; }
+    .custom-slot { display: grid; gap: 4px; justify-items: center; }
+    .custom-choice {
+      width: 58px; height: 72px; border: 1px solid #8a8a8a; background: #fff; box-shadow: inset 1px 1px 0 #fff;
+      padding: 3px; display: grid; place-items: center; cursor: pointer;
+    }
+    .custom-choice img { max-width: 100%; max-height: 100%; image-rendering: pixelated; pointer-events: none; }
+    .custom-choice.active { border-color: #0b57d0; box-shadow: inset 1px 1px 0 #fff, 0 0 0 2px rgba(11,87,208,0.25); background: #eef5ff; }
+    .custom-upload {
+      min-width: 58px; height: 18px; padding: 0 6px; font: 11px "MS Sans Serif", Tahoma, sans-serif;
+      border-top: 1px solid var(--win-light); border-left: 1px solid var(--win-light);
+      border-right: 1px solid var(--win-darker); border-bottom: 1px solid var(--win-darker);
+      background: linear-gradient(180deg, #fafafa, #d8d8d8); cursor: pointer;
+    }
     .hidden { display: none; }
     .pentathlon-label {
       left: 235px; top: 14px; z-index: 22; color: #fff; font: 700 16px "MS Sans Serif", Tahoma, sans-serif; text-shadow: 1px 1px 0 #000; display: none; pointer-events: none;
@@ -447,9 +461,9 @@
         <button type="button" id="btndownvelocita" class="btn icon-btn" style="left:541px;top:74px;width:18px;height:11px;">-</button>
         <div id="status" class="status">Premi Start per iniziare il porting fedele della `Form1` originale.</div>
 
-        <img id="profcatt" class="sprite arena-cursor" src="resources/rebel.png" alt="Prof cattivo">
-        <img id="profbuon" class="sprite arena-cursor" src="resources/ally.png" alt="Prof buono">
-        <img id="bidella" class="sprite arena-cursor" src="resources/assistant.png" alt="Bidella">
+        <img id="profcatt" class="sprite arena-cursor" src="resources/author1.jpg" alt="Prof cattivo">
+        <img id="profbuon" class="sprite arena-cursor" src="resources/author4.jpg" alt="Prof buono">
+        <img id="bidella" class="sprite arena-cursor" src="resources/author7.JPG" alt="Bidella">
 
         <div id="pentathlonLabel" class="pentathlon-label"></div>
         <button type="button" id="perlaHint" class="perla-hint arena-cursor" aria-label="Perla"><img src="resources/coach_1.png" alt="Perla"></button>
@@ -491,18 +505,38 @@
             <p>Scegli i personaggi da usare nel porting web. Livello 1 e 2 usano il personaggio corrente; livello 3 continua a usare lo stesso set selezionato.</p>
             <div class="custom-grid">
               <div class="custom-row">
-                <div class="custom-preview"><img id="previewCattivo" src="resources/rebel.png" alt=""></div>
-                <label>Prof cattivo<select id="selectCattivo"><option value="1">Variante 1</option><option value="2">Variante 2</option><option value="3">Variante 3</option></select></label>
+                <div class="custom-preview"><img id="previewCattivo" src="resources/author1.jpg" alt=""></div>
+                <div>
+                  <span class="custom-label">Prof cattivo</span>
+                  <div class="custom-options" id="choicesCattivo">
+                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="cattivo" data-value="1"><img src="resources/author1.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="cattivo" data-value="1">Carica</button></div>
+                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="cattivo" data-value="2"><img src="resources/author2.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="cattivo" data-value="2">Carica</button></div>
+                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="cattivo" data-value="3"><img src="resources/author3.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="cattivo" data-value="3">Carica</button></div>
+                  </div>
+                </div>
               </div>
               <div class="custom-row">
-                <div class="custom-preview"><img id="previewBuono" src="resources/ally.png" alt=""></div>
-                <label>Prof buono<select id="selectBuono"><option value="1">Variante 1</option><option value="2">Variante 2</option><option value="3">Variante 3</option></select></label>
+                <div class="custom-preview"><img id="previewBuono" src="resources/author4.jpg" alt=""></div>
+                <div>
+                  <span class="custom-label">Prof buono</span>
+                  <div class="custom-options" id="choicesBuono">
+                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="buono" data-value="1"><img src="resources/author4.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="buono" data-value="1">Carica</button></div>
+                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="buono" data-value="2"><img src="resources/author5.JPG" alt=""></button><button type="button" class="custom-upload" data-kind="buono" data-value="2">Carica</button></div>
+                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="buono" data-value="3"><img src="resources/author6.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="buono" data-value="3">Carica</button></div>
+                  </div>
+                </div>
               </div>
               <div class="custom-row">
-                <div class="custom-preview"><img id="previewBidella" src="resources/assistant.png" alt=""></div>
-                <label>Bidella<select id="selectBidella"><option value="1">Variante unica</option></select></label>
+                <div class="custom-preview"><img id="previewBidella" src="resources/author7.JPG" alt=""></div>
+                <div>
+                  <span class="custom-label">Bidella</span>
+                  <div class="custom-options" id="choicesBidella">
+                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="bidella" data-value="1"><img src="resources/author7.JPG" alt=""></button><button type="button" class="custom-upload" data-kind="bidella" data-value="1">Carica</button></div>
+                  </div>
+                </div>
               </div>
             </div>
+            <input id="customUploadInput" type="file" accept="image/*" class="hidden">
             <div class="actions"><button type="button" class="btn" id="closeCustomization" style="position:static;width:72px;height:24px;">Chiudi</button></div>
           </div>
 
@@ -551,6 +585,12 @@
     const GAME_SCALE_FACTOR = 3.0;
     const WINDOW_CHROME_HEIGHT = 24 + 16 + 4;
     const BOTTOM_SAFE_GAP = 50;
+    const CUSTOM_UPLOADS_STORAGE_KEY = 'acciaccaProfCustomUploads';
+    const DEFAULT_CUSTOMIZATION_ASSETS = {
+      cattivo: { 1: 'resources/author1.jpg', 2: 'resources/author2.jpg', 3: 'resources/author3.jpg' },
+      buono: { 1: 'resources/author4.jpg', 2: 'resources/author5.JPG', 3: 'resources/author6.jpg' },
+      bidella: { 1: 'resources/author7.JPG' }
+    };
     const START_MENU_STORY_PAGES = [
       {
         title: 'Acciacca Prof',
@@ -608,7 +648,10 @@
       pentathlonLabel: document.getElementById('pentathlonLabel'), perlaHint: document.getElementById('perlaHint'),
       dialogCircolare: document.getElementById('dialogCircolare'), dialogCustomization: document.getElementById('dialogCustomization'), dialogResult: document.getElementById('dialogResult'),
       confirmCircolare: document.getElementById('confirmCircolare'), closeCustomization: document.getElementById('closeCustomization'), resultTitle: document.getElementById('result-title'), resultSubtitle: document.getElementById('result-subtitle'), resultBody: document.getElementById('result-body'), closeResult: document.getElementById('closeResult'), storyPrev: document.getElementById('storyPrev'), storyNext: document.getElementById('storyNext'),
-      selectCattivo: document.getElementById('selectCattivo'), selectBuono: document.getElementById('selectBuono'), selectBidella: document.getElementById('selectBidella'), previewCattivo: document.getElementById('previewCattivo'), previewBuono: document.getElementById('previewBuono'), previewBidella: document.getElementById('previewBidella'),
+      previewCattivo: document.getElementById('previewCattivo'), previewBuono: document.getElementById('previewBuono'), previewBidella: document.getElementById('previewBidella'),
+      choiceButtons: Array.from(document.querySelectorAll('.custom-choice')),
+      uploadButtons: Array.from(document.querySelectorAll('.custom-upload')),
+      customUploadInput: document.getElementById('customUploadInput'),
       student30: document.getElementById('student30'), student31: document.getElementById('student31'), student32: document.getElementById('student32'), student33: document.getElementById('student33'), student34: document.getElementById('student34'), student35: document.getElementById('student35'),
       pentCells: Array.from({ length: 9 }, (_, i) => document.getElementById(`pentCell${i}`)),
       audioProfmorto: document.getElementById('audioProfmorto'), audioBidella: document.getElementById('audioBidella'), audioBambino: document.getElementById('audioBambino'), audioFuori: document.getElementById('audioFuori'), audioSottofondo: document.getElementById('audioSottofondo'), audioSiii: document.getElementById('audioSiii'), audioNooo: document.getElementById('audioNooo'),
@@ -629,6 +672,8 @@
       pentathlonMode: 0,
       retryCurrentPentathlon: false,
       customization: { cattivo: 1, buono: 1, bidella: 1 },
+      customUploads: {},
+      pendingUploadTarget: null,
       counts: { hit: 0, escaped: 0, wrong: 0 },
       sprites: {
         cattivo: { el: refs.profcatt, left: 800, top: 0, width: 100, height: 1, alzate: 0, visible: false },
@@ -920,23 +965,69 @@
     function syncLevelRadios() { refs.ckdlivello1.checked = state.level === 1; refs.ckdlivello2.checked = state.level === 2; refs.ckdlivello3.checked = state.level >= 3; }
     function selectedLevel() { if (refs.ckdlivello3.checked) return 3; if (refs.ckdlivello2.checked) return 2; return 1; }
 
+    function customizationKey(kind, value) { return `${kind}:${value}`; }
+    function defaultCustomizationAsset(kind, value) { return DEFAULT_CUSTOMIZATION_ASSETS[kind]?.[value] || DEFAULT_CUSTOMIZATION_ASSETS.cattivo[1]; }
+    function customizationAsset(kind, value) { return state.customUploads[customizationKey(kind, value)] || defaultCustomizationAsset(kind, value); }
+    function loadCustomUploads() {
+      try {
+        const raw = window.localStorage.getItem(CUSTOM_UPLOADS_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') state.customUploads = parsed;
+      } catch (_) {}
+    }
+    function saveCustomUploads() {
+      try {
+        window.localStorage.setItem(CUSTOM_UPLOADS_STORAGE_KEY, JSON.stringify(state.customUploads));
+      } catch (_) {}
+    }
+    function refreshCustomizationChoices() {
+      refs.choiceButtons.forEach((button) => {
+        const kind = button.dataset.kind;
+        const value = Number(button.dataset.value);
+        const image = button.querySelector('img');
+        if (image) image.src = customizationAsset(kind, value);
+      });
+    }
     function spriteSource(kind) {
-      const map = {
-        cattivo: { 1: 'resources/rebel.png', 2: 'resources/rebel-2.png', 3: 'resources/rebel-3.png' },
-        buono: { 1: 'resources/ally.png', 2: 'resources/ally-2.png', 3: 'resources/ally-3.png' },
-        bidella: { 1: 'resources/assistant.png' }
-      };
-      return map[kind][state.customization[kind]];
+      return customizationAsset(kind, state.customization[kind]);
     }
     function faceImage(type) {
       return {
-        rebels_1: 'resources/rebel.png', rebels_2: 'resources/rebel-2.png', rebels_3: 'resources/rebel-3.png',
-        allies_1: 'resources/ally.png', allies_2: 'resources/ally-2.png', allies_3: 'resources/ally-3.png',
-        assistant_1: 'resources/assistant.png', coach_1: 'resources/coach_1.png'
-      }[type] || 'resources/rebel.png';
+        rebels_1: customizationAsset('cattivo', 1), rebels_2: customizationAsset('cattivo', 2), rebels_3: customizationAsset('cattivo', 3),
+        allies_1: customizationAsset('buono', 1), allies_2: customizationAsset('buono', 2), allies_3: customizationAsset('buono', 3),
+        assistant_1: customizationAsset('bidella', 1), coach_1: 'resources/author8.png'
+      }[type] || customizationAsset('cattivo', 1);
     }
-    function refreshCustomizationPreview() { refs.previewCattivo.src = spriteSource('cattivo'); refs.previewBuono.src = spriteSource('buono'); refs.previewBidella.src = spriteSource('bidella'); }
+    function refreshCustomizationPreview() {
+      refreshCustomizationChoices();
+      refs.previewCattivo.src = spriteSource('cattivo');
+      refs.previewBuono.src = spriteSource('buono');
+      refs.previewBidella.src = spriteSource('bidella');
+      refs.choiceButtons.forEach((button) => {
+        const kind = button.dataset.kind;
+        const value = Number(button.dataset.value);
+        button.classList.toggle('active', state.customization[kind] === value);
+      });
+    }
     function applyCustomization() { refs.profcatt.src = spriteSource('cattivo'); refs.profbuon.src = spriteSource('buono'); refs.bidella.src = spriteSource('bidella'); refreshCustomizationPreview(); }
+    function handleCustomUploadSelection(event) {
+      const file = event.target.files?.[0];
+      const target = state.pendingUploadTarget;
+      refs.customUploadInput.value = '';
+      state.pendingUploadTarget = null;
+      if (!file || !target) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = typeof reader.result === 'string' ? reader.result : '';
+        if (!result) return;
+        state.customUploads[customizationKey(target.kind, target.value)] = result;
+        saveCustomUploads();
+        applyCustomization();
+        resetPositions();
+      };
+      reader.readAsDataURL(file);
+    }
     function syncScoreboard() { refs.profcolpiti.textContent = String(state.counts.hit); refs.profsfuggiti.textContent = String(state.counts.escaped); refs.colpisbagliati.textContent = String(state.counts.wrong); calculateVote(); }
     function calculateVote() {
       const colpiti = state.counts.hit; const sfuggiti = state.counts.escaped; const sbagliati = state.counts.wrong; const totali = Math.max(1, colpiti + sfuggiti + sbagliati);
@@ -1651,9 +1742,18 @@
     refs.btndownvelocita.addEventListener('click', () => { state.speed = Math.max(1, state.speed - 1); refs.editvelocita.value = String(state.speed); });
     refs.editvelocita.addEventListener('input', () => { refs.editvelocita.value = refs.editvelocita.value.replace(/[^0-9]/g, ''); state.speed = clampSpeed(refs.editvelocita.value || '10'); refs.editvelocita.value = String(state.speed); });
     refs.ckdsottofondo.addEventListener('change', () => { if (refs.ckdsottofondo.checked && state.running) refs.audioSottofondo.play().catch(() => {}); else refs.audioSottofondo.pause(); });
-    refs.selectCattivo.addEventListener('change', () => { state.customization.cattivo = Number(refs.selectCattivo.value); applyCustomization(); resetPositions(); });
-    refs.selectBuono.addEventListener('change', () => { state.customization.buono = Number(refs.selectBuono.value); applyCustomization(); resetPositions(); });
-    refs.selectBidella.addEventListener('change', () => { state.customization.bidella = Number(refs.selectBidella.value); applyCustomization(); resetPositions(); });
+    refs.choiceButtons.forEach((button) => button.addEventListener('click', () => {
+      const kind = button.dataset.kind;
+      const value = Number(button.dataset.value);
+      state.customization[kind] = value;
+      applyCustomization();
+      resetPositions();
+    }));
+    refs.uploadButtons.forEach((button) => button.addEventListener('click', () => {
+      state.pendingUploadTarget = { kind: button.dataset.kind, value: Number(button.dataset.value) };
+      refs.customUploadInput.click();
+    }));
+    refs.customUploadInput.addEventListener('change', handleCustomUploadSelection);
     refs.confirmCircolare.addEventListener('click', handleCircolareConfirm);
     refs.closeCustomization.addEventListener('click', () => { closeModal(true); updateStatus('Personalizzazioni chiuse.'); });
     refs.storyPrev.addEventListener('click', () => {
@@ -1700,7 +1800,7 @@
     window.addEventListener('blur', stopWindowDrag);
     window.addEventListener('blur', stopDesktopIconDrag);
 
-    applyCustomization(); moveSpritesOffstage(); clearPentathlonState(); syncLevelRadios(); syncScoreboard(); syncTaskbarApp(); startTaskbarClock(); resizeForm(); window.addEventListener('resize', resizeForm); new ResizeObserver(resizeForm).observe(refs.viewport);
+    loadCustomUploads(); applyCustomization(); moveSpritesOffstage(); clearPentathlonState(); syncLevelRadios(); syncScoreboard(); syncTaskbarApp(); startTaskbarClock(); resizeForm(); window.addEventListener('resize', resizeForm); new ResizeObserver(resizeForm).observe(refs.viewport);
   </script>
 </body>
 </html>

@@ -112,6 +112,8 @@ La versione iOS e' il riferimento principale per la logica moderna:
 - Pentathlon completo
 - copy di onboarding e supporto alla personalizzazione
 
+La versione Reloaded non e' mai stata pubblicata su App Store: Apple non l'ha approvata richiamando la linea guida `1.1.1`, sostenendo che il gioco incoraggerebbe il danno fisico e umilierebbe la categoria degli insegnanti. Questa lettura non corrisponde allo spirito con cui il progetto e' nato, cioe' come giochino ironico e goliardico da contesto scolastico. Resta comunque possibile scaricare questo repository, aprire il progetto iOS in Xcode e installare l'app sul proprio dispositivo in autonomia.
+
 ## Note di fedelta
 
 Durante il porting web sono stati usati come riferimenti:
@@ -123,7 +125,6 @@ Questo significa che alcune parti non sono "reinventate per il web", ma ricostru
 
 ## Link utili
 
-- App Store: [Acciacca Prof](https://apps.apple.com/us/app/acciacca-prof/id6759299269)
 - Sito / landing web: `web/index.html`
 - Gioco web: `web/play.html`
 
