@@ -139,6 +139,75 @@
       overflow: hidden;
       border-top: 1px solid #ececec;
     }
+    .window.notepad-window {
+      width: 760px;
+      max-width: calc(100vw - 24px);
+    }
+    .notepad-body {
+      padding: 0;
+      background: #d4d0c8;
+    }
+    .notepad-menu {
+      height: 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 8px;
+      background: #ece9d8;
+      border-top: 1px solid #f8f4ea;
+      border-bottom: 1px solid #b8b3a2;
+      font: 12px "Tahoma", "MS Sans Serif", sans-serif;
+    }
+    .notepad-editor {
+      display: block;
+      width: 100%;
+      height: 290px;
+      border: 0;
+      padding: 8px;
+      resize: none;
+      background: #fff;
+      color: #000;
+      font: 12px "Courier New", monospace;
+      line-height: 1.35;
+      white-space: pre-wrap;
+      overflow: auto;
+    }
+    .sheet-wrap {
+      height: 320px;
+      overflow: auto;
+      background: #fff;
+      border-top: 1px solid #b8b3a2;
+    }
+    .sheet-table {
+      width: 100%;
+      border-collapse: collapse;
+      font: 12px "Tahoma", "MS Sans Serif", sans-serif;
+      color: #000;
+    }
+    .sheet-table thead th {
+      position: sticky;
+      top: 0;
+      background: linear-gradient(180deg, #ececec 0%, #d4d4d4 100%);
+      border: 1px solid #a9a9a9;
+      padding: 4px 6px;
+      text-align: left;
+      z-index: 1;
+    }
+    .sheet-table tbody td {
+      border: 1px solid #c7c7c7;
+      padding: 4px 6px;
+      vertical-align: top;
+      background: #fff;
+    }
+    .sheet-table tbody tr:nth-child(even) td {
+      background: #f5faf5;
+    }
+    .sheet-table tbody tr.group-start td {
+      border-top: 3px solid #7f7f7f;
+    }
+    .sheet-table tbody tr.group-end td {
+      border-bottom: 3px solid #7f7f7f;
+    }
     .desktop-icon {
       position: absolute;
       width: 84px;
@@ -158,6 +227,41 @@
       height: 32px;
       image-rendering: auto;
       pointer-events: none;
+    }
+    .desktop-icon.file-doc .file-glyph {
+      width: 32px;
+      height: 38px;
+      border: 1px solid #d7d7d7;
+      border-right-color: #8a8a8a;
+      border-bottom-color: #8a8a8a;
+      background: linear-gradient(180deg, #ffffff 0%, #f1f1f1 100%);
+      position: relative;
+      box-shadow: inset 1px 1px 0 rgba(255,255,255,0.8);
+      pointer-events: none;
+    }
+    .desktop-icon.file-doc .file-glyph::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      width: 10px;
+      height: 10px;
+      background: linear-gradient(135deg, #dfe9ff 0%, #ffffff 70%);
+      border-left: 1px solid #b9b9b9;
+      border-bottom: 1px solid #b9b9b9;
+    }
+    .desktop-icon.file-doc .file-glyph::after {
+      content: "TXT";
+      position: absolute;
+      left: 4px;
+      bottom: 4px;
+      font: 700 9px "Tahoma", "MS Sans Serif", sans-serif;
+      color: #1c49a8;
+      text-shadow: none;
+    }
+    .desktop-icon.file-sheet .file-glyph::after {
+      content: "XLS";
+      color: #0e6a30;
     }
     .desktop-icon span {
       text-align: center;
@@ -204,7 +308,7 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
       z-index: 20;
       display: none;
-      overflow: hidden;
+      overflow: visible;
     }
     .start-menu.visible {
       display: block;
@@ -246,6 +350,7 @@
     .start-menu-items {
       padding: 6px;
       background: #f3f4f7;
+      position: relative;
     }
     .start-item {
       width: 100%;
@@ -268,6 +373,61 @@
       background: linear-gradient(180deg, #2f72dd 0%, #1c49a8 100%);
       color: #fff;
     }
+    .start-item.folder-item {
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .start-item-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .start-item-arrow {
+      font: 700 12px "Tahoma", "MS Sans Serif", sans-serif;
+      pointer-events: none;
+    }
+    .start-submenu {
+      position: absolute;
+      left: calc(100% - 2px);
+      bottom: 6px;
+      width: 198px;
+      background: #f3f4f7;
+      border: 1px solid #2457b5;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      display: none;
+      padding: 6px;
+      z-index: 21;
+    }
+    .start-submenu.visible {
+      display: block;
+    }
+    .start-item.story-item .scroll-glyph {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #9f8648;
+      border-right-color: #6e5824;
+      border-bottom-color: #6e5824;
+      border-radius: 4px;
+      background: linear-gradient(180deg, #fff4cf 0%, #e7d395 100%);
+      position: relative;
+      flex: 0 0 24px;
+      box-shadow: inset 1px 1px 0 rgba(255,255,255,0.7);
+      pointer-events: none;
+    }
+    .start-item.story-item .scroll-glyph::before,
+    .start-item.story-item .scroll-glyph::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border: 1px solid #9f8648;
+      border-radius: 999px;
+      background: #f2dfae;
+      left: 8px;
+    }
+    .start-item.story-item .scroll-glyph::before { top: -3px; }
+    .start-item.story-item .scroll-glyph::after { bottom: -3px; }
     .viewport { position: relative; width: 0; margin: 0 auto; background: transparent; }
     .form {
       position: absolute; left: 0; top: 0; width: 618px; height: 543px; transform-origin: top left;
@@ -276,7 +436,7 @@
     }
     .bg { position: absolute; left: 13px; top: 10px; width: 487px; height: 528px; image-rendering: pixelated; cursor: var(--cursor-up); }
     .win-label { position: absolute; font-size: 11px; line-height: 13px; color: var(--text); }
-    .vote { position: absolute; left: 408px; top: 48px; min-width: 22px; text-align: center; font-size: 28px; line-height: 29px; font-weight: 700; }
+    .vote { position: absolute; left: 469px; top: 48px; min-width: 40px; text-align: left; font-size: 13px; line-height: 16px; font-weight: 700; color: #fff; }
     .link-label {
       position: absolute; left: 259px; top: 116px; font-size: 17px; line-height: 17px; color: var(--link);
       text-decoration: underline; cursor: pointer; background: transparent; border: 0; padding: 0;
@@ -321,11 +481,30 @@
     }
     .icon-btn { font-weight: 700; font-size: 11px; }
     .icon { position: absolute; left: 64px; top: 16px; width: 49px; height: 41px; object-fit: contain; }
-    .status {
-      position: absolute; left: 504px; top: 360px; width: 105px; min-height: 50px; padding: 4px 6px; border: 1px solid #8e8e8e; background: #efefef;
-      box-shadow: inset 1px 1px 0 #fff; font-size: 11px; line-height: 1.25; overflow-wrap: anywhere;
+    .status { display: none; }
+    .coach-dock {
+      position: absolute; left: 504px; top: 408px; width: 105px; height: 122px; display: grid; justify-items: center; align-content: start;
+      padding-top: 4px; background: transparent; cursor: default;
+      border: 1px solid transparent; border-radius: 8px;
     }
-    .status strong { display: block; margin-bottom: 4px; }
+    .coach-dock.active {
+      cursor: var(--cursor-up);
+      background: radial-gradient(circle at center, rgba(255, 245, 120, 0.28) 0%, rgba(255, 245, 120, 0.08) 55%, transparent 75%);
+      border-color: rgba(214, 171, 0, 0.95);
+      box-shadow: 0 0 0 2px rgba(255, 235, 120, 0.55), 0 0 14px rgba(255, 215, 0, 0.7);
+      animation: coach-pulse 0.7s ease-in-out 3;
+    }
+    .coach-dock img {
+      width: 96px; height: 96px; object-fit: contain; image-rendering: pixelated;
+      pointer-events: none;
+    }
+    .coach-dock span {
+      margin-top: 2px; font-size: 11px; line-height: 1.1; text-align: center; color: var(--text); pointer-events: none;
+    }
+    @keyframes coach-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
     .modal-backdrop {
       position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0, 0, 40, 0.28); z-index: 30;
     }
@@ -342,13 +521,49 @@
     .poster.good h2 { color: #0b6f15; }
     .poster.bad h2 { color: #8f0f0f; }
     #result-body { white-space: pre-line; }
-    .custom-grid { display: grid; gap: 12px; margin-bottom: 12px; }
-    .custom-row { display: grid; grid-template-columns: 90px 1fr; align-items: start; gap: 10px; }
-    .custom-preview { width: 72px; height: 72px; display: grid; place-items: center; border: 1px solid #8a8a8a; background: #fff; box-shadow: inset 1px 1px 0 #fff; }
-    .custom-preview img { max-width: 64px; max-height: 64px; image-rendering: pixelated; }
-    .custom-label { display: block; margin-bottom: 6px; font-size: 11px; }
-    .custom-options { display: flex; gap: 8px; flex-wrap: wrap; }
-    .custom-slot { display: grid; gap: 4px; justify-items: center; }
+    .circolare-sheet {
+      width: min(419px, calc(100% - 20px));
+      min-height: 560px;
+      padding: 26px 34px 30px;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.45), transparent 26%),
+        radial-gradient(circle at 80% 12%, rgba(255,255,255,0.28), transparent 20%),
+        linear-gradient(180deg, #f5e7ba 0%, #e4d09a 45%, #d4bc82 100%);
+      border: 1px solid #8f7745;
+      box-shadow: inset 0 0 40px rgba(120, 83, 28, 0.18), 0 12px 28px rgba(0,0,0,0.28);
+      color: #2f220b;
+      position: relative;
+      cursor: pointer;
+    }
+    .circolare-sheet::before,
+    .circolare-sheet::after {
+      content: "";
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(111, 79, 22, 0.12);
+      filter: blur(4px);
+    }
+    .circolare-sheet::before { top: 8px; }
+    .circolare-sheet::after { bottom: 8px; }
+    .circolare-sheet h2,
+    .circolare-sheet p { margin: 0; }
+    .circolare-head { text-align: center; margin-bottom: 14px; }
+    .circolare-school { font-size: 20px; font-weight: 700; }
+    .circolare-line { font-size: 14px; margin-top: 4px; }
+    .circolare-meta { text-align: center; margin: 10px 0 18px; }
+    .circolare-number { font-size: 18px; font-weight: 700; }
+    .circolare-audience { text-align: center; font-size: 15px; font-weight: 700; margin-bottom: 18px; }
+    .circolare-subject { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+    .circolare-body { font-size: 14px; line-height: 1.45; min-height: 170px; }
+    .circolare-signoff { margin-top: 20px; font-size: 14px; }
+    .circolare-signature { margin-top: 4px; font-size: 15px; font-weight: 700; }
+    .custom-grid { display: grid; gap: 10px; margin-bottom: 12px; }
+    .custom-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; align-items: start; }
+    .custom-slot { display: grid; gap: 4px; justify-items: center; align-content: start; }
+    .custom-slot-empty { visibility: hidden; }
     .custom-choice {
       width: 58px; height: 72px; border: 1px solid #8a8a8a; background: #fff; box-shadow: inset 1px 1px 0 #fff;
       padding: 3px; display: grid; place-items: center; cursor: pointer;
@@ -361,6 +576,7 @@
       border-right: 1px solid var(--win-darker); border-bottom: 1px solid var(--win-darker);
       background: linear-gradient(180deg, #fafafa, #d8d8d8); cursor: pointer;
     }
+    .custom-caption { font-size: 11px; text-align: center; line-height: 1.2; }
     .hidden { display: none; }
     .pentathlon-label {
       left: 235px; top: 14px; z-index: 22; color: #fff; font: 700 16px "MS Sans Serif", Tahoma, sans-serif; text-shadow: 1px 1px 0 #000; display: none; pointer-events: none;
@@ -396,22 +612,39 @@
       <img src="resources/app-icon.png" alt="">
       <span>Acciacca prof</span>
     </button>
+    <button type="button" id="desktopReportIcon" class="desktop-icon file-doc file-sheet hidden" aria-label="Apri report sessione">
+      <span class="file-glyph" aria-hidden="true"></span>
+      <span>report-sessione.xls</span>
+    </button>
     <button type="button" id="startHotspot" class="start-hotspot" aria-label="Start">start</button>
     <button type="button" id="taskbarApp" class="taskbar-app" aria-label="Acciacca prof in esecuzione">
       <img src="resources/app-icon.png" alt="">
       <span>Acciacca prof</span>
     </button>
+    <button type="button" id="taskbarExcel" class="taskbar-app" aria-label="Report Excel aperto">
+      <span class="file-glyph" aria-hidden="true" style="width:16px;height:18px;transform:scale(0.75);transform-origin:center center;"></span>
+      <span>report-sessione.xls</span>
+    </button>
     <div id="startMenu" class="start-menu" aria-hidden="true">
       <div class="start-menu-header">Acciacca prof</div>
       <div class="start-menu-items">
-        <button type="button" id="startMenuOpen" class="start-item">
-          <img src="resources/app-icon.png" alt="">
-          <span>Apri Acciacca prof</span>
+        <button type="button" id="startMenuFolder" class="start-item folder-item">
+          <span class="start-item-main">
+            <img src="resources/app-icon.png" alt="">
+            <span>Acciacca Prof</span>
+          </span>
+          <span class="start-item-arrow">▶</span>
         </button>
-        <button type="button" id="startMenuStory" class="start-item">
-          <img src="resources/app-icon.png" alt="">
-          <span>La storia</span>
-        </button>
+        <div id="startSubmenu" class="start-submenu" aria-hidden="true">
+          <button type="button" id="startMenuOpen" class="start-item">
+            <img src="resources/app-icon.png" alt="">
+            <span>Apri Acciacca Prof</span>
+          </button>
+          <button type="button" id="startMenuStory" class="start-item story-item">
+            <span class="scroll-glyph" aria-hidden="true"></span>
+            <span>La storia</span>
+          </button>
+        </div>
       </div>
     </div>
     <div class="window" id="window">
@@ -428,45 +661,51 @@
         <img class="icon" src="resources/app-icon.png" alt="">
 
         <div class="win-label" style="left:520px;top:40px;width:38px;">Velocita</div>
-        <div class="win-label" style="left:237px;top:16px;width:66px;">Prof colpiti:</div>
-        <div class="win-label" style="left:313px;top:16px;width:73px;">Prof sfuggiti:</div>
-        <div class="win-label" style="left:395px;top:16px;width:80px;">Colpi sbagliati</div>
-        <div class="win-label" style="left:264px;top:32px;width:20px;" id="profcolpiti">0</div>
-        <div class="win-label" style="left:344px;top:32px;width:20px;" id="profsfuggiti">0</div>
-        <div class="win-label" style="left:432px;top:32px;width:20px;" id="colpisbagliati">0</div>
-        <div class="win-label" style="left:272px;top:56px;width:117px;font-size:16px;">IL TUO VOTO E':</div>
+        <div class="win-label" style="left:447px;top:16px;width:120px;color:#fff;font-weight:600;">Punti:</div>
+        <div class="win-label" style="display:none;" id="labelSfuggiti">Prof sfuggiti:</div>
+        <div class="win-label" style="display:none;" id="labelSbagliati">Colpi sbagliati</div>
+        <div class="win-label" style="left:444px;top:32px;width:70px;color:#fff;font-weight:700;" id="profcolpiti">0.00</div>
+        <div class="win-label" style="display:none;" id="profsfuggiti"></div>
+        <div class="win-label" style="display:none;" id="colpisbagliati"></div>
+        <div class="win-label" style="left:242px;top:56px;width:235px;font-size:13px;color:#fff;font-weight:600;white-space:nowrap;">IL TUO VOTO IN PAGELLA E':</div>
         <div class="vote" id="lblvoto">0</div>
 
         <button type="button" id="label1" class="link-label">The Anonymous is here</button>
         <button type="button" id="btnSettings" class="btn" style="left:512px;top:96px;width:89px;height:25px;">Personalizzazioni</button>
-        <button type="button" id="btnStart" class="btn" style="left:520px;top:248px;width:75px;height:25px;">Start</button>
-        <button type="button" id="btnPause" class="btn hidden" style="left:520px;top:280px;width:75px;height:25px;">Pausa</button>
-        <input id="debugPentathlonMode" class="speed-input" type="text" inputmode="numeric" value="1" maxlength="1" aria-label="Prova debug pentathlon" style="left:512px;top:312px;width:28px;">
-        <button type="button" id="btnDebugPentathlon" class="btn" style="left:544px;top:312px;width:72px;height:25px;">Pentathlon</button>
+        <button type="button" id="btnStart" class="btn" style="left:520px;top:280px;width:75px;height:25px;">Start</button>
+        <button type="button" id="btnPause" class="btn hidden" style="left:520px;top:312px;width:75px;height:25px;">Pausa</button>
+        <input id="debugPentathlonMode" class="speed-input" type="text" inputmode="numeric" value="1" maxlength="1" aria-label="Prova debug pentathlon" style="left:512px;top:344px;width:28px;">
+        <button type="button" id="btnDebugPentathlon" class="btn" style="left:544px;top:344px;width:72px;height:25px;">Pentathlon</button>
 
-        <div id="groupbox1" class="groupbox">
-          <div class="groupbox-title">Livelli</div>
-          <label class="radio" style="left:8px;top:16px;"><input type="radio" name="livello" id="ckdlivello1" checked><span>Livello 1</span></label>
-          <label class="radio" style="left:8px;top:48px;"><input type="radio" name="livello" id="ckdlivello2"><span>Livello 2</span></label>
-          <label class="radio" style="left:8px;top:80px;"><input type="radio" name="livello" id="ckdlivello3"><span>Livello 3</span></label>
+        <div id="groupbox1" class="groupbox" style="height:146px;">
+          <div class="groupbox-title">Lezioni</div>
+          <label class="radio" style="left:8px;top:16px;"><input type="radio" name="livello" id="ckdlivello1" checked disabled><span>Lezione 1</span></label>
+          <label class="radio" style="left:8px;top:48px;"><input type="radio" name="livello" id="ckdlivello2" disabled><span>Lezione 2</span></label>
+          <label class="radio" style="left:8px;top:80px;"><input type="radio" name="livello" id="ckdlivello3" disabled><span>Lezione 3</span></label>
+          <label class="radio" style="left:8px;top:112px;"><input type="radio" name="livello" id="ckdpentathlon" disabled><span>Pentathlon</span></label>
           <button type="button" class="btn icon-btn" id="help1" style="left:80px;top:16px;width:17px;height:17px;">?</button>
           <button type="button" class="btn icon-btn" id="help2" style="left:80px;top:48px;width:17px;height:17px;">?</button>
           <button type="button" class="btn icon-btn" id="help3" style="left:80px;top:80px;width:17px;height:17px;">?</button>
+          <button type="button" class="btn icon-btn" id="help4" style="left:80px;top:112px;width:17px;height:17px;">?</button>
         </div>
 
-        <label class="check" style="left:520px;top:346px;"><input type="checkbox" id="ckdsottofondo"><span>Sottofondo</span></label>
-        <label class="check" style="left:520px;top:362px;"><input type="checkbox" id="ckdsuoni" checked><span>Suoni</span></label>
+        <label class="check" style="left:520px;top:378px;"><input type="checkbox" id="ckdsottofondo" checked><span>Sottofondo</span></label>
+        <label class="check" style="left:520px;top:394px;"><input type="checkbox" id="ckdsuoni" checked><span>Suoni</span></label>
         <input id="editvelocita" class="speed-input" type="text" inputmode="numeric" value="10" maxlength="2" aria-label="Velocita">
         <button type="button" id="btnupvelocita" class="btn icon-btn" style="left:541px;top:64px;width:18px;height:11px;">+</button>
         <button type="button" id="btndownvelocita" class="btn icon-btn" style="left:541px;top:74px;width:18px;height:11px;">-</button>
         <div id="status" class="status">Premi Start per iniziare il porting fedele della `Form1` originale.</div>
+        <button type="button" id="coachDock" class="coach-dock" aria-label="Coach Perla">
+          <img id="coachDockImg" src="resources/author8.png" alt="Coach Perla">
+          <span>Coach Perla</span>
+        </button>
 
         <img id="profcatt" class="sprite arena-cursor" src="resources/author1.jpg" alt="Prof cattivo">
         <img id="profbuon" class="sprite arena-cursor" src="resources/author4.jpg" alt="Prof buono">
         <img id="bidella" class="sprite arena-cursor" src="resources/author7.JPG" alt="Bidella">
 
         <div id="pentathlonLabel" class="pentathlon-label"></div>
-        <button type="button" id="perlaHint" class="perla-hint arena-cursor" aria-label="Perla"><img src="resources/coach_1.png" alt="Perla"></button>
+        <button type="button" id="perlaHint" class="perla-hint arena-cursor" aria-label="Perla" style="display:none;pointer-events:none;"><img src="resources/coach_1.png" alt="Perla"></button>
         <button type="button" id="pentCell0" class="pent-cell arena-cursor"><img alt=""><span class="cover"></span><span class="target"></span></button>
         <button type="button" id="pentCell1" class="pent-cell arena-cursor"><img alt=""><span class="cover"></span><span class="target"></span></button>
         <button type="button" id="pentCell2" class="pent-cell arena-cursor"><img alt=""><span class="cover"></span><span class="target"></span></button>
@@ -492,48 +731,36 @@
         <button type="button" id="student35" class="student back arena-cursor" aria-label="Studente in alto a sinistra" style="left:12px;top:220px;width:97px;height:89px;"><img src="resources/student-35.png" alt=""></button>
         <button type="button" id="student30" class="student arena-cursor" aria-label="Testa studente in basso a destra" style="left:410px;top:433px;width:64px;height:35px;"><img src="resources/student-30.png" alt=""></button>
         <button type="button" id="student32" class="student arena-cursor" aria-label="Testa studente in alto a sinistra" style="left:9px;top:167px;width:72px;height:63px;"><img src="resources/student-32.png" alt=""></button>
-        <button type="button" id="student34" class="student arena-cursor" aria-label="Testa studente in basso a sinistra" style="left:8px;top:441px;width:116px;height:43px;"><img src="resources/student-34.png" alt=""></button>
+        <button type="button" id="student34" class="student arena-cursor" aria-label="Testa studente in basso a sinistra" style="left:8px;top:441px;width:76px;height:43px;overflow:visible;"><img src="resources/student-34.png" alt="" style="width:116px;"></button>
+        <button type="button" id="student36" class="student arena-cursor" aria-label="Studente vicino alla cattedra" style="left:92px;top:63px;width:114px;height:116px;"></button>
+        <button type="button" id="student37" class="student arena-cursor" aria-label="Prof a sinistra della cattedra" style="left:138px;top:0px;width:74px;height:84px;"></button>
 
         <img id="schizzi" class="fx" src="resources/schizzi.png" alt="" style="left:642px;top:249px;width:73px;height:65px;">
         <img id="zampilli1" class="zampillo" src="resources/zampilli.png" alt="" style="left:415px;top:402px;width:59px;height:56px;">
         <img id="zampilli2" class="zampillo" src="resources/zampilli.png" alt="" style="left:31px;top:146px;width:42px;height:47px;">
         <img id="zampilli3" class="zampillo" src="resources/zampilli.png" alt="" style="left:33px;top:413px;width:42px;height:47px;">
+        <img id="zampilli4" class="zampillo" src="resources/zampilli.png" alt="" style="left:120px;top:74px;width:38px;height:42px;">
+        <img id="zampilli5" class="zampillo" src="resources/zampilli.png" alt="" style="left:154px;top:4px;width:40px;height:44px;">
 
         <div id="modalBackdrop" class="modal-backdrop">
           <div id="dialogCustomization" class="dialog hidden" role="dialog" aria-modal="true" aria-labelledby="custom-title">
             <h2 id="custom-title">Personalizzazioni</h2>
-            <p>Scegli i personaggi da usare nel porting web. Livello 1 e 2 usano il personaggio corrente; livello 3 continua a usare lo stesso set selezionato.</p>
+            <p>Scegli i personaggi da usare nel porting web. Lezione 1 e 2 usano il personaggio corrente; lezione 3 continua a usare lo stesso set selezionato.</p>
             <div class="custom-grid">
               <div class="custom-row">
-                <div class="custom-preview"><img id="previewCattivo" src="resources/author1.jpg" alt=""></div>
-                <div>
-                  <span class="custom-label">Prof cattivo</span>
-                  <div class="custom-options" id="choicesCattivo">
-                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="cattivo" data-value="1"><img src="resources/author1.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="cattivo" data-value="1">Carica</button></div>
-                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="cattivo" data-value="2"><img src="resources/author2.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="cattivo" data-value="2">Carica</button></div>
-                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="cattivo" data-value="3"><img src="resources/author3.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="cattivo" data-value="3">Carica</button></div>
-                  </div>
-                </div>
+                <div class="custom-slot"><button type="button" class="custom-choice" data-kind="buono" data-value="1"><img src="resources/author4.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="buono" data-value="1">Carica</button><span class="custom-caption">Prof buono 1</span></div>
+                <div class="custom-slot"><button type="button" class="custom-choice" data-kind="buono" data-value="2"><img src="resources/author5.JPG" alt=""></button><button type="button" class="custom-upload" data-kind="buono" data-value="2">Carica</button><span class="custom-caption">Prof buono 2</span></div>
+                <div class="custom-slot"><button type="button" class="custom-choice" data-kind="buono" data-value="3"><img src="resources/author6.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="buono" data-value="3">Carica</button><span class="custom-caption">Prof buono 3</span></div>
               </div>
               <div class="custom-row">
-                <div class="custom-preview"><img id="previewBuono" src="resources/author4.jpg" alt=""></div>
-                <div>
-                  <span class="custom-label">Prof buono</span>
-                  <div class="custom-options" id="choicesBuono">
-                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="buono" data-value="1"><img src="resources/author4.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="buono" data-value="1">Carica</button></div>
-                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="buono" data-value="2"><img src="resources/author5.JPG" alt=""></button><button type="button" class="custom-upload" data-kind="buono" data-value="2">Carica</button></div>
-                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="buono" data-value="3"><img src="resources/author6.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="buono" data-value="3">Carica</button></div>
-                  </div>
-                </div>
+                <div class="custom-slot"><button type="button" class="custom-choice" data-kind="cattivo" data-value="1"><img src="resources/author1.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="cattivo" data-value="1">Carica</button><span class="custom-caption">Prof cattivo 1</span></div>
+                <div class="custom-slot"><button type="button" class="custom-choice" data-kind="cattivo" data-value="2"><img src="resources/author2.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="cattivo" data-value="2">Carica</button><span class="custom-caption">Prof cattivo 2</span></div>
+                <div class="custom-slot"><button type="button" class="custom-choice" data-kind="cattivo" data-value="3"><img src="resources/author3.jpg" alt=""></button><button type="button" class="custom-upload" data-kind="cattivo" data-value="3">Carica</button><span class="custom-caption">Prof cattivo 3</span></div>
               </div>
               <div class="custom-row">
-                <div class="custom-preview"><img id="previewBidella" src="resources/author7.JPG" alt=""></div>
-                <div>
-                  <span class="custom-label">Bidella</span>
-                  <div class="custom-options" id="choicesBidella">
-                    <div class="custom-slot"><button type="button" class="custom-choice" data-kind="bidella" data-value="1"><img src="resources/author7.JPG" alt=""></button><button type="button" class="custom-upload" data-kind="bidella" data-value="1">Carica</button></div>
-                  </div>
-                </div>
+                <div class="custom-slot"><button type="button" class="custom-choice" data-kind="bidella" data-value="1"><img src="resources/author7.JPG" alt=""></button><button type="button" class="custom-upload" data-kind="bidella" data-value="1">Carica</button><span class="custom-caption">Bidella</span></div>
+                <div class="custom-slot custom-slot-empty"><span>.</span></div>
+                <div class="custom-slot"><button type="button" class="custom-choice" data-kind="coach" data-value="1"><img src="resources/author8.png" alt=""></button><button type="button" class="custom-upload" data-kind="coach" data-value="1">Carica</button><span class="custom-caption">Coach Perla</span></div>
               </div>
             </div>
             <input id="customUploadInput" type="file" accept="image/*" class="hidden">
@@ -560,6 +787,22 @@
               <button type="button" class="btn" id="closeResult" style="position:static;width:72px;height:24px;">Chiudi</button>
             </div>
           </div>
+
+          <div id="dialogShowCircolare" class="circolare-sheet hidden" role="dialog" aria-modal="true" aria-labelledby="show-circ-school">
+            <div class="circolare-head">
+              <div id="show-circ-school" class="circolare-school">Scuola Statale dell'OZIO</div>
+              <div id="show-circ-line1" class="circolare-line">via (del)lo studio n° 4</div>
+              <div id="show-circ-line2" class="circolare-line">Oziolandia, 32 Dicembre 1666</div>
+            </div>
+            <div class="circolare-meta">
+              <div id="show-circ-number" class="circolare-number">Circolare n° 666</div>
+            </div>
+            <div id="show-circ-audience" class="circolare-audience">A TUTTI GLI STUDENTI</div>
+            <div id="show-circ-subject" class="circolare-subject"></div>
+            <div id="show-circ-body" class="circolare-body"></div>
+            <div id="show-circ-signoff" class="circolare-signoff">Il dirigente scolastico:</div>
+            <div id="show-circ-signature" class="circolare-signature">Armando le Vacche</div>
+          </div>
         </div>
 
         <audio id="audioProfmorto" preload="auto" src="resources/profmorto.wav"></audio>
@@ -573,7 +816,33 @@
         <audio id="audioFail" preload="auto" src="resources/fail.wav"></audio>
         <audio id="audioMiss" preload="auto" src="resources/miss.wav"></audio>
         <audio id="audioRobotHit" preload="auto" src="resources/robot_hit.wav"></audio>
+        <audio id="audioCampanella" preload="auto" src="resources/campanella.m4a"></audio>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="window notepad-window" id="notepadWindow" style="display:none;">
+      <div class="window-titlebar" id="notepadTitlebar">
+        <div class="window-title">report-sessione.xls - Microsoft Excel</div>
+        <div class="window-controls">
+          <button type="button" id="notepadClose" class="win-btn" aria-label="Close">x</button>
+        </div>
+      </div>
+      <div class="window-body notepad-body">
+        <div class="notepad-menu"><span>File</span><span>Modifica</span><span>Visualizza</span><span>Inserisci</span><span>Formato</span><span>Dati</span><span>?</span></div>
+        <div class="sheet-wrap">
+          <table class="sheet-table">
+            <thead>
+              <tr>
+                <th style="width:120px;">Sezione</th>
+                <th style="width:170px;">Voce</th>
+                <th style="width:90px;">Valore</th>
+                <th style="width:80px;">Punti</th>
+                <th>Dettaglio</th>
+              </tr>
+            </thead>
+            <tbody id="notepadEditor"></tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -589,7 +858,8 @@
     const DEFAULT_CUSTOMIZATION_ASSETS = {
       cattivo: { 1: 'resources/author1.jpg', 2: 'resources/author2.jpg', 3: 'resources/author3.jpg' },
       buono: { 1: 'resources/author4.jpg', 2: 'resources/author5.JPG', 3: 'resources/author6.jpg' },
-      bidella: { 1: 'resources/author7.JPG' }
+      bidella: { 1: 'resources/author7.JPG' },
+      coach: { 1: 'resources/author8.png' }
     };
     const START_MENU_STORY_PAGES = [
       {
@@ -626,6 +896,7 @@
     const FIELD_LEFT = 13;
     const FIELD_TOP = 10;
     const SPAWN_Y_OFFSET = 85;
+    const LESSON_STAGE_MAX = 10;
     const PENT_LEFT_OFFSET = FIELD_LEFT - 12;
     const PENT_TOP_OFFSET = 110 + FIELD_TOP + SPAWN_Y_OFFSET - 121;
     const positions = [
@@ -635,27 +906,27 @@
     ];
 
     const refs = {
-      shell: document.querySelector('.shell'), taskbar: document.getElementById('taskbar'), taskbarClock: document.getElementById('taskbarClock'), window: document.getElementById('window'), windowTitlebar: document.getElementById('windowTitlebar'), windowClose: document.getElementById('windowClose'), desktopAppIcon: document.getElementById('desktopAppIcon'), startHotspot: document.getElementById('startHotspot'), taskbarApp: document.getElementById('taskbarApp'), startMenu: document.getElementById('startMenu'), startMenuOpen: document.getElementById('startMenuOpen'), startMenuStory: document.getElementById('startMenuStory'),
+      shell: document.querySelector('.shell'), taskbar: document.getElementById('taskbar'), taskbarClock: document.getElementById('taskbarClock'), window: document.getElementById('window'), windowTitlebar: document.getElementById('windowTitlebar'), windowClose: document.getElementById('windowClose'), notepadWindow: document.getElementById('notepadWindow'), notepadTitlebar: document.getElementById('notepadTitlebar'), notepadClose: document.getElementById('notepadClose'), notepadEditor: document.getElementById('notepadEditor'), desktopAppIcon: document.getElementById('desktopAppIcon'), desktopReportIcon: document.getElementById('desktopReportIcon'), startHotspot: document.getElementById('startHotspot'), taskbarApp: document.getElementById('taskbarApp'), taskbarExcel: document.getElementById('taskbarExcel'), startMenu: document.getElementById('startMenu'), startMenuFolder: document.getElementById('startMenuFolder'), startSubmenu: document.getElementById('startSubmenu'), startMenuOpen: document.getElementById('startMenuOpen'), startMenuStory: document.getElementById('startMenuStory'),
       viewport: document.getElementById('viewport'), form: document.getElementById('form'), background: document.getElementById('background'),
       profcatt: document.getElementById('profcatt'), profbuon: document.getElementById('profbuon'), bidella: document.getElementById('bidella'),
-      schizzi: document.getElementById('schizzi'), zampilli1: document.getElementById('zampilli1'), zampilli2: document.getElementById('zampilli2'), zampilli3: document.getElementById('zampilli3'),
+      schizzi: document.getElementById('schizzi'), zampilli1: document.getElementById('zampilli1'), zampilli2: document.getElementById('zampilli2'), zampilli3: document.getElementById('zampilli3'), zampilli4: document.getElementById('zampilli4'), zampilli5: document.getElementById('zampilli5'),
       profcolpiti: document.getElementById('profcolpiti'), profsfuggiti: document.getElementById('profsfuggiti'), colpisbagliati: document.getElementById('colpisbagliati'), lblvoto: document.getElementById('lblvoto'),
       label1: document.getElementById('label1'), btnSettings: document.getElementById('btnSettings'), btnStart: document.getElementById('btnStart'), btnPause: document.getElementById('btnPause'), btnDebugPentathlon: document.getElementById('btnDebugPentathlon'), debugPentathlonMode: document.getElementById('debugPentathlonMode'),
-      help1: document.getElementById('help1'), help2: document.getElementById('help2'), help3: document.getElementById('help3'),
-      ckdlivello1: document.getElementById('ckdlivello1'), ckdlivello2: document.getElementById('ckdlivello2'), ckdlivello3: document.getElementById('ckdlivello3'),
+      help1: document.getElementById('help1'), help2: document.getElementById('help2'), help3: document.getElementById('help3'), help4: document.getElementById('help4'),
+      ckdlivello1: document.getElementById('ckdlivello1'), ckdlivello2: document.getElementById('ckdlivello2'), ckdlivello3: document.getElementById('ckdlivello3'), ckdpentathlon: document.getElementById('ckdpentathlon'),
       ckdsottofondo: document.getElementById('ckdsottofondo'), ckdsuoni: document.getElementById('ckdsuoni'), editvelocita: document.getElementById('editvelocita'), btnupvelocita: document.getElementById('btnupvelocita'), btndownvelocita: document.getElementById('btndownvelocita'),
-      groupbox1: document.getElementById('groupbox1'), status: document.getElementById('status'), modalBackdrop: document.getElementById('modalBackdrop'),
+      groupbox1: document.getElementById('groupbox1'), status: document.getElementById('status'), coachDock: document.getElementById('coachDock'), coachDockImg: document.getElementById('coachDockImg'), modalBackdrop: document.getElementById('modalBackdrop'),
       pentathlonLabel: document.getElementById('pentathlonLabel'), perlaHint: document.getElementById('perlaHint'),
-      dialogCircolare: document.getElementById('dialogCircolare'), dialogCustomization: document.getElementById('dialogCustomization'), dialogResult: document.getElementById('dialogResult'),
+      dialogCircolare: document.getElementById('dialogCircolare'), dialogCustomization: document.getElementById('dialogCustomization'), dialogResult: document.getElementById('dialogResult'), dialogShowCircolare: document.getElementById('dialogShowCircolare'),
       confirmCircolare: document.getElementById('confirmCircolare'), closeCustomization: document.getElementById('closeCustomization'), resultTitle: document.getElementById('result-title'), resultSubtitle: document.getElementById('result-subtitle'), resultBody: document.getElementById('result-body'), closeResult: document.getElementById('closeResult'), storyPrev: document.getElementById('storyPrev'), storyNext: document.getElementById('storyNext'),
-      previewCattivo: document.getElementById('previewCattivo'), previewBuono: document.getElementById('previewBuono'), previewBidella: document.getElementById('previewBidella'),
+      showCircSubject: document.getElementById('show-circ-subject'), showCircBody: document.getElementById('show-circ-body'),
       choiceButtons: Array.from(document.querySelectorAll('.custom-choice')),
       uploadButtons: Array.from(document.querySelectorAll('.custom-upload')),
       customUploadInput: document.getElementById('customUploadInput'),
-      student30: document.getElementById('student30'), student31: document.getElementById('student31'), student32: document.getElementById('student32'), student33: document.getElementById('student33'), student34: document.getElementById('student34'), student35: document.getElementById('student35'),
+      student30: document.getElementById('student30'), student31: document.getElementById('student31'), student32: document.getElementById('student32'), student33: document.getElementById('student33'), student34: document.getElementById('student34'), student35: document.getElementById('student35'), student36: document.getElementById('student36'), student37: document.getElementById('student37'),
       pentCells: Array.from({ length: 9 }, (_, i) => document.getElementById(`pentCell${i}`)),
       audioProfmorto: document.getElementById('audioProfmorto'), audioBidella: document.getElementById('audioBidella'), audioBambino: document.getElementById('audioBambino'), audioFuori: document.getElementById('audioFuori'), audioSottofondo: document.getElementById('audioSottofondo'), audioSiii: document.getElementById('audioSiii'), audioNooo: document.getElementById('audioNooo'),
-      audioSuccess: document.getElementById('audioSuccess'), audioFail: document.getElementById('audioFail'), audioMiss: document.getElementById('audioMiss'), audioRobotHit: document.getElementById('audioRobotHit')
+      audioSuccess: document.getElementById('audioSuccess'), audioFail: document.getElementById('audioFail'), audioMiss: document.getElementById('audioMiss'), audioRobotHit: document.getElementById('audioRobotHit'), audioCampanella: document.getElementById('audioCampanella')
     };
 
     const state = {
@@ -671,18 +942,51 @@
       inPentathlon: false,
       pentathlonMode: 0,
       retryCurrentPentathlon: false,
-      customization: { cattivo: 1, buono: 1, bidella: 1 },
+      pendingLevelIntro: null,
+      duplicateCustomizationWarningKey: '',
+      sessionReportVisible: false,
+      customization: { cattivo: 1, buono: 1, bidella: 1, coach: 1 },
       customUploads: {},
       pendingUploadTarget: null,
       counts: { hit: 0, escaped: 0, wrong: 0 },
+      sessionReport: {
+        lessons: {
+          1: { cattivoSpawned: 0, cattivoHit: 0, cattivoEscaped: 0, buonoSpawned: 0, buonoHit: 0, buonoEscaped: 0, bidellaShown: 0, bidellaHit: 0, circolareGood: 0, circolareBad: 0, miscWrong: 0 },
+          2: { cattivoSpawned: 0, cattivoHit: 0, cattivoEscaped: 0, buonoSpawned: 0, buonoHit: 0, buonoEscaped: 0, bidellaShown: 0, bidellaHit: 0, circolareGood: 0, circolareBad: 0, miscWrong: 0 },
+          3: { cattivoSpawned: 0, cattivoHit: 0, cattivoEscaped: 0, buonoSpawned: 0, buonoHit: 0, buonoEscaped: 0, bidellaShown: 0, bidellaHit: 0, circolareGood: 0, circolareBad: 0, miscWrong: 0 }
+        },
+        pentathlon: {
+          1: { attempts: 0, successes: 0, failures: 0, correct: 0, wrong: 0 },
+          2: { attempts: 0, successes: 0, failures: 0, correct: 0, wrong: 0 },
+          3: { attempts: 0, successes: 0, failures: 0, correct: 0, wrong: 0 },
+          4: { attempts: 0, successes: 0, failures: 0, correct: 0, wrong: 0 },
+          5: { attempts: 0, successes: 0, failures: 0, correct: 0, wrong: 0 }
+        },
+        points: {
+          lesson1_cattivo: 0,
+          lesson1_errori: 0,
+          lesson2_cattivo: 0,
+          lesson2_buono: 0,
+          lesson2_errori: 0,
+          lesson3_cattivo: 0,
+          lesson3_buono: 0,
+          lesson3_bidella: 0,
+          lesson3_errori: 0,
+          pentathlon1: 0,
+          pentathlon2: 0,
+          pentathlon3: 0,
+          pentathlon4: 0,
+          pentathlon5: 0
+        }
+      },
       sprites: {
-        cattivo: { el: refs.profcatt, left: 800, top: 0, width: 100, height: 1, alzate: 0, visible: false },
-        buono: { el: refs.profbuon, left: 800, top: 0, width: 100, height: 1, alzate: 0, visible: false },
-        bidella: { el: refs.bidella, left: 800, top: 0, width: 100, height: 1, alzate: 0, visible: false }
+        cattivo: { el: refs.profcatt, left: 800, top: 0, width: 100, height: 1, alzate: 0, visible: false, deskIndex: null },
+        buono: { el: refs.profbuon, left: 800, top: 0, width: 100, height: 1, alzate: 0, visible: false, deskIndex: null },
+        bidella: { el: refs.bidella, left: 800, top: 0, width: 100, height: 1, alzate: 0, visible: false, deskIndex: null }
       },
       pentathlon: {
-        memoryMap: {}, memoryFirst: null, memoryMatchedPairs: 0, flipped: new Set(),
-        syncMap: {}, syncEntries: [], syncTickCount: 0, syncPendingReposition: false, syncActive: false,
+        memoryMap: {}, memoryFirst: null, memoryMatchedPairs: 0, flipped: new Set(), memoryBusy: false,
+        syncMap: {}, syncEntries: [], syncTickCount: 0, syncPendingReposition: false, syncActive: false, syncLastLayoutKey: '',
         swapDeskTextures: {}, swapTargets: [], swapSelection: 0, swapRevealTimers: [], swapActive: false,
         riskMap: {}, riskTargets: new Set(), riskCycleId: null, riskActive: false, riskLastSpeed: -1, riskLastDuration: -1,
         sequence: [], sequenceStep: 0, sequenceLength: 2, sequenceTextures: {}, sequenceActive: false
@@ -708,10 +1012,15 @@
       windowClosed: false,
       windowMinimized: false,
       startMenuOpen: false,
+      startSubmenuOpen: false,
       pentathlonAwaitingStart: false,
       storyPage: 0,
       storyMode: false,
-      clockTimerId: null
+      clockTimerId: null,
+      audioUnlocked: false,
+      reportFileContent: '',
+      reportFileVisible: false,
+      notepad: { open: false, moved: false, minimized: false, x: 0, y: 0, active: false, offsetX: 0, offsetY: 0 }
     };
 
     function resizeForm() {
@@ -753,6 +1062,15 @@
         state.desktopIconDrag.initialized = true;
       }
       applyDesktopIconPosition(state.desktopIconDrag.x, state.desktopIconDrag.y, iconWidth, iconHeight);
+      positionReportIcon();
+    }
+    function positionReportIcon() {
+      const desktop = desktopBounds();
+      const iconWidth = refs.desktopReportIcon.offsetWidth || 84;
+      const iconHeight = refs.desktopReportIcon.offsetHeight || 64;
+      refs.desktopReportIcon.style.left = `${desktop.left + 18}px`;
+      refs.desktopReportIcon.style.top = `${desktop.top + 96}px`;
+      refs.desktopReportIcon.classList.toggle('hidden', !state.reportFileVisible);
     }
     function desktopIconBounds(iconWidth, iconHeight) {
       const desktop = desktopBounds();
@@ -779,14 +1097,26 @@
     }
     function closeStartMenu() {
       state.startMenuOpen = false;
+      state.startSubmenuOpen = false;
       refs.startMenu.classList.remove('visible');
+      refs.startSubmenu.classList.remove('visible');
       refs.startMenu.setAttribute('aria-hidden', 'true');
+      refs.startSubmenu.setAttribute('aria-hidden', 'true');
     }
     function openStartMenu() {
       state.startMenuOpen = true;
       refs.startMenu.classList.add('visible');
       refs.startMenu.setAttribute('aria-hidden', 'false');
+      refs.startSubmenu.classList.remove('visible');
+      refs.startSubmenu.setAttribute('aria-hidden', 'true');
+      state.startSubmenuOpen = false;
       positionStartUI();
+    }
+    function toggleStartSubmenu() {
+      if (!state.startMenuOpen) return;
+      state.startSubmenuOpen = !state.startSubmenuOpen;
+      refs.startSubmenu.classList.toggle('visible', state.startSubmenuOpen);
+      refs.startSubmenu.setAttribute('aria-hidden', state.startSubmenuOpen ? 'false' : 'true');
     }
     function toggleStartMenu() {
       if (state.startMenuOpen) closeStartMenu();
@@ -815,6 +1145,9 @@
       refs.taskbarApp.style.left = `${startX + startWidth + 10}px`;
       refs.taskbarApp.style.top = `${startY + Math.max(0, (startHeight - 24) / 2)}px`;
       refs.taskbarApp.style.width = `${Math.min(180, Math.max(142, desktop.width * 0.16))}px`;
+      refs.taskbarExcel.style.left = `${startX + startWidth + 18 + Math.min(180, Math.max(142, desktop.width * 0.16))}px`;
+      refs.taskbarExcel.style.top = `${startY + Math.max(0, (startHeight - 24) / 2)}px`;
+      refs.taskbarExcel.style.width = `${Math.min(180, Math.max(154, desktop.width * 0.18))}px`;
     }
     function windowBounds() {
       const shellRect = refs.shell.getBoundingClientRect();
@@ -852,12 +1185,45 @@
       if (state.windowClosed || state.windowMinimized) return;
       if (state.windowDrag.moved) applyWindowPosition(state.windowDrag.x, state.windowDrag.y);
       else centerWindow();
+      positionNotepadWindow();
+    }
+    function notepadWindowBounds() {
+      const desktop = desktopBounds();
+      const rect = refs.notepadWindow.getBoundingClientRect();
+      return {
+        minX: desktop.left,
+        minY: desktop.top,
+        maxX: Math.max(desktop.left, desktop.left + desktop.width - rect.width),
+        maxY: Math.max(desktop.top, desktop.top + desktop.height - rect.height)
+      };
+    }
+    function applyNotepadPosition(x, y) {
+      const bounds = notepadWindowBounds();
+      const px = Math.min(Math.max(bounds.minX, x), bounds.maxX);
+      const py = Math.min(Math.max(bounds.minY, y), bounds.maxY);
+      state.notepad.x = px;
+      state.notepad.y = py;
+      refs.notepadWindow.style.left = `${px}px`;
+      refs.notepadWindow.style.top = `${py}px`;
+    }
+    function positionNotepadWindow() {
+      if (!state.notepad.open) return;
+      if (state.notepad.moved) {
+        applyNotepadPosition(state.notepad.x, state.notepad.y);
+        return;
+      }
+      const desktop = desktopBounds();
+      const rect = refs.notepadWindow.getBoundingClientRect();
+      applyNotepadPosition(desktop.left + Math.max(110, (desktop.width - rect.width) / 2), desktop.top + Math.max(36, (desktop.height - rect.height) / 2));
     }
     function syncTaskbarApp() {
       const visible = !state.windowClosed;
       refs.taskbarApp.classList.toggle('visible', visible);
       refs.taskbarApp.classList.toggle('minimized', visible && state.windowMinimized);
       refs.taskbarApp.setAttribute('aria-hidden', visible ? 'false' : 'true');
+      refs.taskbarExcel.classList.toggle('visible', state.notepad.open);
+      refs.taskbarExcel.classList.toggle('minimized', state.notepad.open && state.notepad.minimized);
+      refs.taskbarExcel.setAttribute('aria-hidden', state.notepad.open ? 'false' : 'true');
     }
     function startWindowDrag(event) {
       if (state.windowClosed || state.windowMinimized) return;
@@ -905,7 +1271,8 @@
     }
     function closeWindow() {
       stopWindowDrag();
-      if (state.running) stopGame();
+      if (state.running) stopGame(false);
+      closeNotepad();
       closeModal(false);
       closeStartMenu();
       state.windowClosed = true;
@@ -913,6 +1280,7 @@
       refs.window.style.display = 'none';
       refs.window.classList.remove('minimized');
       syncTaskbarApp();
+      syncBackgroundAudio();
     }
     function openWindow(keepPosition = false) {
       state.windowClosed = false;
@@ -923,6 +1291,51 @@
       positionStartUI();
       if (!keepPosition) state.windowDrag.moved = false;
       positionWindow();
+      syncTaskbarApp();
+      syncBackgroundAudio();
+    }
+    function openNotepad() {
+      if (!state.reportFileVisible) return;
+      state.notepad.open = true;
+      state.notepad.minimized = false;
+      refs.notepadWindow.style.display = 'inline-block';
+      renderReportSheet();
+      positionNotepadWindow();
+      syncTaskbarApp();
+    }
+    function closeNotepad() {
+      state.notepad.open = false;
+      state.notepad.active = false;
+      state.notepad.minimized = false;
+      refs.notepadWindow.style.display = 'none';
+      syncTaskbarApp();
+    }
+    function startNotepadDrag(event) {
+      if (!state.notepad.open) return;
+      if (event.target.closest('.win-btn')) return;
+      const rect = refs.notepadWindow.getBoundingClientRect();
+      state.notepad.active = true;
+      state.notepad.offsetX = event.clientX - rect.left;
+      state.notepad.offsetY = event.clientY - rect.top;
+      event.preventDefault();
+    }
+    function moveNotepadDrag(event) {
+      if (!state.notepad.active) return;
+      const shellRect = refs.shell.getBoundingClientRect();
+      state.notepad.moved = true;
+      applyNotepadPosition(event.clientX - shellRect.left - state.notepad.offsetX, event.clientY - shellRect.top - state.notepad.offsetY);
+    }
+    function stopNotepadDrag() {
+      state.notepad.active = false;
+    }
+    function toggleTaskbarExcel() {
+      if (!state.notepad.open) {
+        openNotepad();
+        return;
+      }
+      state.notepad.minimized = !state.notepad.minimized;
+      refs.notepadWindow.style.display = state.notepad.minimized ? 'none' : 'inline-block';
+      if (!state.notepad.minimized) positionNotepadWindow();
       syncTaskbarApp();
     }
     function updateTaskbarClock() {
@@ -956,14 +1369,47 @@
       minimizeWindow();
     }
     function playAudio(el) { if (!refs.ckdsuoni.checked && el !== refs.audioSottofondo) return; try { el.currentTime = 0; el.play().catch(() => {}); } catch (_) {} }
+    function unlockAudio() {
+      if (state.audioUnlocked) return;
+      state.audioUnlocked = true;
+      syncBackgroundAudio();
+    }
+    function syncBackgroundAudio() {
+      refs.audioSottofondo.volume = 0.6;
+      if (!state.audioUnlocked) return;
+      if (refs.ckdsottofondo.checked && !state.windowClosed) {
+        refs.audioSottofondo.play().catch(() => {});
+      } else {
+        refs.audioSottofondo.pause();
+        refs.audioSottofondo.currentTime = 0;
+      }
+    }
     function setHammerDown() { refs.form.classList.add('hammer-down'); }
     function setHammerUp() { refs.form.classList.remove('hammer-down'); }
-    function updateStatus(text) { refs.status.innerHTML = `<strong>L${state.level} · Stage ${state.stageCount}/10 · ${state.points.toFixed(2)} pt</strong>${text}`; }
+    function updateStatus(text) { refs.status.innerHTML = `<strong>Lezione ${Math.min(state.level, 3)} · Stage ${state.stageCount}/10 · ${state.points.toFixed(2)} pt</strong>${text}`; }
     function clampSpeed(raw) { const parsed = Number.parseInt(raw, 10); if (Number.isNaN(parsed)) return state.speed; return Math.min(20, Math.max(1, parsed)); }
     function scoreMultiplier() { const clamped = Math.max(0, Math.min(100, state.speed * 5)); const t = clamped / 100; return 0.5 + 2.5 * Math.log10(1 + 9 * t); }
-    function addPoints(delta) { state.points += delta * scoreMultiplier(); state.points = Math.round(state.points * 100) / 100; updateStatus(state.inPentathlon ? 'Pentathlon in corso.' : 'Partita in corso.'); }
-    function syncLevelRadios() { refs.ckdlivello1.checked = state.level === 1; refs.ckdlivello2.checked = state.level === 2; refs.ckdlivello3.checked = state.level >= 3; }
-    function selectedLevel() { if (refs.ckdlivello3.checked) return 3; if (refs.ckdlivello2.checked) return 2; return 1; }
+    function registerSessionPoints(bucket, appliedDelta) {
+      if (!bucket || !Number.isFinite(appliedDelta)) return;
+      const points = state.sessionReport.points;
+      if (!(bucket in points)) points[bucket] = 0;
+      points[bucket] = Math.round((points[bucket] + appliedDelta) * 100) / 100;
+    }
+    function addPoints(delta, bucket = '') {
+      const previous = state.points;
+      state.points += delta * scoreMultiplier();
+      state.points = Math.round(state.points * 100) / 100;
+      registerSessionPoints(bucket, Math.round((state.points - previous) * 100) / 100);
+      syncScoreboard();
+      updateStatus(state.inPentathlon ? 'Pentathlon in corso.' : 'Partita in corso.');
+    }
+    function syncLevelRadios() {
+      refs.ckdlivello1.checked = state.level === 1;
+      refs.ckdlivello2.checked = state.level === 2;
+      refs.ckdlivello3.checked = state.level === 3;
+      refs.ckdpentathlon.checked = state.level >= 4 || state.inPentathlon;
+    }
+    function selectedLevel() { return 1; }
 
     function customizationKey(kind, value) { return `${kind}:${value}`; }
     function defaultCustomizationAsset(kind, value) { return DEFAULT_CUSTOMIZATION_ASSETS[kind]?.[value] || DEFAULT_CUSTOMIZATION_ASSETS.cattivo[1]; }
@@ -996,21 +1442,44 @@
       return {
         rebels_1: customizationAsset('cattivo', 1), rebels_2: customizationAsset('cattivo', 2), rebels_3: customizationAsset('cattivo', 3),
         allies_1: customizationAsset('buono', 1), allies_2: customizationAsset('buono', 2), allies_3: customizationAsset('buono', 3),
-        assistant_1: customizationAsset('bidella', 1), coach_1: 'resources/author8.png'
+        assistant_1: customizationAsset('bidella', 1), coach_1: customizationAsset('coach', 1)
       }[type] || customizationAsset('cattivo', 1);
     }
     function refreshCustomizationPreview() {
       refreshCustomizationChoices();
-      refs.previewCattivo.src = spriteSource('cattivo');
-      refs.previewBuono.src = spriteSource('buono');
-      refs.previewBidella.src = spriteSource('bidella');
       refs.choiceButtons.forEach((button) => {
         const kind = button.dataset.kind;
         const value = Number(button.dataset.value);
         button.classList.toggle('active', state.customization[kind] === value);
       });
     }
-    function applyCustomization() { refs.profcatt.src = spriteSource('cattivo'); refs.profbuon.src = spriteSource('buono'); refs.bidella.src = spriteSource('bidella'); refreshCustomizationPreview(); }
+    function applyCustomization() { refs.profcatt.src = spriteSource('cattivo'); refs.profbuon.src = spriteSource('buono'); refs.bidella.src = spriteSource('bidella'); refs.perlaHint.querySelector('img').src = customizationAsset('coach', 1); refs.coachDockImg.src = customizationAsset('coach', 1); refreshCustomizationPreview(); }
+    function duplicateCustomizationWarningMessage() {
+      const slots = [];
+      Object.entries(DEFAULT_CUSTOMIZATION_ASSETS).forEach(([kind, values]) => {
+        Object.keys(values).forEach((value) => {
+          const numericValue = Number(value);
+          slots.push({ key: customizationKey(kind, numericValue), asset: customizationAsset(kind, numericValue) });
+        });
+      });
+      const duplicates = new Map();
+      slots.forEach((slot) => {
+        if (!duplicates.has(slot.asset)) duplicates.set(slot.asset, []);
+        duplicates.get(slot.asset).push(slot.key);
+      });
+      const repeated = [...duplicates.values()]
+        .filter((group) => group.length > 1)
+        .map((group) => group.sort().join('|'))
+        .sort();
+      if (!repeated.length) {
+        state.duplicateCustomizationWarningKey = '';
+        return '';
+      }
+      const warningKey = repeated.join(';;');
+      if (state.duplicateCustomizationWarningKey === warningKey) return '';
+      state.duplicateCustomizationWarningKey = warningKey;
+      return "Attenzione: se selezioni piu volte la stessa immagine ti troverai in difficolta nei minigiochi, per esempio nel Memory o in altre prove del Pentathlon.";
+    }
     function handleCustomUploadSelection(event) {
       const file = event.target.files?.[0];
       const target = state.pendingUploadTarget;
@@ -1025,35 +1494,248 @@
         saveCustomUploads();
         applyCustomization();
         resetPositions();
+        const warning = duplicateCustomizationWarningMessage();
+        if (warning) window.alert(warning);
       };
       reader.readAsDataURL(file);
     }
-    function syncScoreboard() { refs.profcolpiti.textContent = String(state.counts.hit); refs.profsfuggiti.textContent = String(state.counts.escaped); refs.colpisbagliati.textContent = String(state.counts.wrong); calculateVote(); }
+    function syncScoreboard() {
+      refs.profcolpiti.textContent = state.points.toFixed(2);
+      refs.profsfuggiti.textContent = '';
+      refs.colpisbagliati.textContent = '';
+      calculateVote();
+    }
     function calculateVote() {
       const colpiti = state.counts.hit; const sfuggiti = state.counts.escaped; const sbagliati = state.counts.wrong; const totali = Math.max(1, colpiti + sfuggiti + sbagliati);
       const voto = (colpiti - sfuggiti) - (2 * sbagliati); const finalVote = Math.floor((voto * 10) / totali); refs.lblvoto.textContent = String(finalVote <= 0 ? 1 : finalVote);
+    }
+    function resetSessionReport() {
+      state.sessionReportVisible = false;
+      state.sessionReport = {
+        lessons: {
+          1: { cattivoSpawned: 0, cattivoHit: 0, cattivoEscaped: 0, buonoSpawned: 0, buonoHit: 0, buonoEscaped: 0, bidellaShown: 0, bidellaHit: 0, circolareGood: 0, circolareBad: 0, miscWrong: 0 },
+          2: { cattivoSpawned: 0, cattivoHit: 0, cattivoEscaped: 0, buonoSpawned: 0, buonoHit: 0, buonoEscaped: 0, bidellaShown: 0, bidellaHit: 0, circolareGood: 0, circolareBad: 0, miscWrong: 0 },
+          3: { cattivoSpawned: 0, cattivoHit: 0, cattivoEscaped: 0, buonoSpawned: 0, buonoHit: 0, buonoEscaped: 0, bidellaShown: 0, bidellaHit: 0, circolareGood: 0, circolareBad: 0, miscWrong: 0 }
+        },
+        pentathlon: {
+          1: { attempts: 0, successes: 0, failures: 0, correct: 0, wrong: 0 },
+          2: { attempts: 0, successes: 0, failures: 0, correct: 0, wrong: 0 },
+          3: { attempts: 0, successes: 0, failures: 0, correct: 0, wrong: 0 },
+          4: { attempts: 0, successes: 0, failures: 0, correct: 0, wrong: 0 },
+          5: { attempts: 0, successes: 0, failures: 0, correct: 0, wrong: 0 }
+        },
+        points: {
+          lesson1_cattivo: 0,
+          lesson1_errori: 0,
+          lesson2_cattivo: 0,
+          lesson2_buono: 0,
+          lesson2_errori: 0,
+          lesson3_cattivo: 0,
+          lesson3_buono: 0,
+          lesson3_bidella: 0,
+          lesson3_errori: 0,
+          pentathlon1: 0,
+          pentathlon2: 0,
+          pentathlon3: 0,
+          pentathlon4: 0,
+          pentathlon5: 0
+        }
+      };
+    }
+    function lessonReport(level) { return state.sessionReport.lessons[level]; }
+    function pentathlonReport(mode) { return state.sessionReport.pentathlon[mode]; }
+    function buildSessionReportText() {
+      const l1 = lessonReport(1);
+      const l2 = lessonReport(2);
+      const l3 = lessonReport(3);
+      const p1 = pentathlonReport(1);
+      const p2 = pentathlonReport(2);
+      const p3 = pentathlonReport(3);
+      const p4 = pentathlonReport(4);
+      const p5 = pentathlonReport(5);
+      const pts = state.sessionReport.points;
+      return [
+        `Lezione 1: prof cattivi colpiti ${l1.cattivoHit} volte su ${LESSON_STAGE_MAX}. Sfuggiti: ${l1.cattivoEscaped}. Punti: ${pts.lesson1_cattivo.toFixed(2)}.`,
+        `Lezione 1: colpi a vuoto ${l1.miscWrong}. Punti: ${pts.lesson1_errori.toFixed(2)}.`,
+        `Lezione 2: prof cattivi colpiti ${l2.cattivoHit} volte su ${LESSON_STAGE_MAX}; cattivi sfuggiti ${l2.cattivoEscaped}. Punti: ${pts.lesson2_cattivo.toFixed(2)}.`,
+        `Lezione 2: prof buoni colpiti ${l2.buonoHit} volte su ${LESSON_STAGE_MAX}; buoni sfuggiti ${l2.buonoEscaped}. Punti: ${pts.lesson2_buono.toFixed(2)}.`,
+        `Lezione 2: colpi a vuoto ${l2.miscWrong}. Punti: ${pts.lesson2_errori.toFixed(2)}.`,
+        `Lezione 3: prof cattivi colpiti ${l3.cattivoHit} volte su ${LESSON_STAGE_MAX}; cattivi sfuggiti ${l3.cattivoEscaped}. Punti: ${pts.lesson3_cattivo.toFixed(2)}.`,
+        `Lezione 3: prof buoni colpiti ${l3.buonoHit} volte su ${LESSON_STAGE_MAX}; buoni sfuggiti ${l3.buonoEscaped}. Punti: ${pts.lesson3_buono.toFixed(2)}.`,
+        `Lezione 3: bidella colpita ${l3.bidellaHit} volte su ${l3.bidellaShown}; circolari buone ${l3.circolareGood}, cattive ${l3.circolareBad}. Punti: ${pts.lesson3_bidella.toFixed(2)}.`,
+        `Lezione 3: colpi a vuoto ${l3.miscWrong}. Punti: ${pts.lesson3_errori.toFixed(2)}.`,
+        '',
+        `Pentathlon 1 Memory: tentativi ${p1.attempts}, completato ${p1.successes} volte, colpi a vuoto ${p1.wrong}. Punti: ${pts.pentathlon1.toFixed(2)}.`,
+        `Pentathlon 2 Riflessi: tentativi ${p2.attempts}, completato ${p2.successes} volte, tocchi corretti ${p2.correct}, colpi a vuoto ${p2.wrong}. Punti: ${pts.pentathlon2.toFixed(2)}.`,
+        `Pentathlon 3 Scambio di posto: tentativi ${p3.attempts}, completato ${p3.successes} volte, tocchi corretti ${p3.correct}, colpi a vuoto ${p3.wrong}. Punti: ${pts.pentathlon3.toFixed(2)}.`,
+        `Pentathlon 4 Rischio controllato: tentativi ${p4.attempts}, completato ${p4.successes} volte, tocchi corretti ${p4.correct}, colpi a vuoto ${p4.wrong}. Punti: ${pts.pentathlon4.toFixed(2)}.`,
+        `Pentathlon 5 Sequenza: tentativi ${p5.attempts}, completato ${p5.successes} volte, tocchi corretti ${p5.correct}, colpi a vuoto ${p5.wrong}. Punti: ${pts.pentathlon5.toFixed(2)}.`
+      ].join('\n');
+    }
+    function buildSessionReportRows() {
+      const l1 = lessonReport(1);
+      const l2 = lessonReport(2);
+      const l3 = lessonReport(3);
+      const p1 = pentathlonReport(1);
+      const p2 = pentathlonReport(2);
+      const p3 = pentathlonReport(3);
+      const p4 = pentathlonReport(4);
+      const p5 = pentathlonReport(5);
+      const pts = state.sessionReport.points;
+      return [
+        { group: 'lezione1', section: 'Lezione 1', label: 'Prof cattivi', value: `${l1.cattivoHit}/${LESSON_STAGE_MAX}`, points: pts.lesson1_cattivo.toFixed(2), detail: `Sfuggiti: ${l1.cattivoEscaped}` },
+        { group: 'lezione1', section: 'Lezione 1', label: 'Colpi a vuoto', value: String(l1.miscWrong), points: pts.lesson1_errori.toFixed(2), detail: 'Sfondo, studenti o Coach Perla' },
+        { group: 'lezione2', section: 'Lezione 2', label: 'Prof cattivi', value: `${l2.cattivoHit}/${LESSON_STAGE_MAX}`, points: pts.lesson2_cattivo.toFixed(2), detail: `Sfuggiti: ${l2.cattivoEscaped}` },
+        { group: 'lezione2', section: 'Lezione 2', label: 'Prof buoni', value: `${l2.buonoHit}/${LESSON_STAGE_MAX}`, points: pts.lesson2_buono.toFixed(2), detail: `Sfuggiti: ${l2.buonoEscaped}` },
+        { group: 'lezione2', section: 'Lezione 2', label: 'Colpi a vuoto', value: String(l2.miscWrong), points: pts.lesson2_errori.toFixed(2), detail: 'Sfondo, studenti o Coach Perla' },
+        { group: 'lezione3', section: 'Lezione 3', label: 'Prof cattivi', value: `${l3.cattivoHit}/${LESSON_STAGE_MAX}`, points: pts.lesson3_cattivo.toFixed(2), detail: `Sfuggiti: ${l3.cattivoEscaped}` },
+        { group: 'lezione3', section: 'Lezione 3', label: 'Prof buoni', value: `${l3.buonoHit}/${LESSON_STAGE_MAX}`, points: pts.lesson3_buono.toFixed(2), detail: `Sfuggiti: ${l3.buonoEscaped}` },
+        { group: 'lezione3', section: 'Lezione 3', label: 'Bidella e circolari', value: `${l3.bidellaHit}/${l3.bidellaShown}`, points: pts.lesson3_bidella.toFixed(2), detail: `Circolari buone: ${l3.circolareGood} · cattive: ${l3.circolareBad}` },
+        { group: 'lezione3', section: 'Lezione 3', label: 'Colpi a vuoto', value: String(l3.miscWrong), points: pts.lesson3_errori.toFixed(2), detail: 'Sfondo, studenti o Coach Perla' },
+        { group: 'pentathlon', section: 'Pentathlon 1', label: 'Memory', value: `${p1.successes}/${p1.attempts}`, points: pts.pentathlon1.toFixed(2), detail: `Coppie corrette: ${p1.correct}` },
+        { group: 'pentathlon', section: 'Pentathlon 1', label: 'Colpi a vuoto', value: String(p1.wrong), points: '', detail: 'Gia inclusi nei punti del gioco' },
+        { group: 'pentathlon', section: 'Pentathlon 2', label: 'Riflessi', value: `${p2.successes}/${p2.attempts}`, points: pts.pentathlon2.toFixed(2), detail: `Tocchi corretti: ${p2.correct}` },
+        { group: 'pentathlon', section: 'Pentathlon 2', label: 'Colpi a vuoto', value: String(p2.wrong), points: '', detail: 'Gia inclusi nei punti del gioco' },
+        { group: 'pentathlon', section: 'Pentathlon 3', label: 'Scambio di posto', value: `${p3.successes}/${p3.attempts}`, points: pts.pentathlon3.toFixed(2), detail: `Tocchi corretti: ${p3.correct}` },
+        { group: 'pentathlon', section: 'Pentathlon 3', label: 'Colpi a vuoto', value: String(p3.wrong), points: '', detail: 'Gia inclusi nei punti del gioco' },
+        { group: 'pentathlon', section: 'Pentathlon 4', label: 'Rischio controllato', value: `${p4.successes}/${p4.attempts}`, points: pts.pentathlon4.toFixed(2), detail: `Tocchi corretti: ${p4.correct}` },
+        { group: 'pentathlon', section: 'Pentathlon 4', label: 'Colpi a vuoto', value: String(p4.wrong), points: '', detail: 'Gia inclusi nei punti del gioco' },
+        { group: 'pentathlon', section: 'Pentathlon 5', label: 'Sequenza', value: `${p5.successes}/${p5.attempts}`, points: pts.pentathlon5.toFixed(2), detail: `Tocchi corretti: ${p5.correct}` },
+        { group: 'pentathlon', section: 'Pentathlon 5', label: 'Colpi a vuoto', value: String(p5.wrong), points: '', detail: 'Gia inclusi nei punti del gioco' },
+        { group: 'finale', section: 'Finale', label: 'Punti totali', value: state.points.toFixed(2), points: '', detail: `Voto: ${refs.lblvoto.textContent}/10` }
+      ];
+    }
+    function renderReportSheet() {
+      const rows = buildSessionReportRows();
+      refs.notepadEditor.innerHTML = rows.map((row, index) => {
+        const prev = rows[index - 1];
+        const next = rows[index + 1];
+        const classes = [
+          !prev || prev.group !== row.group ? 'group-start' : '',
+          !next || next.group !== row.group ? 'group-end' : ''
+        ].filter(Boolean).join(' ');
+        return `<tr class="${classes}"><td>${row.section}</td><td>${row.label}</td><td>${row.value}</td><td>${row.points}</td><td>${row.detail}</td></tr>`;
+      }).join('');
+    }
+    function syncSessionReportFile() {
+      state.reportFileContent = buildSessionReportText();
+      state.reportFileVisible = true;
+      renderReportSheet();
+      positionReportIcon();
+    }
+    function showSessionReport(title) {
+      state.storyMode = false;
+      state.sessionReportVisible = false;
+      syncSessionReportFile();
+      closeModal(false);
+      openNotepad();
+      updateStatus(`${title} aperto in Excel.`);
+    }
+    function showCircolareSheet(esitoBuono) {
+      refs.showCircSubject.textContent = esitoBuono ? "Oggetto: Festivita' aggiuntive." : "Oggetto: Corsi di recupero pomeridiani";
+      refs.showCircBody.textContent = esitoBuono
+        ? "Si comunica che da domani la scuola restera' chiusa per festivita' aggiuntive. Buona vacanza!"
+        : "Si comunica che sono stati attivati corsi di recupero pomeridiani obbligatori per tutte le classi.";
+      openModal('showcircolare');
+    }
+    function levelRuleMeta(level) {
+      if (level === 1) return {
+        title: 'Campanella',
+        subtitle: "E' suonata la prima campanella.",
+        body: "Sta iniziando la lezione 1, ecco le regole:\n\nCompare un solo prof cattivo alla volta. Devi schiacciarlo quando appare. Se non lo colpisci in tempo perdi punti; se clicchi fuori o sbagli, perdi comunque punti."
+      };
+      if (level === 2) return {
+        title: 'Campanella',
+        subtitle: "E' finita la lezione 1 ed e' suonata la campanella.",
+        body: "Ora sta per cominciare la lezione 2, e queste sono le regole della materia:\n\nAppaiono due prof contemporaneamente: uno cattivo e uno buono. Devi schiacciare solo il prof cattivo. Se colpisci quello buono sbagli e perdi punti."
+      };
+      return {
+        title: 'Campanella',
+        subtitle: "E' finita la lezione 2 ed e' suonata la campanella.",
+        body: "Ora sta per cominciare la lezione 3, e queste sono le regole della materia:\n\nCome nella lezione 2, ma i prof buoni e cattivi vengono scelti a caso tra quelli salvati. In piu puo entrare la bidella con una circolare: se la colpisci, il gioco si ferma e devi scegliere una circolare."
+      };
+    }
+    function showLevelRule(level) {
+      const meta = levelRuleMeta(level);
+      state.storyMode = false;
+      state.pendingLevelIntro = level;
+      refs.resultTitle.textContent = meta.title;
+      refs.resultSubtitle.textContent = meta.subtitle;
+      refs.resultBody.textContent = meta.body;
+      refs.storyPrev.classList.add('hidden');
+      refs.storyNext.classList.add('hidden');
+      refs.dialogResult.className = 'poster good';
+      refs.dialogResult.classList.remove('hidden');
+      moveSpritesOffstage();
+      playAudio(refs.audioCampanella);
+      openModal('result');
+    }
+    function resumeGameplayAfterLevelRule() {
+      state.pendingLevelIntro = null;
+      if (!state.running) return;
+      state.paused = false;
+      resetPositions();
+      startTimer();
+      tick();
+      if (refs.ckdsottofondo.checked) refs.audioSottofondo.play().catch(() => {});
+      updateStatus('Partita in corso.');
     }
 
     function registerCattivoSpawn() {
       if (!state.running || state.inPentathlon) return;
       state.stageCount += 1;
-      if (state.level === 1 && state.stageCount >= 10) { state.level = 2; state.stageCount = 0; syncLevelRadios(); updateStatus('Livello 2 sbloccato.'); }
-      else if (state.level === 2 && state.stageCount >= 10) { state.level = 3; state.stageCount = 0; syncLevelRadios(); updateStatus('Livello 3 sbloccato.'); }
-      else if (state.level >= 3 && state.stageCount >= 10) { state.level = 4; state.stageCount = 0; syncLevelRadios(); state.inPentathlon = true; startPentathlon(); }
+      if (state.level === 1 && state.stageCount > 10) {
+        state.level = 2;
+        state.stageCount = 0;
+        syncLevelRadios();
+        showLevelRule(2);
+        updateStatus('Sta cominciando la lezione 2.');
+        return true;
+      }
+      if (state.level === 2 && state.stageCount > 10) {
+        state.level = 3;
+        state.stageCount = 0;
+        syncLevelRadios();
+        showLevelRule(3);
+        updateStatus('Sta cominciando la lezione 3.');
+        return true;
+      }
+      if (state.level >= 3 && state.stageCount > 10) {
+        state.level = 4;
+        state.stageCount = 0;
+        syncLevelRadios();
+        state.inPentathlon = true;
+        startPentathlon();
+        return true;
+      }
+      return false;
     }
 
     function setFrame(el, left, top, width, height) { el.style.left = `${left}px`; el.style.top = `${top}px`; el.style.width = `${width}px`; el.style.height = `${height}px`; }
     function setSpriteFrame(sprite) { setFrame(sprite.el, sprite.left, sprite.top, sprite.width, sprite.height); sprite.el.style.display = sprite.visible && sprite.height > 1 ? 'block' : 'none'; }
-    function hideSprite(sprite) { sprite.visible = false; sprite.left = 800; setSpriteFrame(sprite); }
+    function hideSprite(sprite) { sprite.visible = false; sprite.left = 800; sprite.deskIndex = null; setSpriteFrame(sprite); }
     function resetSprite(sprite) { sprite.top = sprite.top + sprite.height; sprite.height = 1; sprite.visible = true; setSpriteFrame(sprite); }
-    function randomSlot() { const [left, top] = positions[Math.floor(Math.random() * positions.length)]; return { left, top }; }
+    function occupiedDeskIndexes(exceptName) {
+      return Object.entries(state.sprites)
+        .filter(([name, sprite]) => name !== exceptName && sprite.visible && Number.isInteger(sprite.deskIndex))
+        .map(([, sprite]) => sprite.deskIndex);
+    }
+    function randomSlot(excludedIndexes = []) {
+      const taken = new Set(excludedIndexes);
+      const availableIndexes = positions.map((_, index) => index).filter((index) => !taken.has(index));
+      const pool = availableIndexes.length ? availableIndexes : positions.map((_, index) => index);
+      const index = pool[Math.floor(Math.random() * pool.length)];
+      const [left, top] = positions[index];
+      return { index, left, top };
+    }
     function prepareSprite(spriteName) {
       const sprite = state.sprites[spriteName];
-      const slot = randomSlot();
+      const slot = randomSlot(occupiedDeskIndexes(spriteName));
       const leftOffset = PENT_LEFT_OFFSET;
       const topOffset = PENT_TOP_OFFSET;
       sprite.height = 121;
       sprite.alzate = 0;
+      sprite.deskIndex = slot.index;
       sprite.left = slot.left + leftOffset;
       sprite.top = slot.top + topOffset;
       resetSprite(sprite);
@@ -1061,30 +1743,33 @@
 
     function profcattivo() {
       if (state.level >= 3) refs.profcatt.src = faceImage(`rebels_${1 + Math.floor(Math.random() * 3)}`); else refs.profcatt.src = spriteSource('cattivo');
-      registerCattivoSpawn(); prepareSprite('cattivo');
+      if (registerCattivoSpawn()) return;
+      if (state.level <= 3) lessonReport(state.level).cattivoSpawned += 1;
+      prepareSprite('cattivo');
     }
     function profbuono() {
       if (state.level >= 3) refs.profbuon.src = faceImage(`allies_${1 + Math.floor(Math.random() * 3)}`); else refs.profbuon.src = spriteSource('buono');
+      if (state.level <= 3) lessonReport(state.level).buonoSpawned += 1;
       prepareSprite('buono');
     }
-    function bidellaa() { refs.bidella.src = spriteSource('bidella'); prepareSprite('bidella'); }
+    function bidellaa() { refs.bidella.src = spriteSource('bidella'); if (state.level <= 3) lessonReport(state.level).bidellaShown += 1; prepareSprite('bidella'); }
     function scorriSprite(spriteName, onDone) {
       const sprite = state.sprites[spriteName]; if (!sprite.visible) return;
       if (sprite.height < 121) sprite.height = Math.min(121, sprite.height + state.speed);
       if (sprite.alzate < 120 / state.speed) { sprite.top -= state.speed; sprite.alzate += 1; } else { onDone(); return; }
       setSpriteFrame(sprite);
     }
-    function scorribidella() { scorriSprite('bidella', () => { state.attivaBidella = false; addPoints(-1); bidellaa(); }); }
-    function scorribuono() { scorriSprite('buono', () => { addPoints(1); profbuono(); }); }
-    function scorricattivo() { scorriSprite('cattivo', () => { state.counts.escaped += 1; syncScoreboard(); addPoints(-1); profcattivo(); }); }
+    function scorribidella() { scorriSprite('bidella', () => { state.attivaBidella = false; addPoints(-1, 'lesson3_bidella'); bidellaa(); }); }
+    function scorribuono() { scorriSprite('buono', () => { if (state.level <= 3) lessonReport(state.level).buonoEscaped += 1; addPoints(1, state.level >= 3 ? 'lesson3_buono' : 'lesson2_buono'); profbuono(); }); }
+    function scorricattivo() { scorriSprite('cattivo', () => { if (state.level <= 3) lessonReport(state.level).cattivoEscaped += 1; state.counts.escaped += 1; syncScoreboard(); addPoints(-1, state.level >= 3 ? 'lesson3_cattivo' : state.level === 2 ? 'lesson2_cattivo' : 'lesson1_cattivo'); profcattivo(); }); }
 
     function resetPentathlonCells() {
       refs.pentCells.forEach((cell) => {
         cell.style.display = 'none'; cell.className = 'pent-cell arena-cursor'; cell.disabled = false; cell.querySelector('img').src = '';
       });
     }
-    function showPerlaHint() { refs.perlaHint.style.display = 'block'; }
-    function hidePerlaHint() { refs.perlaHint.style.display = 'none'; }
+    function showPerlaHint() { refs.perlaHint.style.display = 'none'; refs.coachDock.classList.remove('active'); void refs.coachDock.offsetWidth; refs.coachDock.classList.add('active'); }
+    function hidePerlaHint() { refs.perlaHint.style.display = 'none'; refs.coachDock.classList.remove('active'); }
     function clearPentathlonTimers() {
       if (state.pentathlon.riskCycleId) {
         clearTimeout(state.pentathlon.riskCycleId);
@@ -1095,8 +1780,8 @@
     }
     function clearPentathlonState() {
       clearPentathlonTimers(); resetPentathlonCells(); refs.pentathlonLabel.style.display = 'none'; refs.pentathlonLabel.textContent = ''; hidePerlaHint();
-      state.pentathlon.memoryMap = {}; state.pentathlon.memoryFirst = null; state.pentathlon.memoryMatchedPairs = 0; state.pentathlon.flipped = new Set();
-      state.pentathlon.syncMap = {}; state.pentathlon.syncEntries = []; state.pentathlon.syncTickCount = 0; state.pentathlon.syncPendingReposition = false; state.pentathlon.syncActive = false;
+      state.pentathlon.memoryMap = {}; state.pentathlon.memoryFirst = null; state.pentathlon.memoryMatchedPairs = 0; state.pentathlon.flipped = new Set(); state.pentathlon.memoryBusy = false;
+      state.pentathlon.syncMap = {}; state.pentathlon.syncEntries = []; state.pentathlon.syncTickCount = 0; state.pentathlon.syncPendingReposition = false; state.pentathlon.syncActive = false; state.pentathlon.syncLastLayoutKey = '';
       state.pentathlon.swapDeskTextures = {}; state.pentathlon.swapTargets = []; state.pentathlon.swapSelection = 0; state.pentathlon.swapActive = false;
       state.pentathlon.riskMap = {}; state.pentathlon.riskTargets = new Set(); state.pentathlon.riskActive = false; state.pentathlon.riskLastSpeed = -1; state.pentathlon.riskLastDuration = -1;
       state.pentathlon.sequence = []; state.pentathlon.sequenceStep = 0; state.pentathlon.sequenceLength = 2; state.pentathlon.sequenceTextures = {}; state.pentathlon.sequenceActive = false;
@@ -1113,7 +1798,15 @@
     function setPentathlonLabel() { refs.pentathlonLabel.textContent = pentathlonModeMeta()[0]; refs.pentathlonLabel.style.display = 'block'; }
     function showPentathlonRule() {
       state.storyMode = false;
-      const [title, body] = pentathlonModeMeta(); refs.resultTitle.textContent = title; refs.resultSubtitle.textContent = ''; refs.resultBody.textContent = body; refs.storyPrev.classList.add('hidden'); refs.storyNext.classList.add('hidden'); refs.dialogResult.className = 'poster good'; refs.dialogResult.classList.remove('hidden'); openModal('result');
+      const [title, body] = pentathlonModeMeta();
+      refs.resultTitle.textContent = title;
+      refs.resultSubtitle.textContent = 'Coach Perla';
+      refs.resultBody.textContent = `Ciao, sono la Perla e ti aiutero in questa disciplina del Pentathlon.\nLe regole sono queste:\n\n${body}`;
+      refs.storyPrev.classList.add('hidden');
+      refs.storyNext.classList.add('hidden');
+      refs.dialogResult.className = 'poster good';
+      refs.dialogResult.classList.remove('hidden');
+      openModal('result');
     }
     function placePentCell(index, face, options = {}) {
       const cell = refs.pentCells[index];
@@ -1124,7 +1817,7 @@
         options.width || 100,
         options.height || 121
       );
-      cell.querySelector('img').src = faceImage(face); cell.style.display = 'block'; cell.className = 'pent-cell arena-cursor';
+      cell.querySelector('img').src = options.hiddenFace ? '' : faceImage(face); cell.style.display = 'block'; cell.className = 'pent-cell arena-cursor';
       if (options.covered) cell.classList.add('covered'); if (options.targeted) cell.classList.add('targeted'); if (options.correct) cell.classList.add('correct'); if (options.wrong) cell.classList.add('wrong'); if (options.inactive) cell.classList.add('inactive');
       cell.disabled = !!options.disabled;
     }
@@ -1185,7 +1878,29 @@
       if (kind === 'miss') playAudio(refs.audioMiss);
       if (kind === 'robot') playAudio(refs.audioRobotHit);
     }
-    function sample(list, count) { return list.slice().sort(() => Math.random() - 0.5).slice(0, count); }
+    function sample(list, count) {
+      const copy = list.slice();
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy.slice(0, count);
+    }
+    function randomSyncDesks(count) {
+      const all = [...Array(9).keys()];
+      let desks = sample(all, count);
+      let key = desks.join(',');
+      if (all.length >= count) {
+        let guard = 0;
+        while (key === state.pentathlon.syncLastLayoutKey && guard < 12) {
+          desks = sample(all, count);
+          key = desks.join(',');
+          guard += 1;
+        }
+      }
+      state.pentathlon.syncLastLayoutKey = key;
+      return desks;
+    }
     function neighbors(index) { const row = Math.floor(index / 3); const col = index % 3; const out = []; if (row > 0) out.push(index - 3); if (row < 2) out.push(index + 3); if (col > 0) out.push(index - 1); if (col < 2) out.push(index + 1); return out; }
     function targetCattiviWithAdjacentBuono(assigned) {
       const targets = new Set(); Object.entries(assigned).forEach(([key, face]) => { const idx = Number(key); if (!face.startsWith('rebels_')) return; if (neighbors(idx).some((n) => assigned[n] && assigned[n].startsWith('allies_'))) targets.add(idx); }); return targets;
@@ -1198,6 +1913,7 @@
       state.pentathlon.memoryFirst = null;
       state.pentathlon.memoryMatchedPairs = 0;
       state.pentathlon.flipped = new Set();
+      state.pentathlon.memoryBusy = false;
       desks.forEach((desk, i) => {
         state.pentathlon.memoryMap[desk] = faces[i];
         placeGrowingPentCell(desk, faces[i], 1);
@@ -1211,11 +1927,11 @@
       }
       const timer = setTimeout(() => {
         desks.forEach((desk) => coverPentCell(desk));
-      }, 500);
+      }, 650);
       state.pentathlon.swapRevealTimers.push(timer);
     }
     function startSyncMode() {
-      const desks = sample([...Array(9).keys()], 6);
+      const desks = randomSyncDesks(6);
       const cattivi = sample(['rebels_1','rebels_2','rebels_3'], 3);
       const buoni = sample(['allies_1','allies_2','allies_3'], 3);
       state.pentathlon.syncEntries = [];
@@ -1230,7 +1946,7 @@
     function repositionSyncMode() {
       const entries = state.pentathlon.syncEntries;
       if (!entries.length) return;
-      const desks = sample([...Array(9).keys()], entries.length);
+      const desks = randomSyncDesks(entries.length);
       entries.forEach((entry, index) => {
         entry.desk = desks[index];
         entry.height = 1;
@@ -1348,12 +2064,13 @@
     function resetSequenceCovers() {
       resetPentathlonCells();
       [...Array(9).keys()].forEach((desk) => {
-        const face = state.pentathlon.sequenceTextures[desk] || 'rebels_1';
-        placePentCell(desk, face, { covered: true });
+        const face = state.pentathlon.sequenceTextures[desk];
+        placePentCell(desk, face || 'rebels_1', { covered: true, hiddenFace: !face });
       });
     }
     function revealSequenceCover(index) {
-      const face = state.pentathlon.sequenceTextures[index] || 'rebels_1';
+      const face = state.pentathlon.sequenceTextures[index];
+      if (!face) return;
       placePentCell(index, face);
     }
     function showSequenceStep(index) {
@@ -1383,7 +2100,7 @@
       showSequenceStep(0);
     }
     function startPentathlonMode() {
-      clearPentathlonState(); setPentathlonLabel(); showPerlaHint(); if (state.pentathlonMode === 1) startMemoryMode(); if (state.pentathlonMode === 2) startSyncMode(); if (state.pentathlonMode === 3) startSwapMode(); if (state.pentathlonMode === 4) startRiskMode(); if (state.pentathlonMode === 5) startSequenceMode();
+      clearPentathlonState(); pentathlonReport(state.pentathlonMode).attempts += 1; setPentathlonLabel(); showPerlaHint(); if (state.pentathlonMode === 1) startMemoryMode(); if (state.pentathlonMode === 2) startSyncMode(); if (state.pentathlonMode === 3) startSwapMode(); if (state.pentathlonMode === 4) startRiskMode(); if (state.pentathlonMode === 5) startSequenceMode();
     }
     function startPentathlon() {
       stopTimer();
@@ -1393,18 +2110,22 @@
       state.pentathlonAwaitingStart = true;
       showPerlaHint();
       setPentathlonLabel();
+      playAudio(refs.audioCampanella);
       showPentathlonRule();
       updateStatus('Pentathlon avviato sulla griglia di gioco.');
     }
     function finishPentathlonMode() {
-      if (state.pentathlonMode >= 5) { clearPentathlonState(); state.inPentathlon = false; state.running = false; state.paused = false; setGameControlsPlaying(false); updateStatus('Pentathlon completato. Partita conclusa come su iOS.'); return; }
+      pentathlonReport(state.pentathlonMode).successes += 1;
+      if (state.pentathlonMode >= 5) { clearPentathlonState(); state.inPentathlon = false; state.running = false; state.paused = false; setGameControlsPlaying(false); calculateVote(); updateStatus('Pentathlon completato. Partita conclusa come su iOS.'); showSessionReport('Report finale'); return; }
       state.pentathlonMode += 1;
       state.pentathlonAwaitingStart = true;
       showPerlaHint();
       setPentathlonLabel();
+      playAudio(refs.audioCampanella);
       showPentathlonRule();
     }
     function failPentathlonMode() {
+      pentathlonReport(state.pentathlonMode).failures += 1;
       state.storyMode = false;
       state.retryCurrentPentathlon = true;
       refs.resultTitle.textContent = 'Riprova';
@@ -1479,11 +2200,11 @@
       const rect = refs.form.getBoundingClientRect(); const scale = Number.parseFloat(getComputedStyle(refs.form).getPropertyValue('--scale'));
       refs.schizzi.style.left = `${(pageX - rect.left) / scale - 45}px`; refs.schizzi.style.top = `${(pageY - rect.top) / scale - 25}px`; refs.schizzi.style.display = 'block'; setTimeout(() => { refs.schizzi.style.display = 'none'; }, 140);
     }
-    function hideZampilli() { refs.zampilli1.style.display = 'none'; refs.zampilli2.style.display = 'none'; refs.zampilli3.style.display = 'none'; }
+    function hideZampilli() { refs.zampilli1.style.display = 'none'; refs.zampilli2.style.display = 'none'; refs.zampilli3.style.display = 'none'; refs.zampilli4.style.display = 'none'; refs.zampilli5.style.display = 'none'; }
     function showZampillo(which) { hideZampilli(); which.style.display = 'block'; setTimeout(hideZampilli, 150); }
     function moveSpritesOffstage() { hideSprite(state.sprites.cattivo); hideSprite(state.sprites.buono); hideSprite(state.sprites.bidella); state.attivaBidella = false; }
     function resetPositions() { if (!state.running || state.inPentathlon) { moveSpritesOffstage(); return; } profcattivo(); if (state.level >= 2) profbuono(); else hideSprite(state.sprites.buono); if (state.level >= 3) bidellaa(); else hideSprite(state.sprites.bidella); state.attivaBidella = false; }
-    function backgroundWrongClick() { if (!state.running || state.paused || state.modal || state.inPentathlon) return; state.counts.wrong += 1; syncScoreboard(); }
+    function backgroundWrongClick() { if (!state.running || state.paused || state.modal || state.inPentathlon) return; state.counts.wrong += 1; if (state.level <= 3) lessonReport(state.level).miscWrong += 1; syncScoreboard(); }
     function selectedDebugPentathlonMode() {
       const raw = Number.parseInt(refs.debugPentathlonMode.value, 10);
       const mode = Number.isFinite(raw) ? raw : 1;
@@ -1492,13 +2213,14 @@
       return clamped;
     }
     function setGameControlsPlaying(isPlaying) {
-      refs.btnStart.textContent = isPlaying ? 'Stop' : 'Start'; refs.btnPause.classList.toggle('hidden', !isPlaying); refs.btnPause.textContent = 'Pausa'; refs.groupbox1.style.pointerEvents = isPlaying ? 'none' : 'auto'; refs.groupbox1.style.opacity = isPlaying ? '0.65' : '1'; refs.btnupvelocita.disabled = isPlaying; refs.btndownvelocita.disabled = isPlaying; refs.editvelocita.disabled = isPlaying;
+      refs.btnStart.textContent = isPlaying ? 'Stop' : 'Start'; refs.btnPause.classList.toggle('hidden', !isPlaying); refs.btnPause.textContent = 'Pausa'; refs.groupbox1.style.pointerEvents = 'auto'; refs.groupbox1.style.opacity = '1'; refs.btnupvelocita.disabled = isPlaying; refs.btndownvelocita.disabled = isPlaying; refs.editvelocita.disabled = isPlaying;
     }
     function startGame() {
-      stopTimer(); clearPentathlonState(); state.running = true; state.paused = false; state.modal = null; state.attivaBidella = false; state.points = 0; state.level = selectedLevel(); state.stageCount = 0; state.inPentathlon = false; state.pentathlonMode = 0; state.retryCurrentPentathlon = false; state.counts.hit = 0; state.counts.escaped = 0; state.counts.wrong = 0; refs.lblvoto.textContent = '0'; syncLevelRadios(); syncScoreboard(); resetPositions(); setGameControlsPlaying(true); startTimer(); tick(); updateStatus('Partita avviata.'); if (refs.ckdsottofondo.checked) refs.audioSottofondo.play().catch(() => {});
+      stopTimer(); clearPentathlonState(); resetSessionReport(); state.running = true; state.paused = false; state.modal = null; state.attivaBidella = false; state.points = 0; state.level = selectedLevel(); state.stageCount = 0; state.inPentathlon = false; state.pentathlonMode = 0; state.retryCurrentPentathlon = false; state.pendingLevelIntro = null; state.counts.hit = 0; state.counts.escaped = 0; state.counts.wrong = 0; refs.lblvoto.textContent = '0'; syncLevelRadios(); syncScoreboard(); moveSpritesOffstage(); setGameControlsPlaying(true); syncBackgroundAudio(); showLevelRule(state.level); updateStatus('Leggi le regole del livello per iniziare.');
     }
-    function stopGame() {
-      state.running = false; state.paused = false; state.inPentathlon = false; state.pentathlonMode = 0; state.retryCurrentPentathlon = false; clearPentathlonState(); stopTimer(); calculateVote(); setGameControlsPlaying(false); moveSpritesOffstage(); refs.audioSottofondo.pause(); updateStatus('Partita fermata. Voto calcolato con la formula Delphi originale.');
+    function stopGame(showReport = true) {
+      state.running = false; state.paused = false; state.inPentathlon = false; state.pentathlonMode = 0; state.retryCurrentPentathlon = false; clearPentathlonState(); stopTimer(); calculateVote(); setGameControlsPlaying(false); moveSpritesOffstage(); syncBackgroundAudio(); updateStatus('Partita fermata. Voto calcolato con la formula Delphi originale.');
+      if (showReport) showSessionReport('Report sessione');
     }
     function debugStartPentathlon() {
       if (!state.running) {
@@ -1520,7 +2242,7 @@
       showPentathlonRule();
       updateStatus(`Debug: pentathlon avviato direttamente alla prova ${targetMode}.`);
     }
-    function toggleStart() { if (state.running) stopGame(); else startGame(); }
+    function toggleStart() { if (state.running) stopGame(true); else startGame(); }
     function togglePause() { if (!state.running || state.inPentathlon) return; state.paused = !state.paused; refs.btnPause.textContent = state.paused ? 'Riprendi' : 'Pausa'; resetPositions(); updateStatus(state.paused ? 'Partita in pausa.' : 'Partita ripresa.'); }
     function restartPentathlonAfterRetry() {
       if (state.pentathlonMode === 4) {
@@ -1536,40 +2258,46 @@
     }
 
     function openModal(name) {
-      state.modal = name; state.paused = true; stopTimer(); refs.modalBackdrop.classList.add('visible'); refs.dialogCustomization.classList.toggle('hidden', name !== 'customization'); refs.dialogCircolare.classList.toggle('hidden', name !== 'circolare'); refs.dialogResult.classList.toggle('hidden', name !== 'result');
+      state.modal = name; state.paused = true; stopTimer(); refs.modalBackdrop.classList.add('visible'); refs.dialogCustomization.classList.toggle('hidden', name !== 'customization'); refs.dialogCircolare.classList.toggle('hidden', name !== 'circolare'); refs.dialogResult.classList.toggle('hidden', name !== 'result'); refs.dialogShowCircolare.classList.toggle('hidden', name !== 'showcircolare');
     }
     function closeModal(resumeGame) {
-      state.modal = null; refs.modalBackdrop.classList.remove('visible'); refs.dialogCustomization.classList.add('hidden'); refs.dialogCircolare.classList.add('hidden'); refs.dialogResult.classList.add('hidden');
+      state.modal = null; refs.modalBackdrop.classList.remove('visible'); refs.dialogCustomization.classList.add('hidden'); refs.dialogCircolare.classList.add('hidden'); refs.dialogResult.classList.add('hidden'); refs.dialogShowCircolare.classList.add('hidden');
       if (resumeGame && state.running) { state.paused = false; startTimer(); }
     }
 
     function clickProfBuono(event) {
-      event.stopPropagation(); showSchizzi(event.clientX, event.clientY); state.counts.wrong += 1; syncScoreboard(); addPoints(-2); profcattivo(); if (state.level >= 3) bidellaa(); state.attivaBidella = false; playAudio(refs.audioProfmorto); setTimeout(() => { if (!state.inPentathlon) profbuono(); }, 120);
+      if (state.level <= 3) lessonReport(state.level).buonoHit += 1;
+      event.stopPropagation(); showSchizzi(event.clientX, event.clientY); state.counts.wrong += 1; syncScoreboard(); addPoints(-2, state.level >= 3 ? 'lesson3_buono' : 'lesson2_buono'); profcattivo(); if (state.level >= 3) bidellaa(); state.attivaBidella = false; playAudio(refs.audioProfmorto); setTimeout(() => { if (!state.inPentathlon) profbuono(); }, 120);
     }
     function clickProfCattivo(event) {
-      event.stopPropagation(); showSchizzi(event.clientX, event.clientY); state.counts.hit += 1; syncScoreboard(); addPoints(2); profcattivo(); if (state.level >= 2) profbuono(); if (state.level >= 3) bidellaa(); state.attivaBidella = false; playAudio(refs.audioProfmorto);
+      if (state.level <= 3) lessonReport(state.level).cattivoHit += 1;
+      event.stopPropagation(); showSchizzi(event.clientX, event.clientY); state.counts.hit += 1; syncScoreboard(); addPoints(2, state.level >= 3 ? 'lesson3_cattivo' : state.level === 2 ? 'lesson2_cattivo' : 'lesson1_cattivo'); profcattivo(); if (state.level >= 2) profbuono(); if (state.level >= 3) bidellaa(); state.attivaBidella = false; playAudio(refs.audioProfmorto);
     }
-    function clickBidella(event) { event.stopPropagation(); profcattivo(); state.attivaBidella = false; bidellaa(); addPoints(5); playAudio(refs.audioBidella); openModal('circolare'); updateStatus('La bidella ha interrotto la partita con una circolare.'); }
-    function backgroundClick(event) { if (!state.running || state.paused || state.modal || state.inPentathlon) return; backgroundWrongClick(); addPoints(-1); playAudio(refs.audioFuori); }
-    function clickStudent(which, event) { event.stopPropagation(); playAudio(refs.audioBambino); addPoints(-1); showZampillo(which); }
+    function clickBidella(event) { if (state.level <= 3) lessonReport(state.level).bidellaHit += 1; event.stopPropagation(); profcattivo(); state.attivaBidella = false; bidellaa(); addPoints(5, 'lesson3_bidella'); playAudio(refs.audioBidella); openModal('circolare'); updateStatus('La bidella ha interrotto la partita con una circolare.'); }
+    function backgroundClick(event) { if (!state.running || state.paused || state.modal || state.inPentathlon) return; backgroundWrongClick(); addPoints(-1, state.level >= 3 ? 'lesson3_errori' : state.level === 2 ? 'lesson2_errori' : 'lesson1_errori'); playAudio(refs.audioFuori); }
+    function clickStudent(which, event) { event.stopPropagation(); if (state.level <= 3 && state.running && !state.inPentathlon) lessonReport(state.level).miscWrong += 1; playAudio(refs.audioBambino); addPoints(-1, state.level >= 3 ? 'lesson3_errori' : state.level === 2 ? 'lesson2_errori' : 'lesson1_errori'); showZampillo(which); }
 
     function handlePentathlonCell(index, event) {
       if (!state.inPentathlon || state.paused || state.modal) return; event.stopPropagation();
       if (state.pentathlonMode === 1) {
-        if (!(index in state.pentathlon.memoryMap) || state.pentathlon.flipped.has(index)) return;
+        if (state.pentathlon.memoryBusy || !(index in state.pentathlon.memoryMap) || state.pentathlon.flipped.has(index)) return;
         revealPentCell(index);
         state.pentathlon.flipped.add(index);
-        if (state.pentathlon.memoryFirst === null) { state.pentathlon.memoryFirst = index; return; }
         const first = state.pentathlon.memoryFirst;
-        state.pentathlon.memoryFirst = null;
+        if (first === null) { state.pentathlon.memoryFirst = index; return; }
         if (first === index) return;
+        state.pentathlon.memoryBusy = true;
+        state.pentathlon.memoryFirst = null;
         if (state.pentathlon.memoryMap[first] === state.pentathlon.memoryMap[index]) {
-          addPoints(2);
+          pentathlonReport(1).correct += 1;
+          addPoints(2, 'pentathlon1');
           playPentathlonAudio('success');
           state.pentathlon.memoryMatchedPairs += 1;
+          state.pentathlon.memoryBusy = false;
           if (state.pentathlon.memoryMatchedPairs >= 4) finishPentathlonMode();
         } else {
-          addPoints(-1);
+          pentathlonReport(1).wrong += 1;
+          addPoints(-1, 'pentathlon1');
           playPentathlonAudio('fail');
           showSchizzi(event.clientX, event.clientY);
           const timer = setTimeout(() => {
@@ -1577,6 +2305,7 @@
             coverPentCell(index);
             state.pentathlon.flipped.delete(first);
             state.pentathlon.flipped.delete(index);
+            state.pentathlon.memoryBusy = false;
           }, 400);
           state.pentathlon.swapRevealTimers.push(timer);
         }
@@ -1585,14 +2314,16 @@
       if (state.pentathlonMode === 2) {
         const face = state.pentathlon.syncMap[index]; if (!face) return;
         if (face.startsWith('allies_')) {
-          addPoints(-2);
+          pentathlonReport(2).wrong += 1;
+          addPoints(-2, 'pentathlon2');
           playPentathlonAudio('miss');
           showSchizzi(event.clientX, event.clientY);
           state.pentathlon.syncActive = false;
           failPentathlonMode();
           return;
         }
-        addPoints(1);
+        pentathlonReport(2).correct += 1;
+        addPoints(1, 'pentathlon2');
         playPentathlonAudio('robot');
         state.pentathlon.syncEntries = state.pentathlon.syncEntries.filter((entry) => entry.desk !== index);
         rebuildSyncMap();
@@ -1603,13 +2334,15 @@
       if (state.pentathlonMode === 3) {
         const expected = state.pentathlon.swapTargets[state.pentathlon.swapSelection]; const actual = state.pentathlon.swapDeskTextures[index]; if (!actual) return;
         if (actual === expected) {
+          pentathlonReport(3).correct += 1;
           playPentathlonAudio('success');
           refs.pentCells[index].style.display = 'none';
           state.pentathlon.swapSelection += 1;
           if (state.pentathlon.swapSelection >= state.pentathlon.swapTargets.length) finishPentathlonMode();
           else placePentCell(4, state.pentathlon.swapTargets[state.pentathlon.swapSelection], { inactive: true });
         } else {
-          addPoints(-2);
+          pentathlonReport(3).wrong += 1;
+          addPoints(-2, 'pentathlon3');
           playPentathlonAudio('fail');
           showSchizzi(event.clientX, event.clientY);
           state.pentathlon.swapActive = false;
@@ -1620,7 +2353,8 @@
       if (state.pentathlonMode === 4) {
         const item = state.pentathlon.riskMap[index]; if (!item) return;
         if (item.face.startsWith('allies_')) {
-          addPoints(-2);
+          pentathlonReport(4).wrong += 1;
+          addPoints(-2, 'pentathlon4');
           playPentathlonAudio('fail');
           showSchizzi(event.clientX, event.clientY);
           state.pentathlon.riskActive = false;
@@ -1628,14 +2362,16 @@
           return;
         }
         if (!item.target) {
-          addPoints(-2);
+          pentathlonReport(4).wrong += 1;
+          addPoints(-2, 'pentathlon4');
           playPentathlonAudio('fail');
           showSchizzi(event.clientX, event.clientY);
           state.pentathlon.riskActive = false;
           failPentathlonMode();
           return;
         }
-        addPoints(2);
+        pentathlonReport(4).correct += 1;
+        addPoints(2, 'pentathlon4');
         playPentathlonAudio('robot');
         delete state.pentathlon.riskMap[index];
         refs.pentCells[index].style.display = 'none';
@@ -1647,11 +2383,12 @@
       if (state.pentathlonMode === 5) {
         if (!state.pentathlon.sequenceActive) return;
         if (index === state.pentathlon.sequence[state.pentathlon.sequenceStep]) {
+          pentathlonReport(5).correct += 1;
           revealSequenceCover(index);
           playPentathlonAudio('robot');
           state.pentathlon.sequenceStep += 1;
           if (state.pentathlon.sequenceStep >= state.pentathlon.sequence.length) {
-            addPoints(2);
+            addPoints(2, 'pentathlon5');
             if (state.pentathlon.sequenceLength >= 9) finishPentathlonMode();
             else {
               state.pentathlon.sequenceLength += 1;
@@ -1667,7 +2404,8 @@
             }
           }
         } else {
-          addPoints(-1);
+          pentathlonReport(5).wrong += 1;
+          addPoints(-1, 'pentathlon5');
           playPentathlonAudio('miss');
           state.pentathlon.sequenceLength = 2;
           state.pentathlon.sequence = sample([...Array(9).keys()], state.pentathlon.sequenceLength);
@@ -1692,7 +2430,8 @@
 
     function handleCircolareConfirm() {
       const selected = Number(document.querySelector('input[name="circolare"]:checked').value); const numero = Math.floor(Math.random() * 2) + 1; const good = numero === selected;
-      state.storyMode = false; state.counts.hit = good ? state.counts.hit + 100 : state.counts.hit - 100; addPoints(good ? 100 : -100); refs.resultTitle.textContent = good ? 'Bella notizia' : 'Cattiva notizia'; refs.resultSubtitle.textContent = ''; refs.resultBody.textContent = good ? 'Hai scelto la circolare giusta. Guadagni 100 punti sui prof colpiti.' : 'Hai scelto male. Perdi 100 punti sui prof colpiti.'; refs.storyPrev.classList.add('hidden'); refs.storyNext.classList.add('hidden'); refs.dialogResult.className = `poster ${good ? 'good' : 'bad'}`; refs.dialogResult.classList.remove('hidden'); refs.dialogCircolare.classList.add('hidden'); syncScoreboard(); playAudio(good ? refs.audioSiii : refs.audioNooo);
+      lessonReport(3)[good ? 'circolareGood' : 'circolareBad'] += 1;
+      state.storyMode = false; state.counts.hit = good ? state.counts.hit + 100 : state.counts.hit - 100; addPoints(good ? 100 : -100, 'lesson3_bidella'); refs.dialogCircolare.classList.add('hidden'); syncScoreboard(); playAudio(good ? refs.audioSiii : refs.audioNooo); showCircolareSheet(good);
     }
 
     refs.profcatt.addEventListener('mousedown', clickProfCattivo);
@@ -1705,6 +2444,8 @@
     refs.student35.addEventListener('mousedown', (event) => clickStudent(refs.zampilli2, event));
     refs.student34.addEventListener('mousedown', (event) => clickStudent(refs.zampilli3, event));
     refs.student33.addEventListener('mousedown', (event) => clickStudent(refs.zampilli3, event));
+    refs.student36.addEventListener('mousedown', (event) => clickStudent(refs.zampilli4, event));
+    refs.student37.addEventListener('mousedown', (event) => clickStudent(refs.zampilli5, event));
     refs.pentCells.forEach((cell, index) => cell.addEventListener('mousedown', (event) => handlePentathlonCell(index, event)));
 
     refs.btnStart.addEventListener('click', toggleStart);
@@ -1714,9 +2455,23 @@
     refs.debugPentathlonMode.addEventListener('change', selectedDebugPentathlonMode);
     refs.btnSettings.addEventListener('click', () => { openModal('customization'); updateStatus('Personalizzazioni aperte.'); });
     refs.perlaHint.addEventListener('mousedown', (event) => { event.stopPropagation(); showPentathlonRule(); });
+    refs.coachDock.addEventListener('mousedown', (event) => {
+      event.stopPropagation();
+      if (!state.inPentathlon) {
+        if (!state.running || state.paused || state.modal) return;
+        backgroundWrongClick();
+        addPoints(-1, state.level >= 3 ? 'lesson3_errori' : state.level === 2 ? 'lesson2_errori' : 'lesson1_errori');
+        playAudio(refs.audioFuori);
+        return;
+      }
+      showPentathlonRule();
+    });
     refs.windowTitlebar.addEventListener('mousedown', startWindowDrag);
     refs.windowClose.addEventListener('mousedown', (event) => { event.stopPropagation(); });
     refs.windowClose.addEventListener('click', (event) => { event.stopPropagation(); closeWindow(); });
+    refs.notepadTitlebar.addEventListener('mousedown', startNotepadDrag);
+    refs.notepadClose.addEventListener('mousedown', (event) => { event.stopPropagation(); });
+    refs.notepadClose.addEventListener('click', (event) => { event.stopPropagation(); closeNotepad(); });
     refs.desktopAppIcon.addEventListener('mousedown', startDesktopIconDrag);
     refs.desktopAppIcon.addEventListener('click', (event) => {
       if (state.desktopIconDrag.suppressClick) {
@@ -1726,22 +2481,26 @@
       }
       openWindow();
     });
+    refs.desktopReportIcon.addEventListener('click', (event) => {
+      event.stopPropagation();
+      openNotepad();
+    });
     refs.taskbarApp.addEventListener('click', (event) => { event.stopPropagation(); toggleTaskbarWindow(); });
+    refs.taskbarExcel.addEventListener('click', (event) => { event.stopPropagation(); toggleTaskbarExcel(); });
     refs.startHotspot.addEventListener('click', (event) => { event.stopPropagation(); toggleStartMenu(); });
+    refs.startMenuFolder.addEventListener('click', (event) => { event.stopPropagation(); toggleStartSubmenu(); });
     refs.startMenuOpen.addEventListener('click', (event) => { event.stopPropagation(); closeStartMenu(); openWindow(); });
     refs.startMenuStory.addEventListener('click', (event) => { event.stopPropagation(); showStartStory(); });
-    refs.help1.addEventListener('click', () => { window.alert("Apparira una sola immagine alla volta, se la colpisci guadagni punti, se non la colpisci, o se sbagli a colpirla perdi punti"); });
-    refs.help2.addEventListener('click', () => { window.alert("Appariranno 1 prof 'buono' e 1 prof 'cattivo'. Se colpisci quello 'buono' perdi punti se colpisci quello 'cattivo' li guadagni"); });
-    refs.help3.addEventListener('click', () => { window.alert("Come il livello 2 solo che i prof buoni e cattivi sono scelti a caso tra quelli salvati, e ci sara la bidella che ogni tanto porta circolari..."); });
+    refs.help1.addEventListener('click', () => { window.alert("Apparira un solo prof cattivo alla volta: se lo schiacci guadagni punti, se lo lasci andare o se sbagli perdi punti."); });
+    refs.help2.addEventListener('click', () => { window.alert("Appariranno 1 prof buono e 1 prof cattivo. Devi schiacciare solo il cattivo."); });
+    refs.help3.addEventListener('click', () => { window.alert("Come la lezione 2, ma i prof buoni e cattivi vengono scelti a caso tra quelli salvati. Inoltre puo entrare la bidella con una circolare e interrompere la partita."); });
+    refs.help4.addEventListener('click', () => { window.alert("Dopo le tre lezioni classiche parte il Pentathlon: 5 prove speciali consecutive sulla griglia di gioco, guidate dalla Coach Perla."); });
     refs.label1.addEventListener('click', () => { window.open('http://www.moscio88.altervista.org/SAP.php', '_blank', 'noopener'); });
 
-    refs.ckdlivello1.addEventListener('change', () => { if (!state.running) state.level = 1; syncLevelRadios(); });
-    refs.ckdlivello2.addEventListener('change', () => { if (!state.running) state.level = 2; syncLevelRadios(); });
-    refs.ckdlivello3.addEventListener('change', () => { if (!state.running) state.level = 3; syncLevelRadios(); });
     refs.btnupvelocita.addEventListener('click', () => { state.speed = Math.min(20, state.speed + 1); refs.editvelocita.value = String(state.speed); });
     refs.btndownvelocita.addEventListener('click', () => { state.speed = Math.max(1, state.speed - 1); refs.editvelocita.value = String(state.speed); });
     refs.editvelocita.addEventListener('input', () => { refs.editvelocita.value = refs.editvelocita.value.replace(/[^0-9]/g, ''); state.speed = clampSpeed(refs.editvelocita.value || '10'); refs.editvelocita.value = String(state.speed); });
-    refs.ckdsottofondo.addEventListener('change', () => { if (refs.ckdsottofondo.checked && state.running) refs.audioSottofondo.play().catch(() => {}); else refs.audioSottofondo.pause(); });
+    refs.ckdsottofondo.addEventListener('change', syncBackgroundAudio);
     refs.choiceButtons.forEach((button) => button.addEventListener('click', () => {
       const kind = button.dataset.kind;
       const value = Number(button.dataset.value);
@@ -1755,6 +2514,11 @@
     }));
     refs.customUploadInput.addEventListener('change', handleCustomUploadSelection);
     refs.confirmCircolare.addEventListener('click', handleCircolareConfirm);
+    refs.dialogShowCircolare.addEventListener('click', () => {
+      if (state.modal !== 'showcircolare') return;
+      closeModal(true);
+      updateStatus('Circolare completata. La partita riprende.');
+    });
     refs.closeCustomization.addEventListener('click', () => { closeModal(true); updateStatus('Personalizzazioni chiuse.'); });
     refs.storyPrev.addEventListener('click', () => {
       if (!state.storyMode || state.storyPage <= 0) return;
@@ -1774,8 +2538,14 @@
     refs.closeResult.addEventListener('click', () => {
       const wasStoryMode = state.storyMode;
       state.storyMode = false;
-      const fromPentathlon = state.inPentathlon; const retry = state.retryCurrentPentathlon; state.retryCurrentPentathlon = false; closeModal(true);
+      const pendingLevelIntro = state.pendingLevelIntro;
+      const fromPentathlon = state.inPentathlon; const retry = state.retryCurrentPentathlon; const reportVisible = state.sessionReportVisible; state.retryCurrentPentathlon = false; state.sessionReportVisible = false; closeModal(true);
       if (wasStoryMode) return;
+      if (reportVisible) return;
+      if (pendingLevelIntro !== null) {
+        resumeGameplayAfterLevelRule();
+        return;
+      }
       if (fromPentathlon) {
         if (retry) { state.paused = false; restartPentathlonAfterRetry(); updateStatus('Pentathlon ripreso dalla stessa prova.'); }
         else if (state.pentathlonAwaitingStart) { state.pentathlonAwaitingStart = false; state.paused = false; startPentathlonMode(); updateStatus('Pentathlon in corso.'); }
@@ -1785,6 +2555,7 @@
     refs.modalBackdrop.addEventListener('mousedown', (event) => { event.stopPropagation(); });
 
     refs.form.addEventListener('mousedown', setHammerDown);
+    document.addEventListener('pointerdown', unlockAudio, { once: true });
     refs.form.addEventListener('mouseleave', setHammerUp);
     document.addEventListener('mousedown', (event) => {
       if (!state.startMenuOpen) return;
@@ -1793,14 +2564,17 @@
     });
     document.addEventListener('mousemove', moveWindowDrag);
     document.addEventListener('mousemove', moveDesktopIconDrag);
+    document.addEventListener('mousemove', moveNotepadDrag);
     document.addEventListener('mouseup', setHammerUp);
     document.addEventListener('mouseup', stopWindowDrag);
     document.addEventListener('mouseup', stopDesktopIconDrag);
+    document.addEventListener('mouseup', stopNotepadDrag);
     window.addEventListener('blur', setHammerUp);
     window.addEventListener('blur', stopWindowDrag);
     window.addEventListener('blur', stopDesktopIconDrag);
+    window.addEventListener('blur', stopNotepadDrag);
 
-    loadCustomUploads(); applyCustomization(); moveSpritesOffstage(); clearPentathlonState(); syncLevelRadios(); syncScoreboard(); syncTaskbarApp(); startTaskbarClock(); resizeForm(); window.addEventListener('resize', resizeForm); new ResizeObserver(resizeForm).observe(refs.viewport);
+    loadCustomUploads(); applyCustomization(); moveSpritesOffstage(); clearPentathlonState(); syncLevelRadios(); syncScoreboard(); syncTaskbarApp(); startTaskbarClock(); syncBackgroundAudio(); resizeForm(); window.addEventListener('resize', resizeForm); new ResizeObserver(resizeForm).observe(refs.viewport);
   </script>
 </body>
 </html>
