@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Acciacca Prof Web - Porting Delphi</title>
-  <link rel="icon" type="image/png" href="resources/favicon.png">
+  <link rel="icon" type="image/png" href="resources/dio.png">
   <style>
     :root {
       --win-bg: #c0c0c0;
@@ -208,6 +208,9 @@
     .login-footer-copy {
       font: 400 12px Tahoma, "MS Sans Serif", sans-serif;
       color: rgba(255,255,255,0.86);
+      line-height: 1.35;
+      max-width: 940px;
+      text-align: center;
     }
     .taskbar {
       position: absolute;
@@ -436,6 +439,13 @@
       height: 100%;
       background: #000;
     }
+    .media-player-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+      object-fit: contain;
+      background: #000;
+    }
     .media-placeholder {
       padding: 18px;
       color: #f2f2f2;
@@ -520,6 +530,11 @@
       font: 11px Tahoma, "MS Sans Serif", sans-serif;
       color: #1e1e1e;
     }
+    .comment-group-title {
+      padding: 5px 2px 1px;
+      font: 700 11px Tahoma, "MS Sans Serif", sans-serif;
+      color: #3d2f14;
+    }
     .comment-entry-head {
       display: flex;
       justify-content: space-between;
@@ -527,6 +542,17 @@
       margin-bottom: 4px;
       font-size: 10px;
       color: #5f4d26;
+    }
+    .comment-entry-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+      font-size: 10px;
+      color: #6c5a2e;
+    }
+    .comment-entry-meta span {
+      display: inline-block;
     }
     .comment-entry-head strong {
       color: #2a2a2a;
@@ -968,9 +994,9 @@
     .bg { position: absolute; left: 13px; top: 10px; width: 487px; height: 528px; image-rendering: pixelated; cursor: var(--cursor-up); }
     img { -webkit-user-drag: none; user-select: none; }
     .win-label { position: absolute; font-size: 11px; line-height: 13px; color: var(--text); }
-    .vote { position: absolute; left: 469px; top: 48px; min-width: 40px; text-align: left; font-size: 13px; line-height: 16px; font-weight: 700; color: #fff; }
+    .vote { position: absolute; left: 446px; top: 54px; min-width: 24px; text-align: left; font-size: 13px; line-height: 16px; font-weight: 700; color: #fff; }
     .link-label {
-      position: absolute; left: 266px; top: 124px; width: 170px; font-size: 10px; line-height: 11px; color: var(--link);
+      position: absolute; left: 228px; top: 112px; width: 210px; font-size: 11px; line-height: 12px; color: var(--link);
       text-decoration: underline; cursor: pointer; background: transparent; border: 0; padding: 0; text-align: center;
       white-space: nowrap; overflow: hidden;
     }
@@ -1063,7 +1089,7 @@
     .poster.story-scroll {
       width: min(419px, calc(100% - 20px));
       min-height: 560px;
-      padding: 106px 78px 40px;
+      padding: 86px 78px 40px;
       background: url("resources/Unit4_Image1.png") center center / 100% 100% no-repeat;
       border: 0;
       box-shadow: none;
@@ -1086,6 +1112,15 @@
       min-height: 250px;
       line-height: 1.5;
     }
+    .poster.story-scroll .story-link-line {
+      display: inline-block;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+    .poster.story-scroll .story-link {
+      color: #5d4516;
+      text-decoration: underline;
+    }
     .poster.story-scroll .actions {
       justify-content: center;
       margin-top: 32px;
@@ -1094,7 +1129,7 @@
       margin-top: -48px;
     }
     .poster.story-scroll.story-page-1 .actions {
-      margin-top: -18px;
+      margin-top: 2px;
     }
     .poster.story-scroll.story-page-2 .actions {
       margin-top: 2px;
@@ -1141,7 +1176,7 @@
     .circolare-sheet-inner {
       position: absolute;
       inset: 0;
-      padding: 108px 66px 40px;
+      padding: 88px 66px 40px;
     }
     .circolare-sheet h2,
     .circolare-sheet p { margin: 0; }
@@ -1220,18 +1255,21 @@
     <div class="login-panel-wrap">
       <div class="login-panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
         <div class="login-avatar">
-          <img src="resources/app-icon.png" alt="">
+          <img id="loginAvatarImg" src="resources/dio.png" alt="">
         </div>
         <div class="login-copy">
           <h1 id="loginTitle">Liceo Scientifico G. Galilei - Piggi</h1>
-          <p id="loginPrompt">Seleziona la sessione da aprire.</p>
+          <p id="loginPrompt">Seleziona la sessione da aprire e inserisci le credenziali richieste.</p>
           <div class="login-form">
             <select id="loginSessionSelect" class="login-select" aria-label="Sessione">
               <option value="generic">OKKUPAZIONE</option>
               <option value="va">Classe VA 2008</option>
             </select>
-            <div id="loginNameLabel" class="login-field-label">Nome alunno</div>
-            <input id="loginNameInput" class="login-input login-field" type="text" maxlength="24" autocomplete="name" placeholder="Nome alunno">
+            <div id="loginNameLabel" class="login-field-label">Nickname visitatore esterno</div>
+            <input id="loginNameInput" class="login-input login-field" type="text" maxlength="24" autocomplete="nickname" placeholder="Nickname visitatore esterno">
+            <select id="loginNameSelect" class="login-select login-field hidden" aria-label="Nome alunno VA">
+              <option value="">Seleziona alunno</option>
+            </select>
             <div id="loginPasswordLabel" class="login-field-label hidden">Password VA</div>
             <input id="loginPasswordInput" class="login-input login-field hidden" type="password" maxlength="64" autocomplete="current-password" placeholder="Password">
             <button id="loginSubmit" class="login-submit" type="button">Accedi</button>
@@ -1241,7 +1279,7 @@
       </div>
     </div>
     <div class="login-footer">
-      <div class="login-footer-copy">Acciacca Prof Reloaded · Windows XP Login Simulation</div>
+      <div class="login-footer-copy">Questo e un sito memorial della VA del 2008 del Liceo Scientifico G. Galilei. Alcuni contenuti sono privati e visibili solo ai membri della classe. Gli altri possono usare la login di Okkupazione per accedere esclusivamente ad Acciacca Prof. Il sito utilizza solo cookie tecnici e non effettua tracciamento, in ottemperanza alla normativa GDPR.</div>
     </div>
   </div>
   <main class="shell hidden">
@@ -1496,6 +1534,7 @@
             <div id="mediaCurrentMeta" class="media-meta"></div>
             <div class="media-player-wrap">
               <video id="mediaPlayer" controls preload="metadata" playsinline class="hidden"></video>
+              <img id="mediaImage" alt="" class="hidden">
               <div id="mediaPlaceholder" class="media-placeholder"></div>
             </div>
             <div id="mediaActions" class="media-actions"></div>
@@ -1602,42 +1641,40 @@
     const REPORT_FILES_STORAGE_KEY = 'acciaccaProfReportFiles';
     const DESKTOP_ICONS_STORAGE_KEY = 'acciaccaProfDesktopIcons';
     const DEFAULT_CUSTOMIZATION_ASSETS = {
-      cattivo: { 1: 'resources/author1.jpg', 2: 'resources/author2.jpg', 3: 'resources/author3.jpg' },
-      buono: { 1: 'resources/author4.jpg', 2: 'resources/author5.JPG', 3: 'resources/author6.jpg' },
-      bidella: { 1: 'resources/author7.JPG' },
-      coach: { 1: 'resources/author8.png' }
+      va: {
+        cattivo: { 1: 'resources/author1.jpg', 2: 'resources/author2.jpg', 3: 'resources/author3.jpg' },
+        buono: { 1: 'resources/author4.jpg', 2: 'resources/author5.JPG', 3: 'resources/author6.jpg' },
+        bidella: { 1: 'resources/author7.JPG' },
+        coach: { 1: 'resources/author8.png' }
+      },
+      generic: {
+        cattivo: { 1: 'resources/banana/cattivo1.png', 2: 'resources/banana/cattivo2.png', 3: 'resources/banana/cattivo3.png' },
+        buono: { 1: 'resources/banana/buono1.png', 2: 'resources/banana/buono2.png', 3: 'resources/banana/buono3.png' },
+        bidella: { 1: 'resources/banana/bidella.png' },
+        coach: { 1: 'resources/banana/perla.png' }
+      }
     };
     const START_MENU_STORY_PAGES = [
       {
         title: 'Acciacca Prof',
         subtitle: '2007: niente app, solo PC',
-        body: `Nel 2007 non esistevano ancora le app. Gli smartphone moderni stavano per arrivare, e pure l'App Store sarebbe nato solo pochi mesi dopo. E mentre i suoi compagni di classe studiavano e facevano i compiti, Jacopo da Perugia, invece di fare i compiti, programmava per divertimento. In quell'epoca smanettava su Windows e realizzava piccoli giochi per il gusto di farli. Non si chiamavano app. Si chiamavano "programmini".`
+        body: `Nel 2007 non esistevano ancora le app. Gli smartphone moderni stavano per arrivare, e pure l'App Store sarebbe nato solo pochi mesi dopo. Invece che fare i compiti come i suoi compagni, Jacopo passava i pomeriggi ad imparare Delphi. In quell'epoca smanettava su Windows e realizzava piccoli giochi e utility per il solo gusto di farli. Non si chiamavano ancora app. Si chiamavano "programmini".`
       },
       {
         title: 'Dal PC al forum',
         subtitle: 'Windows XP, Delphi e ricreazioni',
-        body: `Dopo il successo di un precedente gioco di enigmi a livelli, nasce un gioco fatto per puro divertimento. E' scritto in Delphi, gira su Windows XP e passa di mano in mano da un PC all'altro. Finisce sul forum del liceo scientifico Galileo Galilei, dove le classi lo trasformano in un piccolo rito scolastico e lo personalizzano con facce e personaggi immaginari.`
+        body: `Dopo la pubblicazione di un precedente gioco di enigmi a livelli, nasce un gioco fatto per puro divertimento. <span class="story-link-line">Wikipedia: <a class="story-link" href="https://it.wikipedia.org/wiki/Enigma_online#:~:text=moscio88" target="_blank" rel="noopener noreferrer">Enigma online</a></span> E' scritto in Delphi, gira su Windows XP e passa di mano in mano da un PC all'altro. Finisce sul forum del liceo scientifico Galileo Galilei, dove le classi lo trasformano in un piccolo rito scolastico e lo personalizzano con le facce dei loro professori.`
       },
       {
         title: 'Dal PC al forum',
         subtitle: 'La richiesta rimasta aperta',
-        body: `E' cosi che nacque l'Acciacca Prof: un giochino semplice, simpatico, con spirito goliardico, quello delle ricreazioni, dei banchi di scuola e delle risate tra compagni. Gli studenti lo usavano personalizzandolo con le facce dei propri prof, divertendosi a schiacciarli. Divento un piccolo meme, prima dei meme. Il 25 febbraio 2007 un commento recito: "Io volevo la Perla e il pentathlon".`
+        body: `All'inizio Acciacca Prof era un gioco con solo i professori. Poi un compagno di classe suggerì di aggiungere quel pizzico di pepe in più: la bidella che entra in aula con le circolari e rimette l'esito del voto in mano alla sorte. Nella versione originale c'erano soltanto i primi 3 livelli: il pentathlon ancora non esisteva. Però il 29/02/2008 arrivò un commento rimasto inascoltato fino ad oggi, recitava così: "Io volevo la Perla e il pentathlon". Oggi Acciacca Prof torna in grande stile, e lo fa in versione web implementando anche il Pentathlon e la Coach Perla.`
       },
       {
         title: 'Come si gioca',
         subtitle: 'La banalita giusta',
         body: `La dinamica e' volutamente semplice: una versione scolastica di "Schiaccia la talpa". Dai banchi compaiono i prof. Alcuni vanno colpiti al momento giusto, altri no. Se sbagli perdi punti e il voto finale peggiora. E' proprio questa semplicita a tenerlo fedele allo spirito originale.`
       },
-      {
-        title: 'La bidella',
-        subtitle: 'Circolari e fortuna',
-        body: `C'e anche la bidella. Ogni tanto entra in classe con una circolare: se la blocchi puoi leggerla e giocarti la fortuna. Non tutte le circolari portano buone notizie, quindi anche li serve un po' di sorte oltre ai riflessi.`
-      },
-      {
-        title: '2026: ritorno',
-        subtitle: 'Perla e pentathlon',
-        body: `Nel 2026 l'Acciacca Prof torna su iPhone e Web: stesso spirito, stessa grafica, stessi suoni. Restano i personaggi classici, i prof da acciaccare al momento giusto e il Pentathlon finalmente completo guidato dalla coach Perla.`
-      }
     ];
     const DEFAULT_MEDIA_LIBRARY = [];
     const FIELD_LEFT = 13;
@@ -1653,8 +1690,8 @@
     ];
 
     const refs = {
-      loginScreen: document.getElementById('loginScreen'), loginPrompt: document.getElementById('loginPrompt'), loginSessionSelect: document.getElementById('loginSessionSelect'), loginNameLabel: document.getElementById('loginNameLabel'), loginNameInput: document.getElementById('loginNameInput'), loginPasswordLabel: document.getElementById('loginPasswordLabel'), loginPasswordInput: document.getElementById('loginPasswordInput'), loginSubmit: document.getElementById('loginSubmit'), loginError: document.getElementById('loginError'),
-      shell: document.querySelector('.shell'), taskbar: document.getElementById('taskbar'), taskbarClock: document.getElementById('taskbarClock'), window: document.getElementById('window'), windowTitlebar: document.getElementById('windowTitlebar'), windowClose: document.getElementById('windowClose'), notepadWindow: document.getElementById('notepadWindow'), notepadTitlebar: document.getElementById('notepadTitlebar'), notepadClose: document.getElementById('notepadClose'), notepadEditor: document.getElementById('notepadEditor'), leaderboardWindow: document.getElementById('leaderboardWindow'), leaderboardTitlebar: document.getElementById('leaderboardTitlebar'), leaderboardClose: document.getElementById('leaderboardClose'), leaderboardBody: document.getElementById('leaderboardBody'), mediaWindow: document.getElementById('mediaWindow'), mediaTitlebar: document.getElementById('mediaTitlebar'), mediaClose: document.getElementById('mediaClose'), mediaList: document.getElementById('mediaList'), mediaCurrentTitle: document.getElementById('mediaCurrentTitle'), mediaCurrentMeta: document.getElementById('mediaCurrentMeta'), mediaPlayer: document.getElementById('mediaPlayer'), mediaPlaceholder: document.getElementById('mediaPlaceholder'), mediaActions: document.getElementById('mediaActions'), commentsWindow: document.getElementById('commentsWindow'), commentsTitlebar: document.getElementById('commentsTitlebar'), commentsClose: document.getElementById('commentsClose'), commentsTargetTitle: document.getElementById('commentsTargetTitle'), commentsTargetMeta: document.getElementById('commentsTargetMeta'), commentsList: document.getElementById('commentsList'), commentsInput: document.getElementById('commentsInput'), commentsSubmit: document.getElementById('commentsSubmit'), desktopAppIcon: document.getElementById('desktopAppIcon'), desktopReportTemplate: document.getElementById('desktopReportIcon'), desktopLeaderboardIcon: document.getElementById('desktopLeaderboardIcon'), desktopMediaIcon: document.getElementById('desktopMediaIcon'), startHotspot: document.getElementById('startHotspot'), taskbarApp: document.getElementById('taskbarApp'), taskbarExcel: document.getElementById('taskbarExcel'), taskbarLeaderboard: document.getElementById('taskbarLeaderboard'), taskbarMedia: document.getElementById('taskbarMedia'), taskbarComments: document.getElementById('taskbarComments'), startMenu: document.getElementById('startMenu'), startMenuHeader: document.getElementById('startMenuHeader'), startMenuFolder: document.getElementById('startMenuFolder'), startSubmenu: document.getElementById('startSubmenu'), startMenuOpen: document.getElementById('startMenuOpen'), startMenuLeaderboard: document.getElementById('startMenuLeaderboard'), startMenuMedia: document.getElementById('startMenuMedia'), startMenuStory: document.getElementById('startMenuStory'), startMenuLogout: document.getElementById('startMenuLogout'),
+      loginScreen: document.getElementById('loginScreen'), loginAvatarImg: document.getElementById('loginAvatarImg'), loginPrompt: document.getElementById('loginPrompt'), loginSessionSelect: document.getElementById('loginSessionSelect'), loginNameLabel: document.getElementById('loginNameLabel'), loginNameInput: document.getElementById('loginNameInput'), loginNameSelect: document.getElementById('loginNameSelect'), loginPasswordLabel: document.getElementById('loginPasswordLabel'), loginPasswordInput: document.getElementById('loginPasswordInput'), loginSubmit: document.getElementById('loginSubmit'), loginError: document.getElementById('loginError'),
+      shell: document.querySelector('.shell'), taskbar: document.getElementById('taskbar'), taskbarClock: document.getElementById('taskbarClock'), window: document.getElementById('window'), windowTitlebar: document.getElementById('windowTitlebar'), windowClose: document.getElementById('windowClose'), notepadWindow: document.getElementById('notepadWindow'), notepadTitlebar: document.getElementById('notepadTitlebar'), notepadClose: document.getElementById('notepadClose'), notepadEditor: document.getElementById('notepadEditor'), leaderboardWindow: document.getElementById('leaderboardWindow'), leaderboardTitlebar: document.getElementById('leaderboardTitlebar'), leaderboardClose: document.getElementById('leaderboardClose'), leaderboardBody: document.getElementById('leaderboardBody'), mediaWindow: document.getElementById('mediaWindow'), mediaTitlebar: document.getElementById('mediaTitlebar'), mediaClose: document.getElementById('mediaClose'), mediaList: document.getElementById('mediaList'), mediaCurrentTitle: document.getElementById('mediaCurrentTitle'), mediaCurrentMeta: document.getElementById('mediaCurrentMeta'), mediaPlayer: document.getElementById('mediaPlayer'), mediaImage: document.getElementById('mediaImage'), mediaPlaceholder: document.getElementById('mediaPlaceholder'), mediaActions: document.getElementById('mediaActions'), commentsWindow: document.getElementById('commentsWindow'), commentsTitlebar: document.getElementById('commentsTitlebar'), commentsClose: document.getElementById('commentsClose'), commentsTargetTitle: document.getElementById('commentsTargetTitle'), commentsTargetMeta: document.getElementById('commentsTargetMeta'), commentsList: document.getElementById('commentsList'), commentsInput: document.getElementById('commentsInput'), commentsSubmit: document.getElementById('commentsSubmit'), desktopAppIcon: document.getElementById('desktopAppIcon'), desktopReportTemplate: document.getElementById('desktopReportIcon'), desktopLeaderboardIcon: document.getElementById('desktopLeaderboardIcon'), desktopMediaIcon: document.getElementById('desktopMediaIcon'), startHotspot: document.getElementById('startHotspot'), taskbarApp: document.getElementById('taskbarApp'), taskbarExcel: document.getElementById('taskbarExcel'), taskbarLeaderboard: document.getElementById('taskbarLeaderboard'), taskbarMedia: document.getElementById('taskbarMedia'), taskbarComments: document.getElementById('taskbarComments'), startMenu: document.getElementById('startMenu'), startMenuHeader: document.getElementById('startMenuHeader'), startMenuFolder: document.getElementById('startMenuFolder'), startSubmenu: document.getElementById('startSubmenu'), startMenuOpen: document.getElementById('startMenuOpen'), startMenuLeaderboard: document.getElementById('startMenuLeaderboard'), startMenuMedia: document.getElementById('startMenuMedia'), startMenuStory: document.getElementById('startMenuStory'), startMenuLogout: document.getElementById('startMenuLogout'),
       viewport: document.getElementById('viewport'), form: document.getElementById('form'), background: document.getElementById('background'),
       profcatt: document.getElementById('profcatt'), profbuon: document.getElementById('profbuon'), bidella: document.getElementById('bidella'),
       schizzi: document.getElementById('schizzi'), zampilli1: document.getElementById('zampilli1'), zampilli2: document.getElementById('zampilli2'), zampilli3: document.getElementById('zampilli3'), zampilli4: document.getElementById('zampilli4'), zampilli5: document.getElementById('zampilli5'),
@@ -1833,6 +1870,7 @@
         if (!raw) return;
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed.name === 'string') refs.loginNameInput.value = parsed.name.slice(0, 24);
+        if (parsed && typeof parsed.name === 'string') refs.loginNameSelect.value = parsed.name.slice(0, 24);
         if (parsed && typeof parsed.sessionType === 'string') refs.loginSessionSelect.value = parsed.sessionType === 'va' ? 'va' : 'generic';
       } catch (_) {}
     }
@@ -1859,8 +1897,18 @@
         window.localStorage.setItem(DESKTOP_ICONS_STORAGE_KEY, JSON.stringify(state.desktopIcons));
       } catch (_) {}
     }
+    function desktopGridOrigin() {
+      const desktop = desktopBounds();
+      return { x: desktop.left + 18, y: desktop.top + 18 };
+    }
+    function desktopGridStep(iconWidth = refs.desktopAppIcon.offsetWidth || 84, iconHeight = refs.desktopAppIcon.offsetHeight || 64) {
+      return { x: iconWidth + 16, y: iconHeight + 14 };
+    }
     function reportFilesStorageKeyFor(name = state.userName, sessionType = state.sessionType) {
       return `${REPORT_FILES_STORAGE_KEY}:${String(sessionType || 'generic').trim().toLowerCase()}:${String(name || '').trim().toLowerCase()}`;
+    }
+    function customUploadsStorageKeyFor(sessionType = state.sessionType) {
+      return `${CUSTOM_UPLOADS_STORAGE_KEY}:${String(sessionType || 'generic').trim().toLowerCase()}`;
     }
     function clearReportFilesState() {
       state.reportFiles.forEach((report) => {
@@ -1952,16 +2000,37 @@
     function hasMediaAccess() {
       return state.sessionType === 'va' && state.mediaLibrary.length > 0;
     }
+    async function loadVaStudents() {
+      try {
+        const response = await fetch('resources/va-students.json', { cache: 'no-store' });
+        if (!response.ok) return;
+        const payload = await response.json();
+        const names = Array.isArray(payload) ? payload.map((item) => String(item || '').trim()).filter(Boolean) : [];
+        refs.loginNameSelect.innerHTML = '<option value="">Seleziona alunno</option>' + names.map((name) => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('');
+        const savedName = refs.loginNameInput.value.trim();
+        if (savedName && names.includes(savedName)) refs.loginNameSelect.value = savedName;
+      } catch (_) {}
+    }
     function syncLoginFields() {
       const isVa = refs.loginSessionSelect.value === 'va';
-      refs.loginPrompt.textContent = isVa ? 'Immetti nome alunno e password VA.' : 'Immetti nome alunno per entrare in Okkupazione.';
+      refs.loginAvatarImg.src = isVa ? 'resources/5a.png' : 'resources/dio.png';
+      refs.loginPrompt.textContent = isVa
+        ? 'Immetti nome alunno e password VA per accedere ai contenuti riservati.'
+        : 'Immetti un nickname visitatore esterno per entrare in Okkupazione.';
+      refs.loginNameLabel.textContent = isVa ? 'Nome alunno' : 'Nickname visitatore esterno';
+      refs.loginNameInput.placeholder = isVa ? 'Nome alunno' : 'Nickname visitatore esterno';
       refs.loginNameLabel.classList.remove('hidden');
-      refs.loginNameInput.classList.remove('hidden');
+      refs.loginNameInput.classList.toggle('hidden', isVa);
+      refs.loginNameSelect.classList.toggle('hidden', !isVa);
       refs.loginPasswordLabel.classList.toggle('hidden', !isVa);
       refs.loginPasswordInput.classList.toggle('hidden', !isVa);
       if (!isVa) refs.loginPasswordInput.value = '';
     }
     function focusLoginPrimary() {
+      if (refs.loginSessionSelect.value === 'va') {
+        refs.loginNameSelect.focus();
+        return;
+      }
       refs.loginNameInput.focus();
     }
     function generateSessionId() {
@@ -1979,6 +2048,8 @@
       const userName = String(sessionData?.userName || '');
       applyUserProfile(userName, sessionType, !!sessionData?.isVa);
       applyMediaCatalog(media);
+      loadCustomUploads(sessionType);
+      applyCustomization();
       saveUserProfile(userName, sessionType);
       loadReportFiles(userName, sessionType);
       state.loggedIn = true;
@@ -1994,15 +2065,16 @@
       syncBackgroundAudio();
       if (options.playSound !== false) playSystemAudio(refs.audioLoginXp);
       updateStatus(`Sessione ${sessionType === 'va' ? 'VA' : 'generica'} avviata per ${userName}.`);
-      if (options.showStory !== false) showStartStory();
+      if (options.showStory !== false && sessionType !== 'va') showStartStory();
     }
     async function submitLogin() {
       const sessionType = refs.loginSessionSelect.value === 'va' ? 'va' : 'generic';
       const isVa = sessionType === 'va';
-      const name = refs.loginNameInput.value.trim().replace(/\s+/g, ' ').slice(0, 24);
+      const rawName = isVa ? refs.loginNameSelect.value : refs.loginNameInput.value;
+      const name = String(rawName || '').trim().replace(/\s+/g, ' ').slice(0, 24);
       const password = refs.loginPasswordInput.value;
       if (!name) {
-        refs.loginError.textContent = isVa ? 'Inserisci il nome alunno per accedere alla sessione VA.' : 'Inserisci il nome alunno per entrare in Okkupazione.';
+        refs.loginError.textContent = isVa ? 'Inserisci il nome alunno per accedere alla sessione VA.' : 'Inserisci un nickname visitatore esterno per entrare in Okkupazione.';
         focusLoginPrimary();
         return;
       }
@@ -2018,7 +2090,7 @@
         if (!response.ok || !payload.session) {
           throw new Error(payload.error || 'Accesso non riuscito');
         }
-        completeLogin(payload.session, payload.media || [], { showStory: true });
+        completeLogin(payload.session, payload.media || [], { showStory: sessionType !== 'va' });
       } catch (error) {
         refs.loginError.textContent = error.message || 'Accesso non riuscito';
       } finally {
@@ -2045,6 +2117,8 @@
       state.sessionId = '';
       state.sessionSubmitted = false;
       applyMediaCatalog([]);
+      loadCustomUploads('generic');
+      applyCustomization();
       clearReportFilesState();
       refs.shell.classList.add('hidden');
       refs.loginScreen.classList.remove('hidden');
@@ -2055,24 +2129,15 @@
       syncBackgroundAudio();
     }
     function positionDesktopIcon() {
-      const desktop = desktopBounds();
+      normalizeDesktopIcons();
       const iconWidth = refs.desktopAppIcon.offsetWidth || 84;
       const iconHeight = refs.desktopAppIcon.offsetHeight || 64;
-      if (typeof state.desktopIcons.app.x !== 'number' || typeof state.desktopIcons.app.y !== 'number') {
-        state.desktopIcons.app.x = desktop.left + 18;
-        state.desktopIcons.app.y = desktop.top + 18;
-      }
       applyDesktopIconPosition('app', state.desktopIcons.app.x, state.desktopIcons.app.y, iconWidth, iconHeight);
       positionDesktopLeaderboardIcon();
       positionDesktopMediaIcon();
       renderReportIcons();
     }
     function positionDesktopLeaderboardIcon() {
-      const desktop = desktopBounds();
-      if (typeof state.desktopIcons.leaderboard.x !== 'number' || typeof state.desktopIcons.leaderboard.y !== 'number') {
-        state.desktopIcons.leaderboard.x = desktop.left + 118;
-        state.desktopIcons.leaderboard.y = desktop.top + 18;
-      }
       const pos = clampDesktopIconPosition(state.desktopIcons.leaderboard.x, state.desktopIcons.leaderboard.y, refs.desktopLeaderboardIcon.offsetWidth || 84, refs.desktopLeaderboardIcon.offsetHeight || 64);
       state.desktopIcons.leaderboard = pos;
       refs.desktopLeaderboardIcon.style.left = `${pos.x}px`;
@@ -2081,11 +2146,6 @@
     function positionDesktopMediaIcon() {
       refs.desktopMediaIcon.classList.toggle('hidden', !hasMediaAccess());
       if (!hasMediaAccess()) return;
-      const desktop = desktopBounds();
-      if (typeof state.desktopIcons.media.x !== 'number' || typeof state.desktopIcons.media.y !== 'number') {
-        state.desktopIcons.media.x = desktop.left + 218;
-        state.desktopIcons.media.y = desktop.top + 18;
-      }
       const pos = clampDesktopIconPosition(state.desktopIcons.media.x, state.desktopIcons.media.y, refs.desktopMediaIcon.offsetWidth || 84, refs.desktopMediaIcon.offsetHeight || 64);
       state.desktopIcons.media = pos;
       refs.desktopMediaIcon.style.left = `${pos.x}px`;
@@ -2202,14 +2262,56 @@
       };
     }
     function snapDesktopIconPosition(x, y, iconWidth = refs.desktopAppIcon.offsetWidth || 84, iconHeight = refs.desktopAppIcon.offsetHeight || 64) {
-      const desktop = desktopBounds();
-      const originX = desktop.left + 18;
-      const originY = desktop.top + 18;
-      const stepX = 100;
-      const stepY = 78;
+      const { x: originX, y: originY } = desktopGridOrigin();
+      const { x: stepX, y: stepY } = desktopGridStep(iconWidth, iconHeight);
       const snappedX = originX + (Math.round((x - originX) / stepX) * stepX);
       const snappedY = originY + (Math.round((y - originY) / stepY) * stepY);
       return clampDesktopIconPosition(snappedX, snappedY, iconWidth, iconHeight);
+    }
+    function nextFreeDesktopSlot(occupied, startColumn, iconWidth = refs.desktopAppIcon.offsetWidth || 84, iconHeight = refs.desktopAppIcon.offsetHeight || 64) {
+      const desktop = desktopBounds();
+      const { x: originX, y: originY } = desktopGridOrigin();
+      const { x: stepX, y: stepY } = desktopGridStep(iconWidth, iconHeight);
+      const maxRows = Math.max(1, Math.floor(Math.max(stepY, desktop.height - 18) / stepY));
+      for (let column = startColumn; column < startColumn + 12; column += 1) {
+        for (let row = 0; row < maxRows; row += 1) {
+          const key = `${column}:${row}`;
+          if (occupied.has(key)) continue;
+          occupied.add(key);
+          return clampDesktopIconPosition(originX + (column * stepX), originY + (row * stepY), iconWidth, iconHeight);
+        }
+      }
+      return clampDesktopIconPosition(originX, originY, iconWidth, iconHeight);
+    }
+    function normalizeDesktopIcons() {
+      const occupied = new Set();
+      const iconWidth = refs.desktopAppIcon.offsetWidth || 84;
+      const iconHeight = refs.desktopAppIcon.offsetHeight || 64;
+      const { x: originX, y: originY } = desktopGridOrigin();
+      const { x: stepX, y: stepY } = desktopGridStep(iconWidth, iconHeight);
+      const descriptors = [
+        { key: 'app', visible: true, defaultColumn: 0, defaultRow: 0 },
+        { key: 'leaderboard', visible: true, defaultColumn: 1, defaultRow: 0 },
+        { key: 'media', visible: hasMediaAccess(), defaultColumn: 2, defaultRow: 0 }
+      ];
+      descriptors.forEach((item) => {
+        if (!item.visible) return;
+        let pos = state.desktopIcons[item.key];
+        if (typeof pos?.x !== 'number' || typeof pos?.y !== 'number') {
+          pos = {
+            x: originX + (item.defaultColumn * stepX),
+            y: originY + (item.defaultRow * stepY)
+          };
+        }
+        const snapped = snapDesktopIconPosition(pos.x, pos.y, iconWidth, iconHeight);
+        const column = Math.round((snapped.x - originX) / stepX);
+        const row = Math.round((snapped.y - originY) / stepY);
+        const gridKey = `${column}:${row}`;
+        state.desktopIcons[item.key] = occupied.has(gridKey)
+          ? nextFreeDesktopSlot(occupied, item.defaultColumn, iconWidth, iconHeight)
+          : (occupied.add(gridKey), snapped);
+      });
+      saveDesktopIconPositions();
     }
     function applyDesktopIconPosition(kind, x, y, iconWidth = refs.desktopAppIcon.offsetWidth || 84, iconHeight = refs.desktopAppIcon.offsetHeight || 64) {
       const pos = clampDesktopIconPosition(x, y, iconWidth, iconHeight);
@@ -2386,11 +2488,13 @@
     }
     function syncTaskbarApp() {
       const visible = !state.windowClosed;
+      const customizationVisible = state.sessionType !== 'va';
+      refs.btnSettings.classList.toggle('hidden', !customizationVisible);
       refs.taskbarApp.classList.toggle('visible', visible);
       refs.taskbarApp.classList.toggle('minimized', visible && state.windowMinimized);
       refs.taskbarApp.setAttribute('aria-hidden', visible ? 'false' : 'true');
       const taskbarLabel = refs.taskbarApp.querySelector('span:last-child');
-      if (taskbarLabel) taskbarLabel.textContent = state.running && state.userName ? `Ciao ${state.userName}` : 'Acciacca prof';
+      if (taskbarLabel) taskbarLabel.textContent = 'Acciacca prof';
       refs.startMenuHeader.textContent = state.loggedIn && state.userName ? `Ciao ${state.userName}` : 'Acciacca prof';
       refs.taskbarExcel.classList.toggle('visible', state.notepad.open);
       refs.taskbarExcel.classList.toggle('minimized', state.notepad.open && state.notepad.minimized);
@@ -2450,6 +2554,11 @@
         meta: 'Lascia un commento per questo contenuto.'
       };
     }
+    function commentVideoLabel(entry) {
+      if ((entry?.target || '') === 'videos') return 'Archivio video';
+      const mediaEntry = state.mediaLibrary.find((item) => item.id === entry?.target);
+      return mediaEntry ? mediaEntry.title : '';
+    }
     function renderCommentsWindow() {
       const targetInfo = commentTargetInfo();
       refs.commentsTargetTitle.textContent = targetInfo.title;
@@ -2466,20 +2575,38 @@
         refs.commentsList.innerHTML = '<div class="comments-empty">Nessun commento ancora. Scrivi il primo.</div>';
         return;
       }
-      refs.commentsList.innerHTML = state.comments.entries.map((entry) => {
+      const isGameComments = state.comments.target === 'game';
+      const groups = {
+        reloaded: state.comments.entries.filter((entry) => entry.sessionType !== 'legacy' && entry.sessionType !== 'legacy_site'),
+        legacy: state.comments.entries.filter((entry) => entry.sessionType === 'legacy' || entry.sessionType === 'legacy_site')
+      };
+      const reloadedLabel = isGameComments ? 'Commenti lasciati nel gioco Reloaded 2026' : 'Commenti reloaded';
+      const originalLabel = isGameComments ? 'Commenti lasciati nel gioco originale del 2008' : 'Commenti dal sito originale';
+      const renderEntries = (entries) => entries.map((entry) => {
         const when = new Date(entry.createdAt || '');
         const createdAt = Number.isNaN(when.getTime()) ? String(entry.createdAt || '') : when.toLocaleString('it-IT');
-        const sessionBadge = entry.sessionType === 'va' ? 'VA' : (entry.sessionType === 'legacy' ? '2008' : 'OKK');
+        const videoLabel = !isGameComments ? commentVideoLabel(entry) : '';
         return `
           <div class="comment-entry">
             <div class="comment-entry-head">
-              <strong>${escapeHtml(entry.userName || 'Anonimo')} · ${sessionBadge}</strong>
+              <strong>${escapeHtml(entry.userName || 'Anonimo')}</strong>
               <span>${escapeHtml(createdAt)}</span>
             </div>
+            ${videoLabel ? `<div class="comment-entry-meta"><span>Video: ${escapeHtml(videoLabel)}</span></div>` : ''}
             <div class="comment-entry-body">${escapeHtml(entry.message || '')}</div>
           </div>
         `;
       }).join('');
+      const chunks = [];
+      if (groups.reloaded.length) {
+        chunks.push(`<div class="comment-group-title">${reloadedLabel}</div>`);
+        chunks.push(renderEntries(groups.reloaded));
+      }
+      if (groups.legacy.length) {
+        chunks.push(`<div class="comment-group-title">${originalLabel}</div>`);
+        chunks.push(renderEntries(groups.legacy));
+      }
+      refs.commentsList.innerHTML = chunks.join('');
     }
     async function loadComments(target = state.comments.target) {
       state.comments.target = target;
@@ -2508,6 +2635,8 @@
         refs.mediaPlayer.removeAttribute('src');
         refs.mediaPlayer.load();
         refs.mediaPlayer.classList.add('hidden');
+        refs.mediaImage.removeAttribute('src');
+        refs.mediaImage.classList.add('hidden');
         refs.mediaPlaceholder.textContent = 'Accedi alla sessione VA per sbloccare il video riservato.';
         refs.mediaPlaceholder.classList.remove('hidden');
         return;
@@ -2519,11 +2648,18 @@
       refs.mediaPlayer.removeAttribute('src');
       refs.mediaPlayer.load();
       refs.mediaPlayer.classList.add('hidden');
+      refs.mediaImage.removeAttribute('src');
+      refs.mediaImage.classList.add('hidden');
       refs.mediaPlaceholder.classList.remove('hidden');
       if (entry.kind === 'video') {
         refs.mediaPlayer.src = entry.url;
         refs.mediaPlayer.load();
         refs.mediaPlayer.classList.remove('hidden');
+        refs.mediaPlaceholder.classList.add('hidden');
+      } else if (entry.kind === 'image') {
+        refs.mediaImage.src = entry.url;
+        refs.mediaImage.alt = entry.title;
+        refs.mediaImage.classList.remove('hidden');
         refs.mediaPlaceholder.classList.add('hidden');
       } else {
         refs.mediaPlaceholder.textContent = 'Questo contenuto non e disponibile in streaming in questa sessione.';
@@ -3094,19 +3230,26 @@
     function selectedLevel() { return 1; }
 
     function customizationKey(kind, value) { return `${kind}:${value}`; }
-    function defaultCustomizationAsset(kind, value) { return DEFAULT_CUSTOMIZATION_ASSETS[kind]?.[value] || DEFAULT_CUSTOMIZATION_ASSETS.cattivo[1]; }
+    function sessionDefaultAssets() {
+      return state.sessionType === 'va' ? DEFAULT_CUSTOMIZATION_ASSETS.va : DEFAULT_CUSTOMIZATION_ASSETS.generic;
+    }
+    function defaultCustomizationAsset(kind, value) {
+      const defaults = sessionDefaultAssets();
+      return defaults[kind]?.[value] || defaults.cattivo[1];
+    }
     function customizationAsset(kind, value) { return state.customUploads[customizationKey(kind, value)] || defaultCustomizationAsset(kind, value); }
-    function loadCustomUploads() {
+    function loadCustomUploads(sessionType = state.sessionType) {
+      state.customUploads = {};
       try {
-        const raw = window.localStorage.getItem(CUSTOM_UPLOADS_STORAGE_KEY);
+        const raw = window.localStorage.getItem(customUploadsStorageKeyFor(sessionType));
         if (!raw) return;
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === 'object') state.customUploads = parsed;
       } catch (_) {}
     }
-    function saveCustomUploads() {
+    function saveCustomUploads(sessionType = state.sessionType) {
       try {
-        window.localStorage.setItem(CUSTOM_UPLOADS_STORAGE_KEY, JSON.stringify(state.customUploads));
+        window.localStorage.setItem(customUploadsStorageKeyFor(sessionType), JSON.stringify(state.customUploads));
       } catch (_) {}
     }
     function refreshCustomizationChoices() {
@@ -3138,7 +3281,7 @@
     function applyCustomization() { refs.profcatt.src = spriteSource('cattivo'); refs.profbuon.src = spriteSource('buono'); refs.bidella.src = spriteSource('bidella'); refs.perlaHint.querySelector('img').src = customizationAsset('coach', 1); refs.coachDockImg.src = customizationAsset('coach', 1); refreshCustomizationPreview(); }
     function duplicateCustomizationWarningMessage() {
       const slots = [];
-      Object.entries(DEFAULT_CUSTOMIZATION_ASSETS).forEach(([kind, values]) => {
+      Object.entries(sessionDefaultAssets()).forEach(([kind, values]) => {
         Object.keys(values).forEach((value) => {
           const numericValue = Number(value);
           slots.push({ key: customizationKey(kind, numericValue), asset: customizationAsset(kind, numericValue) });
@@ -3828,7 +3971,7 @@
       const isLastPage = state.storyPage === START_MENU_STORY_PAGES.length - 1;
       refs.resultTitle.textContent = page.title;
       refs.resultSubtitle.textContent = page.subtitle;
-      refs.resultBody.textContent = page.body;
+      refs.resultBody.innerHTML = page.body;
       refs.dialogResult.className = `poster story-scroll story-page-${state.storyPage}`;
       refs.storyPrev.classList.toggle('hidden', state.storyPage === 0);
       refs.storyNext.classList.toggle('hidden', isLastPage);
@@ -4148,7 +4291,11 @@
 
     refs.btnStart.addEventListener('click', toggleStart);
     refs.btnPause.addEventListener('click', togglePause);
-    refs.btnSettings.addEventListener('click', () => { openModal('customization'); updateStatus('Personalizzazioni aperte.'); });
+    refs.btnSettings.addEventListener('click', () => {
+      if (state.sessionType === 'va') return;
+      openModal('customization');
+      updateStatus('Personalizzazioni aperte.');
+    });
     refs.btnComments.addEventListener('click', () => { openCommentsWindow('game'); });
     refs.perlaHint.addEventListener('mousedown', (event) => { event.stopPropagation(); showPentathlonRule(); });
     refs.coachDock.addEventListener('mousedown', (event) => {
@@ -4270,9 +4417,15 @@
     refs.loginSessionSelect.addEventListener('change', () => {
       refs.loginError.textContent = '';
       syncLoginFields();
+      focusLoginPrimary();
     });
     refs.loginSubmit.addEventListener('click', submitLogin);
     refs.loginNameInput.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      event.preventDefault();
+      submitLogin();
+    });
+    refs.loginNameSelect.addEventListener('keydown', (event) => {
       if (event.key !== 'Enter') return;
       event.preventDefault();
       submitLogin();
@@ -4366,7 +4519,7 @@
       } catch (_) {}
     }
 
-    loadUserProfile(); loadDesktopIconPositions(); syncLoginFields(); loadCustomUploads(); applyCustomization(); moveSpritesOffstage(); clearPentathlonState(); syncLevelRadios(); syncScoreboard(); applyWindowStack(); syncTaskbarApp(); startTaskbarClock(); syncBackgroundAudio(); resizeForm(); focusLoginPrimary(); fetchLeaderboard().catch(() => {}); restoreServerSession(); window.addEventListener('resize', resizeForm); new ResizeObserver(resizeForm).observe(refs.viewport);
+    loadUserProfile(); loadDesktopIconPositions(); syncLoginFields(); loadVaStudents().finally(focusLoginPrimary); loadCustomUploads('generic'); applyCustomization(); moveSpritesOffstage(); clearPentathlonState(); syncLevelRadios(); syncScoreboard(); applyWindowStack(); syncTaskbarApp(); startTaskbarClock(); syncBackgroundAudio(); resizeForm(); fetchLeaderboard().catch(() => {}); restoreServerSession(); window.addEventListener('resize', resizeForm); new ResizeObserver(resizeForm).observe(refs.viewport);
   </script>
 </body>
 </html>

@@ -7,6 +7,7 @@ return [
     'media' => [
         'public' => dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'public',
         'va' => dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'va',
+        'shared' => dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'media',
     ],
     'media_map' => [
         'cena1' => ['scope' => 'public', 'file' => 'cena_prima_parte.mp4', 'mime' => 'video/mp4'],
@@ -18,5 +19,6 @@ return [
         'lisbona3' => ['scope' => 'public', 'file' => 'gita_lisbona_terzo_tempo.mp4', 'mime' => 'video/mp4'],
         'lisbona4' => ['scope' => 'public', 'file' => 'gita_lisbona_quarto_tempo.mp4', 'mime' => 'video/mp4'],
         'va0708' => ['scope' => 'va', 'file' => 'va_galilei_perugia_0708.mp4', 'mime' => 'video/mp4'],
+        'cena2026foto' => ['scope' => 'shared', 'file' => 'photo_2026-03-11_15-26-29.jpg', 'mime' => 'image/jpeg'],
     ],
 ];

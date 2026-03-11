@@ -92,17 +92,18 @@ function media_catalog_for_session(string $sessionType, bool $includePrivate): a
         return [];
     }
     $items = [
-        ['id' => 'cena1', 'title' => 'Cena coi prof - Parte 1', 'subtitle' => 'Compito in classe', 'kind' => 'video', 'note' => 'Streaming locale MP4.'],
-        ['id' => 'cena2', 'title' => 'Cena coi prof - Parte 2', 'subtitle' => 'Indovina cosa ho in testa', 'kind' => 'video', 'note' => 'Streaming locale MP4.'],
-        ['id' => 'cento_giorni', 'title' => '100 Giorni 15 Marzo 2008 - Roma', 'subtitle' => 'Archivio principale', 'kind' => 'video', 'note' => 'Video locale estratto dall’archivio originale.'],
-        ['id' => 'coppa', 'title' => 'La coppa si smonta', 'subtitle' => 'Corsa campestre', 'kind' => 'video', 'note' => 'Conversione locale da WMV a MP4.'],
-        ['id' => 'lisbona1', 'title' => 'Gita a Lisbona - Primo tempo', 'subtitle' => '2008', 'kind' => 'video', 'note' => 'Conversione locale da WMV a MP4.'],
-        ['id' => 'lisbona2', 'title' => 'Gita a Lisbona - Secondo tempo', 'subtitle' => '2008', 'kind' => 'video', 'note' => 'Conversione locale da WMV a MP4.'],
-        ['id' => 'lisbona3', 'title' => 'Gita a Lisbona - Terzo tempo', 'subtitle' => '2008', 'kind' => 'video', 'note' => 'Conversione locale da WMV a MP4.'],
-        ['id' => 'lisbona4', 'title' => 'Gita a Lisbona - Quarto tempo', 'subtitle' => 'Incompleto', 'kind' => 'video', 'note' => 'Conversione locale da WMV a MP4.'],
+        ['id' => 'coppa', 'title' => 'La coppa si smonta', 'subtitle' => '19 febbraio 2008 · Corsa campestre', 'kind' => 'video', 'note' => 'Registrato e montato interamente in classe con il Nokia N70.'],
+        ['id' => 'cento_giorni', 'title' => '100 Giorni 15 Marzo 2008 - Roma', 'subtitle' => '11-15 marzo 2008 · Archivio principale', 'kind' => 'video', 'note' => 'Video locale estratto dall’archivio originale.'],
+        ['id' => 'lisbona1', 'title' => 'Gita a Lisbona - Primo tempo', 'subtitle' => 'Dal 14 aprile 2008', 'kind' => 'video', 'note' => 'Conversione locale da WMV a MP4.'],
+        ['id' => 'lisbona2', 'title' => 'Gita a Lisbona - Secondo tempo', 'subtitle' => 'Dal 14 aprile 2008', 'kind' => 'video', 'note' => 'Conversione locale da WMV a MP4.'],
+        ['id' => 'lisbona3', 'title' => 'Gita a Lisbona - Terzo tempo', 'subtitle' => 'Dal 14 aprile 2008', 'kind' => 'video', 'note' => 'Conversione locale da WMV a MP4.'],
+        ['id' => 'lisbona4', 'title' => 'Gita a Lisbona - Quarto tempo', 'subtitle' => 'Dal 14 aprile 2008 · Incompleto', 'kind' => 'video', 'note' => 'Conversione locale da WMV a MP4.'],
+        ['id' => 'cena1', 'title' => 'Cena coi prof - Parte 1', 'subtitle' => '10 giugno 2008 · Compito in classe', 'kind' => 'video', 'note' => 'Streaming locale MP4.'],
+        ['id' => 'cena2', 'title' => 'Cena coi prof - Parte 2', 'subtitle' => '10 giugno 2008 · Indovina cosa ho in testa', 'kind' => 'video', 'note' => 'Streaming locale MP4.'],
+        ['id' => 'cena2026foto', 'title' => 'Cena coi prof 2026', 'subtitle' => '27 febbraio 2026 · Foto ricordo', 'kind' => 'image', 'note' => 'Scatto della cena coi prof aggiunto nell’archivio memorial.'],
     ];
     if ($includePrivate) {
-        $items[] = ['id' => 'va0708', 'title' => 'V A 2007/2008', 'subtitle' => 'Sessione riservata', 'kind' => 'video', 'note' => 'Contenuto disponibile solo dopo accesso VA.'];
+        array_unshift($items, ['id' => 'va0708', 'title' => 'V A 2007/2008', 'subtitle' => 'Settembre 2007 - giugno 2008', 'kind' => 'video', 'note' => 'Archivio principale della classe VA 2007/2008.']);
     }
     return $items;
 }

@@ -73,6 +73,33 @@ function historic_game_comments(): array
     ];
 }
 
+function historic_media_comments(): array
+{
+    $baseComments = [
+        ['slug' => 'andriy', 'userName' => 'Andriy', 'createdAt' => '2008-03-26T12:00:00+01:00', 'message' => 'sei il prossimo candidato al premio oscar come miglior regista.... ok ho detto la mia cazzata!'],
+        ['slug' => 'jul', 'userName' => 'Jul', 'createdAt' => '2008-03-26T12:00:00+01:00', 'message' => 'Il moscio è il più grande regista sceneggiatore montatore e musicologo del mondo!!!!!'],
+        ['slug' => 'marco-1', 'userName' => 'Marco', 'createdAt' => '2008-03-27T12:00:00+01:00', 'message' => 'Meno male che jacopo non ha niente da fare, sennò come avremmo potuto vedere il nostro film dei 100 giorni?'],
+        ['slug' => 'matteo', 'userName' => 'Matteo', 'createdAt' => '2008-03-27T12:00:00+01:00', 'message' => "Auhahuahuhahua spettacolare veramente spettacolare, veramente bravo ja !!! Ora tocca fa un film come uqello dell'anno XD per chiudere inbellezza !!!"],
+        ['slug' => 'arianna', 'userName' => 'Arianna', 'createdAt' => '2008-03-29T12:00:00+01:00', 'message' => 'Bravo moccichinooooo.. tu sei che sei un genio u.ù ma se non ti metti a studiare storia e filosofia ti picchiooooo!!!'],
+        ['slug' => 'gabrjiskijineoq', 'userName' => 'Gabrjiskijineoq', 'createdAt' => '2008-03-30T12:00:00+01:00', 'message' => 'Che talento moscio! Bravo per il montaggio ... ma soprattutto per le musichette dei cartoni'],
+        ['slug' => 'nico', 'userName' => 'nico', 'createdAt' => '2008-04-02T12:00:00+02:00', 'message' => 'nonostante nn abbia potuto partecipare venedo a mancare un grande attoreXD...bellissimo video moscio..direi perfetto...'],
+        ['slug' => 'sunday', 'userName' => 'Sunday', 'createdAt' => '2008-05-05T12:00:00+02:00', 'message' => 'bello moscio...solo un piccolo particolare: a te non ti si vede mai in faccia. e poi tutte ste valige per una sola notte?!?!?!'],
+        ['slug' => 'marco-2', 'userName' => 'Marco', 'createdAt' => '2018-03-09T12:00:00+01:00', 'message' => 'porca troia vacca schifa moscio, dieci merda di anni sono già passati'],
+        ['slug' => 'richi', 'userName' => 'Richi', 'createdAt' => '2026-02-15T12:00:00+01:00', 'message' => 'Cazzo i capelli...'],
+    ];
+    return array_map(
+        static fn(array $comment): array => [
+            'id' => sprintf('historic-site-videos-%s', $comment['slug']),
+            'target' => 'videos',
+            'userName' => $comment['userName'],
+            'sessionType' => 'legacy_site',
+            'message' => $comment['message'],
+            'createdAt' => $comment['createdAt'],
+        ],
+        $baseComments
+    );
+}
+
 function ensure_comments_store(string $dataDir, string $commentsFile): void
 {
     if (!is_dir($dataDir)) {
@@ -107,6 +134,9 @@ function with_historic_seed(array $entries): array
         }
     }
     foreach (historic_game_comments() as $entry) {
+        $byId[$entry['id']] = $byId[$entry['id']] ?? $entry;
+    }
+    foreach (historic_media_comments() as $entry) {
         $byId[$entry['id']] = $byId[$entry['id']] ?? $entry;
     }
     return array_values($byId);
@@ -155,6 +185,29 @@ function require_comment_target(array $authState, string $target): string
     return $normalized;
 }
 
+function video_comment_targets(array $authState): array
+{
+    return array_values(array_filter(
+        allowed_comment_targets($authState),
+        static fn(string $target): bool => $target !== 'game'
+    ));
+}
+
+function comments_for_target(array $entries, string $target, array $authState): array
+{
+    if ($target === 'game') {
+        return dedupe_comments(array_values(array_filter(
+            $entries,
+            static fn(array $entry): bool => ($entry['target'] ?? '') === 'game'
+        )));
+    }
+    $videoTargets = video_comment_targets($authState);
+    return dedupe_comments(array_values(array_filter(
+        $entries,
+        static fn(array $entry): bool => ($entry['target'] ?? '') === 'videos' || in_array((string)($entry['target'] ?? ''), $videoTargets, true)
+    )));
+}
+
 function sort_comments(array $entries): array
 {
     usort($entries, static function (array $a, array $b): int {
@@ -163,14 +216,26 @@ function sort_comments(array $entries): array
     return $entries;
 }
 
+function dedupe_comments(array $entries): array
+{
+    $unique = [];
+    foreach ($entries as $entry) {
+        $key = implode('|', [
+            (string)($entry['sessionType'] ?? ''),
+            mb_strtolower(trim((string)($entry['userName'] ?? ''))),
+            trim((string)($entry['message'] ?? '')),
+            (string)($entry['createdAt'] ?? ''),
+        ]);
+        $unique[$key] = $entry;
+    }
+    return array_values($unique);
+}
+
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 if ($method === 'GET') {
     $target = require_comment_target($authState, (string)($_GET['target'] ?? ''));
-    $entries = array_values(array_filter(
-        with_historic_seed(read_comments($commentsFile)),
-        static fn(array $entry): bool => ($entry['target'] ?? '') === $target
-    ));
+    $entries = comments_for_target(with_historic_seed(read_comments($commentsFile)), $target, $authState);
     send_json(200, ['entries' => array_slice(sort_comments($entries), 0, 100)]);
 }
 
@@ -201,7 +266,7 @@ try {
         $entries = array_slice($entries, -5000);
     }
     write_comments($commentsFile, $entries);
-    $filtered = array_values(array_filter($entries, static fn(array $comment): bool => ($comment['target'] ?? '') === $target));
+    $filtered = comments_for_target($entries, $target, $authState);
     send_json(200, ['ok' => true, 'entry' => $entry, 'entries' => array_slice(sort_comments($filtered), 0, 100)]);
 } catch (Throwable $error) {
     send_json(500, ['error' => $error->getMessage()]);
