@@ -1,82 +1,162 @@
-# Acciacca Prof Reloaded
+# GalileoGalileiVA2008Memorial
 
-Acciacca Prof Reloaded e' il ritorno di un gioco nato in ambiente scolastico nel 2007 e scritto originariamente in Delphi per Windows XP.
+Questo repository non e' soltanto un progetto web. E' un memoriale digitale.
 
-Questo repository contiene:
-- il porting iOS in SwiftUI/SpriteKit
-- la versione web giocabile ispirata alla `Form1` originale Delphi
-- asset, note e materiali di supporto usati per ricostruire grafica, coordinate, layering e gameplay
-- API PHP locali per sessioni protette, classifica e streaming video
+Dentro ci sono i resti vivi di un'epoca precisa: la VA 2007/2008 del Liceo Scientifico Galileo Galilei. Ci sono il gioco, i commenti, i video, i suoni, i soprannomi, le schermate, i rituali da laboratorio informatico, le circolari, le bidelle, i prof buoni, i prof cattivi, l'ironia da classe chiusa in aula troppe ore e abbastanza sveglia da trasformare tutto in leggenda.
 
-## Cos'e'
+Non e' un archivio freddo. E' una ricostruzione affettiva e tecnica di un piccolo mondo scolastico che, invece di svanire, e' stato rimesso in piedi pezzo per pezzo.
 
-Il gioco riprende la logica di "schiaccia la talpa", ma ambientata in un'aula scolastica:
-- dai banchi compaiono i prof
-- alcuni vanno colpiti, altri no
-- gli errori abbassano il punteggio e il voto
-- ai tre livelli classici si aggiunge il Pentathlon con 5 prove speciali
+## La storia
 
-L'obiettivo di questo repo non e' solo "rifare il gioco", ma conservarne anche atmosfera, coordinate, grafiche, suoni e UI il piu fedelmente possibile.
+Ogni classe si porta dietro un lessico suo: battute, episodi, nomi storpiati, piccole ossessioni, file passati di mano, foto venute male, storie che col tempo diventano piu grandi del fatto da cui erano partite.
+
+La VA del Galileo Galilei del 2007/2008 aveva esattamente questo.
+
+Lezioni, verifiche, recuperi, interrogazioni, laboratori, gite, professori ingestibili, bidelle fuori tempo massimo, circolari comparse nel momento peggiore, forum, CD masterizzati, video montati in casa, giochi nati per scherzo e diventati parte dell'identita di classe. Niente di eroico, semplicemente il modo in cui una classe vera finisce per costruirsi una memoria comune.
+
+Questo progetto nasce per ricordare proprio questo: non una scuola astratta, ma una compagnia di persone che ha passato anni insieme e che, nel frattempo, ha lasciato dietro di sé un piccolo archivio di oggetti, storie e riferimenti condivisi.
+
+In quel mondo nasce anche **Acciacca Prof**, gioco scritto originariamente in Delphi per Windows XP, diventato uno dei simboli di quell'immaginario. Ma oggi il progetto e' piu grande del solo gioco: Acciacca Prof e' uno dei reperti principali di un memoriale piu ampio.
+
+## Cos'e' oggi
+
+`GalileoGalileiVA2008Memorial` e' una versione web che raccoglie e rende navigabili:
+
+- il gioco storico **Acciacca Prof**
+- i commenti storici del gioco e del sito
+- l'archivio video della classe
+- una shell grafica ispirata al desktop Windows XP
+- classifiche, sessioni e piccoli strumenti di amministrazione
+- materiali e riferimenti usati per ricostruire il comportamento originale
+
+L'obiettivo non e' solo "far funzionare qualcosa", ma ricreare atmosfera, tono, ritmo e memoria.
+
+## Cosa contiene il progetto
+
+- una landing pubblica che introduce il memoriale
+- una versione web giocabile di **Acciacca Prof**
+- un archivio video con contenuti pubblici e contenuti riservati alla sessione `VA`
+- commenti distinti tra storici e nuovi
+- leaderboard persistente lato PHP
+- un `godpanel` admin per gestire commenti e leaderboard
+- asset grafici e sonori recuperati o riallineati al materiale storico
+
+La parte iOS e' stata separata in un repository dedicato:
+
+- [AcciaccaProfIOS](https://github.com/jacmos3/AcciaccaProfIOS)
 
 ## Screenshot
 
-### Web desktop shell
+### Desktop shell
 ![Desktop XP con finestra di gioco](web/resources/winxp.jpg)
 
 ### Grafica originale
 ![Classe originale Delphi](web/resources/original.PNG)
 
-### Landing / storia
-![Landing page Reloaded](web/resources/desktop.png)
+### Landing memoriale
+![Landing page memoriale](web/resources/desktop.png)
 
-### Versione iPhone
-![Acciacca Prof su iPhone](web/resources/now.png)
+### Vista progetto
+![Archivio memoriale](web/resources/now.png)
 
-## Storia
+## Come funziona
 
-Nel 2007 non esistevano ancora le app come le intendiamo oggi. In quel contesto nacque Acciacca Prof: un piccolo gioco scritto in Delphi per Windows XP, con spirito goliardico da ricreazione scolastica, diffuso tra compagni di scuola e sul forum del liceo.
+Il progetto e' composto da una parte frontend statica e da una piccola parte backend PHP.
 
-Nel 2026 il progetto e' stato riportato in vita con un doppio obiettivo:
-- ricostruire il gioco su iPhone
-- creare anche una versione web fedele alla grafica e al feeling originale
+### Frontend
 
-Nel repository trovi quindi sia il porting moderno, sia la parte "museale": asset, copie del layout, note sul Pentathlon, coordinate e riferimenti al comportamento storico.
+La UI principale vive nella cartella `web/`:
 
-## Funzionalita principali
+- `web/index.html`
+  Pagina pubblica del memoriale, usata come presentazione del progetto.
 
-- Gameplay classico a tre livelli
-- Prof cattivi, prof buoni e bidella
-- Voto finale e punteggio
-- Personalizzazioni personaggi
-- Pentathlon completo a 5 prove
-- Desktop shell stile Windows XP nella versione web
-- Riposizionamento e layering derivati dai riferimenti Delphi/iOS
+- `web/play.html`
+  Cuore dell'esperienza: shell stile Windows XP, gioco, classifica, archivio video, commenti e finestre desktop.
+
+- `web/resources/`
+  Asset grafici, audio, wallpaper, icone, cursori e materiali visivi.
+
+- `web/app/`
+  Pagine di supporto e privacy.
+
+### Backend
+
+Gli endpoint PHP vivono in `web/api/` e gestiscono:
+
+- login e logout delle sessioni
+- sessione `Generica` e sessione `VA`
+- leaderboard persistente
+- archivio commenti
+- streaming media locale
+- pannello admin `godpanel`
+
+### Dati locali
+
+I dati runtime stanno principalmente qui:
+
+- `data/comments.json`
+- `data/leaderboard.json`
+
+Questi file contengono i dati nuovi salvati localmente. I commenti legacy storici invece vengono anche reiniettati via codice, cosi' restano separati logicamente dalle nuove aggiunte.
+
+### Media
+
+I video non vengono salvati dentro `web/`, ma in:
+
+```text
+media/public/
+media/va/
+```
+
+e sono esposti tramite gli endpoint PHP, cosi' i contenuti riservati non diventano file statici accessibili direttamente.
+
+## Gameplay di Acciacca Prof
+
+All'interno del memoriale, **Acciacca Prof** resta perfettamente centrale.
+
+La logica e' quella storica:
+
+- dai banchi compaiono i professori
+- alcuni vanno colpiti
+- altri non vanno toccati
+- gli errori abbassano punti e voto
+- la bidella puo' cambiare il destino della partita
+- il Pentathlon aggiunge cinque prove speciali
+
+La versione web cerca di essere fedele nel feeling, ma non e' una semplice copia piatta: e' una ricostruzione ragionata, usando riferimenti Delphi, materiali storici e il porting iOS come appoggio per la logica moderna.
+
+## Stato attuale
+
+La versione web include:
+
+- shell desktop XP
+- finestra di gioco trascinabile
+- gameplay classico
+- Pentathlon completo integrato nella griglia
+- login con sessione `Generica` e `VA`
+- leaderboard persistente
+- archivio video
+- commenti storici e nuovi
+- `godpanel` per gestione admin
 
 ## Struttura del repository
 
 ```text
 .
-├── ios/
-│   ├── AcciaccaProf/
-│   │   ├── AcciaccaProf/          # codice app iOS
-│   │   └── Resources/             # asset e risorse Xcode
-│   ├── PENTATHLON_NOTES.md        # note sulle prove del Pentathlon
-│   └── README.md                  # note specifiche sul porting iOS
 ├── web/
-    ├── index.html                 # landing / pagina pubblica
-    ├── play.html                  # gioco web
-    ├── api/                       # login/session/logout, leaderboard, streaming media
-    ├── resources/                 # asset grafici, audio, cursori, wallpaper
-    └── app/                       # privacy policy / supporto
-├── data/                         # classifica JSON locale
-└── media/                        # video locali pubblici e riservati (fuori Git)
+│   ├── index.html
+│   ├── play.html
+│   ├── api/
+│   ├── resources/
+│   └── app/
+├── data/
+├── media/
+└── README.md
 ```
 
 ## Avvio rapido
 
-### Web
-
-La versione web richiede PHP, perche' usa endpoint locali per sessioni, classifica e streaming video.
+Serve PHP, perche' sessioni, leaderboard, commenti e streaming media passano dagli endpoint locali.
 
 Avvio consigliato dalla root del repository:
 
@@ -90,79 +170,48 @@ Poi apri:
 http://127.0.0.1:4183/play.html
 ```
 
-Configurazione della sessione `VA`:
+## Configurazione
+
+Per configurare la sessione `VA` e altre password locali:
 
 ```text
 web/api/config.local.php
 ```
 
-Parti da:
+Parti dal file esempio:
 
 ```text
 web/api/config.local.php.example
 ```
 
-I video non sono versionati in Git. Vanno messi qui:
-
-```text
-media/public/
-media/va/
-```
-
-e vengono serviti tramite:
-
-```text
-web/api/media.php?id=...
-```
-
-In questo modo il video riservato `VA` resta protetto dalla sessione PHP e non e' esposto come file statico sotto `web/`.
-
-### iOS
-
-Il porting iOS si trova in `ios/AcciaccaProf/`.
-
-Se apri il progetto in Xcode:
-- verifica che le risorse siano nel bundle
-- controlla i target membership degli asset audio/grafici
-- usa `ios/AcciaccaProf/README.md` per le note specifiche del porting
-
-## Stato del progetto
-
-### Web
-
-La versione web include:
-- shell desktop XP
-- finestra di gioco trascinabile
-- gameplay classico
-- Pentathlon integrato sulla griglia di gioco
-- menu Start, icona desktop e onboarding narrativo a pagine
-- login a sessioni `Generica` / `VA`
-- classifica persistente lato PHP
-- archivio video locale con controllo accessi sulla sessione `VA`
-
-### iOS
-
-La versione iOS e' il riferimento principale per la logica moderna:
-- SpriteKit per scena e timing
-- Pentathlon completo
-- copy di onboarding e supporto alla personalizzazione
-
-La versione Reloaded non e' mai stata pubblicata su App Store: Apple non l'ha approvata richiamando la linea guida `1.1.1`, sostenendo che il gioco incoraggerebbe il danno fisico e umilierebbe la categoria degli insegnanti. Questa lettura non corrisponde allo spirito con cui il progetto e' nato, cioe' come giochino ironico e goliardico da contesto scolastico. Resta comunque possibile scaricare questo repository, aprire il progetto iOS in Xcode e installare l'app sul proprio dispositivo in autonomia.
-
 ## Note di fedelta
 
-Durante il porting web sono stati usati come riferimenti:
-- coordinate e layering Delphi
-- logiche di gioco iOS
-- asset originali dell'aula e dei personaggi
+Durante la ricostruzione del memoriale e del gioco sono stati usati come riferimenti:
 
-Questo significa che alcune parti non sono "reinventate per il web", ma ricostruite per assomigliare il piu possibile al comportamento storico o al porting iOS gia esistente.
+- coordinate e layering Delphi
+- asset originali dell'aula e dei personaggi
+- copy storico dei commenti
+- materiali del sito originale
+- porting iOS per alcune logiche moderne
+
+Quindi il progetto non prova a "modernizzare tutto". Prova a ricordare bene.
+
+## Perche' esiste
+
+Perche' certi progetti non servono a lanciare una startup.
+
+Servono a non perdere le tracce.
+
+Servono a ricordare che una classe non e' fatta solo di registri, compiti e voti, ma anche di linguaggi interni, scherzi, file dimenticati, materiali improbabili e memorie che a distanza di anni continuano ad avere senso solo per chi c'era.
+
+Questo repository prova a tenere insieme tutto questo nel modo piu ordinato possibile.
 
 ## Link utili
 
-- Sito / landing web: `web/index.html`
-- Gioco web: `web/play.html`
+- Landing del memoriale: `web/index.html`
+- Gioco / shell: `web/play.html`
+- Repo iOS separato: [AcciaccaProfIOS](https://github.com/jacmos3/AcciaccaProfIOS)
 
 ## Licenza / note
 
-Questo repository contiene materiale storico, porting moderni e asset del progetto Acciacca Prof Reloaded. Se vuoi pubblicarlo o riutilizzarlo in un contesto diverso, conviene chiarire prima licenza, provenienza degli asset e modalita di distribuzione.
+Questo repository contiene materiale storico, porting moderni, asset, testi e ricostruzioni legati alla memoria della classe. Prima di riutilizzare o redistribuire i contenuti, conviene chiarire bene provenienza degli asset, diritti e contesto.
