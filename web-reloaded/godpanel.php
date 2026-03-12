@@ -342,6 +342,25 @@
               </table>
             </div>
           </section>
+
+          <section class="panel list-panel">
+            <div class="toolbar">
+              <h3 style="margin-right:auto;">Login</h3>
+            </div>
+            <div class="list-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Sessione</th>
+                    <th>Nome</th>
+                    <th>IP</th>
+                  </tr>
+                </thead>
+                <tbody id="loginLogBody"></tbody>
+              </table>
+            </div>
+          </section>
         </div>
       </div>
     </div>
@@ -352,6 +371,7 @@
       admin: false,
       comments: [],
       leaderboard: [],
+      loginLog: [],
       activeCommentId: '',
       activeScoreId: ''
     };
@@ -369,6 +389,7 @@
       scoresFilter: document.getElementById('scoresFilter'),
       commentsBody: document.getElementById('commentsBody'),
       scoresBody: document.getElementById('scoresBody'),
+      loginLogBody: document.getElementById('loginLogBody'),
       commentId: document.getElementById('commentId'),
       commentTarget: document.getElementById('commentTarget'),
       commentUser: document.getElementById('commentUser'),
@@ -462,6 +483,17 @@
       `).join('') || '<tr><td colspan="6">Nessun punteggio.</td></tr>';
     }
 
+    function renderLoginLog() {
+      refs.loginLogBody.innerHTML = state.loginLog.map((entry) => `
+        <tr>
+          <td>${escapeHtml(entry.date || '')}</td>
+          <td>${escapeHtml(entry.session || '')}</td>
+          <td>${escapeHtml(entry.name || '')}</td>
+          <td>${escapeHtml(entry.ip || '')}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="4">Nessun login registrato.</td></tr>';
+    }
+
     function fillComment(entry = {}) {
       state.activeCommentId = entry.id || '';
       refs.commentId.value = entry.id || '';
@@ -491,8 +523,10 @@
       const payload = await api('dashboard', {}, 'GET');
       state.comments = Array.isArray(payload.comments) ? payload.comments : [];
       state.leaderboard = Array.isArray(payload.leaderboard) ? payload.leaderboard : [];
+      state.loginLog = Array.isArray(payload.loginLog) ? payload.loginLog : [];
       renderComments();
       renderScores();
+      renderLoginLog();
       if (state.activeCommentId) {
         const comment = state.comments.find((entry) => entry.id === state.activeCommentId);
         if (comment) fillComment(comment);

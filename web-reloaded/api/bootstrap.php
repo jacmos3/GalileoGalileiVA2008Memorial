@@ -6,6 +6,11 @@ function app_root(): string
     return dirname(__DIR__, 2);
 }
 
+function app_data_file(string $filename): string
+{
+    return app_root() . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . ltrim($filename, DIRECTORY_SEPARATOR);
+}
+
 function app_config(): array
 {
     static $config = null;
@@ -59,6 +64,69 @@ function request_json(): array
 function truncate_text(mixed $value, int $maxLength): string
 {
     return mb_substr(trim((string)($value ?? '')), 0, $maxLength);
+}
+
+function ensure_json_store(string $path): void
+{
+    $dir = dirname($path);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0775, true);
+    }
+    if (!is_file($path)) {
+        file_put_contents($path, "[]\n", LOCK_EX);
+    }
+}
+
+function read_json_store(string $path): array
+{
+    ensure_json_store($path);
+    $decoded = json_decode((string)file_get_contents($path), true);
+    return is_array($decoded) ? $decoded : [];
+}
+
+function write_json_store(string $path, array $entries): void
+{
+    ensure_json_store($path);
+    file_put_contents(
+        $path,
+        json_encode(array_values($entries), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL,
+        LOCK_EX
+    );
+}
+
+function request_ip(): string
+{
+    $candidates = [
+        $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '',
+        $_SERVER['HTTP_CLIENT_IP'] ?? '',
+        $_SERVER['REMOTE_ADDR'] ?? '',
+    ];
+    foreach ($candidates as $candidate) {
+        if (!is_string($candidate) || trim($candidate) === '') {
+            continue;
+        }
+        $ip = trim(explode(',', $candidate)[0]);
+        if ($ip !== '') {
+            return $ip;
+        }
+    }
+    return 'unknown';
+}
+
+function append_auth_log(string $sessionType, string $name, string $event = 'login'): void
+{
+    $normalizedSession = trim($event) === 'logout'
+        ? sprintf('logout:%s', $sessionType !== '' ? $sessionType : 'unknown')
+        : ($sessionType !== '' ? $sessionType : 'unknown');
+
+    $entries = read_json_store(app_data_file('login-log.json'));
+    $entries[] = [
+        'session' => $normalizedSession,
+        'name' => $name !== '' ? $name : 'Anonimo',
+        'date' => date(DATE_ATOM),
+        'ip' => request_ip(),
+    ];
+    write_json_store(app_data_file('login-log.json'), $entries);
 }
 
 function current_auth_state(): array

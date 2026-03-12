@@ -3,6 +3,9 @@ declare(strict_types=1);
 require __DIR__ . '/bootstrap.php';
 
 start_app_session();
+$sessionType = truncate_text($_SESSION['session_type'] ?? '', 16);
+$userName = truncate_text($_SESSION['user_name'] ?? '', 24);
+append_auth_log($sessionType, $userName, 'logout');
 $_SESSION = [];
 if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();

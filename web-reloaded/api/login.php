@@ -20,6 +20,7 @@ if ($sessionType === 'generic') {
         send_json(422, ['error' => 'Inserisci il nome alunno per entrare in Okkupazione']);
     }
     $_SESSION['user_name'] = $name;
+    append_auth_log('generic', $name);
     send_json(200, [
         'ok' => true,
         'session' => current_auth_state(),
@@ -35,6 +36,7 @@ if (!hash_equals((string)$config['va_password'], $password)) {
 }
 $_SESSION['session_type'] = 'va';
 $_SESSION['user_name'] = $name;
+append_auth_log('va', $name);
 send_json(200, [
     'ok' => true,
     'session' => current_auth_state(),

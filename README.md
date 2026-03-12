@@ -1,5 +1,7 @@
 # GalileoGalileiVA2008Memorial
 
+Avvio online: [centoggva](https://centoggva.altervista.org/reloaded/)
+
 Questo repository non e' soltanto un progetto web. E' un memoriale digitale.
 
 Dentro ci sono i resti vivi di un'epoca precisa: la VA 2007/2008 del Liceo Scientifico Galileo Galilei. Ci sono il gioco, i commenti, i video, i suoni, i soprannomi, le schermate, i rituali da laboratorio informatico, le circolari, le bidelle, i prof buoni, i prof cattivi, l'ironia da classe chiusa in aula troppe ore e abbastanza sveglia da trasformare tutto in leggenda.

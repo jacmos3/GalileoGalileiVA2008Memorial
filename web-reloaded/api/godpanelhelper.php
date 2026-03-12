@@ -8,6 +8,7 @@ header('Cache-Control: no-store');
 $dataDir = app_root() . DIRECTORY_SEPARATOR . 'data';
 $commentsFile = $dataDir . DIRECTORY_SEPARATOR . 'comments.json';
 $leaderboardFile = $dataDir . DIRECTORY_SEPARATOR . 'leaderboard.json';
+$loginLogFile = $dataDir . DIRECTORY_SEPARATOR . 'login-log.json';
 
 function godpanel_json_response(int $statusCode, array $payload): never
 {
@@ -120,6 +121,12 @@ function godpanel_sort_leaderboard(array $entries): array
     return array_values($entries);
 }
 
+function godpanel_sort_login_logs(array $entries): array
+{
+    usort($entries, static fn(array $a, array $b): int => strtotime((string)($b['date'] ?? '')) <=> strtotime((string)($a['date'] ?? '')));
+    return array_values($entries);
+}
+
 function godpanel_comment_payload(array $body): array
 {
     $id = truncate_text($body['id'] ?? '', 120);
@@ -170,11 +177,12 @@ function godpanel_delete_by_id(array $entries, string $id): array
     ));
 }
 
-function godpanel_dashboard(string $commentsFile, string $leaderboardFile): array
+function godpanel_dashboard(string $commentsFile, string $leaderboardFile, string $loginLogFile): array
 {
     return [
         'comments' => godpanel_sort_comments(godpanel_seeded_comments(godpanel_read_json($commentsFile))),
         'leaderboard' => godpanel_sort_leaderboard(godpanel_read_json($leaderboardFile)),
+        'loginLog' => godpanel_sort_login_logs(godpanel_read_json($loginLogFile)),
     ];
 }
 
@@ -208,7 +216,7 @@ if ($action === 'status') {
 require_admin_session();
 
 if ($action === 'dashboard') {
-    godpanel_json_response(200, ['ok' => true] + godpanel_dashboard($commentsFile, $leaderboardFile));
+    godpanel_json_response(200, ['ok' => true] + godpanel_dashboard($commentsFile, $leaderboardFile, $loginLogFile));
 }
 
 if ($action === 'save-comment') {
